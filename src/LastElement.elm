@@ -1,4 +1,4 @@
-module LastElement exposing (..)
+module LastElement exposing (test)
 
 import List
 
