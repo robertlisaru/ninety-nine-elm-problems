@@ -1,3 +1,5 @@
+![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/9a2e1778-1e23-4ac0-8689-c0470aad64b8)
+
 ## Description
 My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
 
@@ -12,6 +14,11 @@ My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncr
 - No more `undefined` runtime errors. Everything is always defined.
 - `Application flow` is easy to follow in code.
 - Elm developers are friendly, helpful, and always excited to talk about Elm.
+
+The elm tree is also a wonderful tree.
+
+![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/34d16f6f-3f13-4c66-b845-8a57cf5d4fd8)
+
 
 ## How to run
 Run `elm make src/Main.elm` then open `index.html` file locally in your browser.
