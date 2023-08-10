@@ -19,7 +19,7 @@ My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncr
 - After React, this was the 2nd web framework I had ever interacted with at the time, in 2021.
 - At university I had mostly used imperative languages like Java, C, C++, PHP.
 - Thinking in a functional style was not easy at first, but shortly became natural and intuitive to me.
-- It took me 7 days to learn the Elm basics and build a small test app.
+- It took me 7 days to learn the Elm basics and build a [small test app](https://github.com/robertlisaru/elm-todos-app).
 - After that, I jumped straight into a real-world production project, where I successfully deployed over 100 pull requests, and many thousand lines of code.
 
 The elm tree is also a wonderful tree.
