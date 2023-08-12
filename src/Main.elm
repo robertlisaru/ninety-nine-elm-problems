@@ -1,7 +1,8 @@
 module Main exposing (main)
 
+import CountElements
 import ElementAt
-import Html exposing (Html, div, h4)
+import Html exposing (Html, li, ol)
 import LastElement
 import Penultimate
 
@@ -11,6 +12,7 @@ problems =
     [ { identifier = "1", title = "Last element", testFunction = LastElement.test }
     , { identifier = "2", title = "Penultimate", testFunction = Penultimate.test }
     , { identifier = "3", title = "Element at", testFunction = ElementAt.test }
+    , { identifier = "4", title = "Count elements", testFunction = CountElements.test }
     ]
 
 
@@ -23,19 +25,14 @@ type alias Problem =
 
 main : Html a
 main =
-    div []
-        (problems
-            |> List.map evaluate
-        )
+    ol [] (problems |> List.map evaluate)
 
 
 evaluate : Problem -> Html a
-evaluate { identifier, title, testFunction } =
-    h4 []
+evaluate { title, testFunction } =
+    li []
         [ Html.text <|
-            identifier
-                ++ ". "
-                ++ title
+            title
                 ++ ": "
                 ++ (case testFunction of
                         0 ->
