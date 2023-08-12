@@ -5,6 +5,7 @@ import ElementAt
 import Html exposing (Html, li, ol)
 import LastElement
 import Penultimate
+import Reverse
 
 
 problems : List Problem
@@ -13,6 +14,7 @@ problems =
     , { identifier = "2", title = "Penultimate", testFunction = Penultimate.test }
     , { identifier = "3", title = "Element at", testFunction = ElementAt.test }
     , { identifier = "4", title = "Count elements", testFunction = CountElements.test }
+    , { identifier = "5", title = "Reverse", testFunction = Reverse.test }
     ]
 
 
