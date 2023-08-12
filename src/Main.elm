@@ -3,6 +3,7 @@ module Main exposing (main)
 import CountElements
 import ElementAt
 import Html exposing (Html, li, ol)
+import IsPalindrome
 import LastElement
 import Penultimate
 import Reverse
@@ -15,6 +16,7 @@ problems =
     , { identifier = "3", title = "Element at", testFunction = ElementAt.test }
     , { identifier = "4", title = "Count elements", testFunction = CountElements.test }
     , { identifier = "5", title = "Reverse", testFunction = Reverse.test }
+    , { identifier = "6", title = "Is palindrome", testFunction = IsPalindrome.test }
     ]
 
 
