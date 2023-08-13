@@ -6,9 +6,11 @@ countElements list =
     list |> List.map (\_ -> 1) |> List.sum
 
 
-countElements2 : List a -> Int
-countElements2 list =
-    list |> List.foldl ((\_ -> 1) >> (+)) 0
+
+{- countElements2 : List a -> Int
+   countElements2 list =
+       list |> List.foldl ((\_ -> 1) >> (+)) 0
+-}
 
 
 test : Int
