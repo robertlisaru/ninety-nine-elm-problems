@@ -6,6 +6,7 @@ import FlattenNestedList
 import Html exposing (Html, li, ol)
 import IsPalindrome
 import LastElement
+import NoDupes
 import Penultimate
 import Reverse
 
@@ -19,6 +20,7 @@ problems =
     , { identifier = "5", title = "Reverse", testFunction = Reverse.test }
     , { identifier = "6", title = "Is palindrome", testFunction = IsPalindrome.test }
     , { identifier = "7", title = "Flatten nested list", testFunction = FlattenNestedList.test }
+    , { identifier = "8", title = "No dupes", testFunction = NoDupes.test }
     ]
 
 
