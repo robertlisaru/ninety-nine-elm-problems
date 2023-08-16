@@ -10,6 +10,7 @@ import NoDupes
 import Pack
 import Penultimate
 import Reverse
+import RunLengths
 
 
 problems : List Problem
@@ -23,6 +24,7 @@ problems =
     , { identifier = "7", title = "Flatten nested list", testFunction = FlattenNestedList.test }
     , { identifier = "8", title = "No dupes", testFunction = NoDupes.test }
     , { identifier = "9", title = "Pack", testFunction = Pack.test }
+    , { identifier = "10", title = "Run lengths", testFunction = RunLengths.test }
     ]
 
 
