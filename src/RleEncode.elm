@@ -8,60 +8,60 @@ type RleCode a
     | Single a
 
 
-getFirstSequence : List a -> List a
+incrementRun : Maybe (RleCode a) -> Maybe (RleCode a)
+incrementRun rleCode =
+    case rleCode of
+        Just (Run count a) ->
+            Just (Run (count + 1) a)
+
+        Just (Single a) ->
+            Just (Run 2 a)
+
+        _ ->
+            Nothing
+
+
+sequenceLength : RleCode a -> Int
+sequenceLength rleCode =
+    case rleCode of
+        Run length _ ->
+            length
+
+        Single _ ->
+            1
+
+
+getFirstSequence : List a -> Maybe (RleCode a)
 getFirstSequence list =
     case list of
         first :: rest ->
             if List.head rest == Just first then
-                first :: getFirstSequence rest
+                incrementRun (getFirstSequence rest)
 
             else
-                [ first ]
+                Just (Single first)
 
         _ ->
-            list
+            Nothing
 
 
-pack : List a -> List (List a)
-pack list =
-    let
-        firstSequence =
-            getFirstSequence list
-
-        remaining =
-            list |> List.drop (List.length firstSequence)
-    in
+rleEncode : List a -> List (RleCode a)
+rleEncode list =
     case list of
         [] ->
             []
 
         _ ->
-            firstSequence :: pack remaining
+            case getFirstSequence list of
+                Just firstSequence ->
+                    let
+                        remaining =
+                            list |> List.drop (sequenceLength firstSequence)
+                    in
+                    firstSequence :: rleEncode remaining
 
-
-encodePacked : List (List a) -> List (RleCode a)
-encodePacked packedList =
-    case packedList of
-        firstSubList :: rest ->
-            case firstSubList of
-                firstElement :: _ ->
-                    case List.length firstSubList of
-                        1 ->
-                            Single firstElement :: encodePacked rest
-
-                        _ ->
-                            Run (List.length firstSubList) firstElement :: encodePacked rest
-
-                [] ->
-                    encodePacked rest
-
-        [] ->
-            []
-
-
-rleEncode : List a -> List (RleCode a)
-rleEncode list =
-    list |> pack |> encodePacked
+                Nothing ->
+                    []
 
 
 test : Int
