@@ -7,6 +7,7 @@ import Html exposing (Html, li, ol)
 import IsPalindrome
 import LastElement
 import NoDupes
+import Pack
 import Penultimate
 import Reverse
 
@@ -21,6 +22,7 @@ problems =
     , { identifier = "6", title = "Is palindrome", testFunction = IsPalindrome.test }
     , { identifier = "7", title = "Flatten nested list", testFunction = FlattenNestedList.test }
     , { identifier = "8", title = "No dupes", testFunction = NoDupes.test }
+    , { identifier = "9", title = "Pack", testFunction = Pack.test }
     ]
 
 
