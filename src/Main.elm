@@ -10,6 +10,7 @@ import NoDupes
 import Pack
 import Penultimate
 import Reverse
+import RleEncode
 import RunLengths
 
 
@@ -25,6 +26,7 @@ problems =
     , { identifier = "8", title = "No dupes", testFunction = NoDupes.test }
     , { identifier = "9", title = "Pack", testFunction = Pack.test }
     , { identifier = "10", title = "Run lengths", testFunction = RunLengths.test }
+    , { identifier = "11", title = "Run lengths encode", testFunction = RleEncode.test }
     ]
 
 
