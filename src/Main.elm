@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import CountElements
+import Duplicate
 import ElementAt
 import FlattenNestedList
 import Html exposing (Html, li, ol)
@@ -29,6 +30,7 @@ problems =
     , { identifier = "10", title = "Run lengths", testFunction = RunLengths.test }
     , { identifier = "11", title = "Run lengths encode", testFunction = RleEncode.test }
     , { identifier = "12", title = "Run lengths decode", testFunction = RleDecode.test }
+    , { identifier = "14", title = "Duplicate", testFunction = Duplicate.test }
     ]
 
 
