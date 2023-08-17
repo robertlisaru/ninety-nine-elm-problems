@@ -4,7 +4,7 @@ import CountElements
 import Duplicate
 import ElementAt
 import FlattenNestedList
-import Html exposing (Html, li, ol)
+import Html exposing (Html, li, ul)
 import IsPalindrome
 import LastElement
 import NoDupes
@@ -43,14 +43,16 @@ type alias Problem =
 
 main : Html a
 main =
-    ol [] (problems |> List.map evaluate)
+    ul [] (problems |> List.map evaluate)
 
 
 evaluate : Problem -> Html a
-evaluate { title, testFunction } =
+evaluate { identifier, title, testFunction } =
     li []
         [ Html.text <|
-            title
+            identifier
+                ++ ". "
+                ++ title
                 ++ ": "
                 ++ (case testFunction of
                         0 ->
