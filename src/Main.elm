@@ -10,6 +10,7 @@ import LastElement
 import NoDupes
 import Pack
 import Penultimate
+import RepeatElements
 import Reverse
 import RleDecode
 import RleEncode
@@ -31,6 +32,7 @@ problems =
     , { identifier = "11", title = "Run lengths encode", testFunction = RleEncode.test }
     , { identifier = "12", title = "Run lengths decode", testFunction = RleDecode.test }
     , { identifier = "14", title = "Duplicate", testFunction = Duplicate.test }
+    , { identifier = "15", title = "Repeat elements", testFunction = RepeatElements.test }
     ]
 
 
