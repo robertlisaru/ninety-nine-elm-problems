@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import CountElements
+import DropNth
 import Duplicate
 import ElementAt
 import FlattenNestedList
@@ -33,6 +34,7 @@ problems =
     , { identifier = "12", title = "Run lengths decode", testFunction = RleDecode.test }
     , { identifier = "14", title = "Duplicate", testFunction = Duplicate.test }
     , { identifier = "15", title = "Repeat elements", testFunction = RepeatElements.test }
+    , { identifier = "16", title = "Drop nth", testFunction = DropNth.test }
     ]
 
 
