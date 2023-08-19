@@ -16,6 +16,7 @@ import Reverse
 import RleDecode
 import RleEncode
 import RunLengths
+import Split
 
 
 problems : List Problem
@@ -35,6 +36,7 @@ problems =
     , { identifier = "14", title = "Duplicate", testFunction = Duplicate.test }
     , { identifier = "15", title = "Repeat elements", testFunction = RepeatElements.test }
     , { identifier = "16", title = "Drop nth", testFunction = DropNth.test }
+    , { identifier = "17", title = "Split", testFunction = Split.test }
     ]
 
 
