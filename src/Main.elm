@@ -17,6 +17,7 @@ import RleDecode
 import RleEncode
 import RunLengths
 import Split
+import Sublist
 
 
 problems : List Problem
@@ -37,6 +38,7 @@ problems =
     , { identifier = "15", title = "Repeat elements", testFunction = RepeatElements.test }
     , { identifier = "16", title = "Drop nth", testFunction = DropNth.test }
     , { identifier = "17", title = "Split", testFunction = Split.test }
+    , { identifier = "18", title = "Sublist", testFunction = Sublist.test }
     ]
 
 
