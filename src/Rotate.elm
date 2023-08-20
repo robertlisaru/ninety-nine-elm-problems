@@ -5,36 +5,19 @@ import List
 
 rotate : Int -> List a -> List a
 rotate rot list =
-    if rot == 0 then
-        list
-
-    else if (list |> List.length) == 0 then
+    if list == [] then
         []
 
     else
         let
-            absRot =
-                abs rot
-
             rotMod =
-                absRot |> modBy length
-
-            length =
-                list |> List.length
+                rot |> modBy (list |> List.length)
 
             leftSegment =
-                if rot < 0 then
-                    list |> List.drop (length - rotMod)
-
-                else
-                    list |> List.drop rotMod
+                list |> List.drop rotMod
 
             rightSegment =
-                if rot < 0 then
-                    list |> List.take (length - rotMod)
-
-                else
-                    list |> List.take rotMod
+                list |> List.take rotMod
         in
         leftSegment ++ rightSegment
 
