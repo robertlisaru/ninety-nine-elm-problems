@@ -15,6 +15,7 @@ import RepeatElements
 import Reverse
 import RleDecode
 import RleEncode
+import Rotate
 import RunLengths
 import Split
 import Sublist
@@ -39,6 +40,7 @@ problems =
     , { identifier = "16", title = "Drop nth", testFunction = DropNth.test }
     , { identifier = "17", title = "Split", testFunction = Split.test }
     , { identifier = "18", title = "Sublist", testFunction = Sublist.test }
+    , { identifier = "19", title = "Rotate", testFunction = Rotate.test }
     ]
 
 
