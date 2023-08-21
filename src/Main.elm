@@ -13,6 +13,7 @@ import LastElement
 import NoDupes
 import Pack
 import Penultimate
+import Range
 import RepeatElements
 import Reverse
 import RleDecode
@@ -45,6 +46,7 @@ problems =
     , { identifier = "19", title = "Rotate", testFunction = Rotate.test }
     , { identifier = "20", title = "Drop at", testFunction = DropAt.test }
     , { identifier = "21", title = "Insert at", testFunction = InsertAt.test }
+    , { identifier = "22", title = "Range", testFunction = Range.test }
     ]
 
 
