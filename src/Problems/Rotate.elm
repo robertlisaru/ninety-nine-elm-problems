@@ -1,4 +1,4 @@
-module Rotate exposing (test)
+module Problems.Rotate exposing (test)
 
 import List
 

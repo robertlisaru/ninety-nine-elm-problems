@@ -1,52 +1,52 @@
 module Main exposing (main)
 
-import CountElements
-import DropAt
-import DropNth
-import Duplicate
-import ElementAt
-import FlattenNestedList
 import Html exposing (Html, li, ul)
-import InsertAt
-import IsPalindrome
-import LastElement
-import NoDupes
-import Pack
-import Penultimate
-import Range
-import RepeatElements
-import Reverse
-import RleDecode
-import RleEncode
-import Rotate
-import RunLengths
-import Split
-import Sublist
+import Problems.CountElements
+import Problems.DropAt
+import Problems.DropNth
+import Problems.Duplicate
+import Problems.ElementAt
+import Problems.FlattenNestedList
+import Problems.InsertAt
+import Problems.IsPalindrome
+import Problems.LastElement
+import Problems.NoDupes
+import Problems.Pack
+import Problems.Penultimate
+import Problems.Range
+import Problems.RepeatElements
+import Problems.Reverse
+import Problems.RleDecode
+import Problems.RleEncode
+import Problems.Rotate
+import Problems.RunLengths
+import Problems.Split
+import Problems.Sublist
 
 
 problems : List Problem
 problems =
-    [ { identifier = "1", title = "Last element", testFunction = LastElement.test }
-    , { identifier = "2", title = "Penultimate", testFunction = Penultimate.test }
-    , { identifier = "3", title = "Element at", testFunction = ElementAt.test }
-    , { identifier = "4", title = "Count elements", testFunction = CountElements.test }
-    , { identifier = "5", title = "Reverse", testFunction = Reverse.test }
-    , { identifier = "6", title = "Is palindrome", testFunction = IsPalindrome.test }
-    , { identifier = "7", title = "Flatten nested list", testFunction = FlattenNestedList.test }
-    , { identifier = "8", title = "No dupes", testFunction = NoDupes.test }
-    , { identifier = "9", title = "Pack", testFunction = Pack.test }
-    , { identifier = "10", title = "Run lengths", testFunction = RunLengths.test }
-    , { identifier = "11", title = "Run lengths encode", testFunction = RleEncode.test }
-    , { identifier = "12", title = "Run lengths decode", testFunction = RleDecode.test }
-    , { identifier = "14", title = "Duplicate", testFunction = Duplicate.test }
-    , { identifier = "15", title = "Repeat elements", testFunction = RepeatElements.test }
-    , { identifier = "16", title = "Drop nth", testFunction = DropNth.test }
-    , { identifier = "17", title = "Split", testFunction = Split.test }
-    , { identifier = "18", title = "Sublist", testFunction = Sublist.test }
-    , { identifier = "19", title = "Rotate", testFunction = Rotate.test }
-    , { identifier = "20", title = "Drop at", testFunction = DropAt.test }
-    , { identifier = "21", title = "Insert at", testFunction = InsertAt.test }
-    , { identifier = "22", title = "Range", testFunction = Range.test }
+    [ { identifier = "1", title = "Last element", testFunction = Problems.LastElement.test }
+    , { identifier = "2", title = "Penultimate", testFunction = Problems.Penultimate.test }
+    , { identifier = "3", title = "Element at", testFunction = Problems.ElementAt.test }
+    , { identifier = "4", title = "Count elements", testFunction = Problems.CountElements.test }
+    , { identifier = "5", title = "Reverse", testFunction = Problems.Reverse.test }
+    , { identifier = "6", title = "Is palindrome", testFunction = Problems.IsPalindrome.test }
+    , { identifier = "7", title = "Flatten nested list", testFunction = Problems.FlattenNestedList.test }
+    , { identifier = "8", title = "No dupes", testFunction = Problems.NoDupes.test }
+    , { identifier = "9", title = "Pack", testFunction = Problems.Pack.test }
+    , { identifier = "10", title = "Run lengths", testFunction = Problems.RunLengths.test }
+    , { identifier = "11", title = "Run lengths encode", testFunction = Problems.RleEncode.test }
+    , { identifier = "12", title = "Run lengths decode", testFunction = Problems.RleDecode.test }
+    , { identifier = "14", title = "Duplicate", testFunction = Problems.Duplicate.test }
+    , { identifier = "15", title = "Repeat elements", testFunction = Problems.RepeatElements.test }
+    , { identifier = "16", title = "Drop nth", testFunction = Problems.DropNth.test }
+    , { identifier = "17", title = "Split", testFunction = Problems.Split.test }
+    , { identifier = "18", title = "Sublist", testFunction = Problems.Sublist.test }
+    , { identifier = "19", title = "Rotate", testFunction = Problems.Rotate.test }
+    , { identifier = "20", title = "Drop at", testFunction = Problems.DropAt.test }
+    , { identifier = "21", title = "Insert at", testFunction = Problems.InsertAt.test }
+    , { identifier = "22", title = "Range", testFunction = Problems.Range.test }
     ]
 
 

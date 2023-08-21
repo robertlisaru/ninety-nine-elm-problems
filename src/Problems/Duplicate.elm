@@ -1,4 +1,4 @@
-module Duplicate exposing (test)
+module Problems.Duplicate exposing (test)
 
 import List
 

@@ -1,4 +1,4 @@
-module LastElement exposing (..)
+module Problems.LastElement exposing (..)
 
 import List
 

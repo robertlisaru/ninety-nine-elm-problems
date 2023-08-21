@@ -1,4 +1,4 @@
-module FlattenNestedList exposing (test)
+module Problems.FlattenNestedList exposing (test)
 
 import List
 

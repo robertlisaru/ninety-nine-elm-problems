@@ -1,4 +1,4 @@
-module Split exposing (test)
+module Problems.Split exposing (test)
 
 import List
 

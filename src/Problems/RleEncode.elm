@@ -1,4 +1,4 @@
-module RleEncode exposing (test)
+module Problems.RleEncode exposing (test)
 
 import List
 

@@ -1,4 +1,4 @@
-module IsPalindrome exposing (test)
+module Problems.IsPalindrome exposing (test)
 
 import List
 

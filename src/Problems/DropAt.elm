@@ -1,4 +1,4 @@
-module DropAt exposing (test)
+module Problems.DropAt exposing (test)
 
 import List
 

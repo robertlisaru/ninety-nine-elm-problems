@@ -1,4 +1,4 @@
-module Pack exposing (test)
+module Problems.Pack exposing (test)
 
 import Html.Attributes exposing (list)
 import List

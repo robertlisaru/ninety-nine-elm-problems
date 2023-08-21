@@ -1,4 +1,4 @@
-module DropNth exposing (test)
+module Problems.DropNth exposing (test)
 
 import Html exposing (a)
 import Html.Attributes exposing (list)

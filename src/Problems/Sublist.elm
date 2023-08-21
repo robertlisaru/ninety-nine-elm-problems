@@ -1,4 +1,4 @@
-module Sublist exposing (test)
+module Problems.Sublist exposing (test)
 
 import List
 

@@ -1,4 +1,4 @@
-module RepeatElements exposing (test)
+module Problems.RepeatElements exposing (test)
 
 {- Using foldr
 

@@ -1,4 +1,4 @@
-module InsertAt exposing (test)
+module Problems.InsertAt exposing (test)
 
 import List
 

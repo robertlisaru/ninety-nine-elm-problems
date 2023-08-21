@@ -1,4 +1,4 @@
-module CountElements exposing (test)
+module Problems.CountElements exposing (test)
 
 
 countElements : List a -> Int

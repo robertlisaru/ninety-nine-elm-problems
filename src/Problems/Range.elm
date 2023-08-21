@@ -1,4 +1,4 @@
-module Range exposing (test)
+module Problems.Range exposing (test)
 
 import List
 

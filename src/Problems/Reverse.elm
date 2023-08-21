@@ -1,4 +1,4 @@
-module Reverse exposing (test)
+module Problems.Reverse exposing (test)
 
 
 myReverse : List a -> List a

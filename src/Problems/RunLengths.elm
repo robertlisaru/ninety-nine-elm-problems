@@ -1,4 +1,4 @@
-module RunLengths exposing (test)
+module Problems.RunLengths exposing (test)
 
 import List
 

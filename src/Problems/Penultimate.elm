@@ -1,4 +1,4 @@
-module Penultimate exposing (test)
+module Problems.Penultimate exposing (test)
 
 import List
 

@@ -1,4 +1,4 @@
-module NoDupes exposing (test)
+module Problems.NoDupes exposing (test)
 
 
 noDupes : List a -> List a
