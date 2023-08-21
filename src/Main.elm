@@ -7,6 +7,7 @@ import Duplicate
 import ElementAt
 import FlattenNestedList
 import Html exposing (Html, li, ul)
+import InsertAt
 import IsPalindrome
 import LastElement
 import NoDupes
@@ -43,6 +44,7 @@ problems =
     , { identifier = "18", title = "Sublist", testFunction = Sublist.test }
     , { identifier = "19", title = "Rotate", testFunction = Rotate.test }
     , { identifier = "20", title = "Drop at", testFunction = DropAt.test }
+    , { identifier = "21", title = "Insert at", testFunction = InsertAt.test }
     ]
 
 
