@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import CountElements
+import DropAt
 import DropNth
 import Duplicate
 import ElementAt
@@ -41,6 +42,7 @@ problems =
     , { identifier = "17", title = "Split", testFunction = Split.test }
     , { identifier = "18", title = "Sublist", testFunction = Sublist.test }
     , { identifier = "19", title = "Rotate", testFunction = Rotate.test }
+    , { identifier = "20", title = "Drop at", testFunction = DropAt.test }
     ]
 
 
