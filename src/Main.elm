@@ -1,6 +1,8 @@
-module Main exposing (main)
+module Main exposing (..)
 
-import Html exposing (Html, li, ul)
+import Browser
+import Html exposing (Html, button, li, span, text, ul)
+import Html.Events exposing (onClick)
 import Problems.CountElements
 import Problems.DropAt
 import Problems.DropNth
@@ -22,6 +24,37 @@ import Problems.Rotate
 import Problems.RunLengths
 import Problems.Split
 import Problems.Sublist
+import Random
+
+
+
+-- MAIN
+
+
+main : Program () Model Msg
+main =
+    Browser.element
+        { init = always ( Model [], Cmd.none )
+        , update = update
+        , subscriptions = always Sub.none
+        , view = view
+        }
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { randomList : List Int
+    }
+
+
+type alias Problem =
+    { identifier : String
+    , title : String
+    , testFunction : Int
+    }
 
 
 problems : List Problem
@@ -47,37 +80,68 @@ problems =
     , { identifier = "20", title = "Drop at", testFunction = Problems.DropAt.test }
     , { identifier = "21", title = "Insert at", testFunction = Problems.InsertAt.test }
     , { identifier = "22", title = "Range", testFunction = Problems.Range.test }
+    , { identifier = "23", title = "Random select", testFunction = 0 }
     ]
 
 
-type alias Problem =
-    { identifier : String
-    , title : String
-    , testFunction : Int
-    }
+
+-- UPDATE
 
 
-main : Html a
-main =
-    ul [] (problems |> List.map evaluate)
+type Msg
+    = RequestRandomList
+    | RandomListArrived (List Int)
 
 
-evaluate : Problem -> Html a
-evaluate { identifier, title, testFunction } =
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        RequestRandomList ->
+            ( model, Random.generate RandomListArrived (Random.list 10 (Random.int 1 100)) )
+
+        RandomListArrived randomList ->
+            ( { model | randomList = randomList }, Cmd.none )
+
+
+
+-- VIEW
+
+
+view : Model -> Html Msg
+view model =
+    ul [] (problems |> List.map (evaluate model))
+
+
+evaluate : Model -> Problem -> Html Msg
+evaluate model { identifier, title, testFunction } =
+    case identifier of
+        "23" ->
+            problem23 model
+
+        _ ->
+            li []
+                [ text <|
+                    identifier
+                        ++ ". "
+                        ++ title
+                        ++ ": "
+                        ++ (case testFunction of
+                                0 ->
+                                    "Your implementation passed all tests."
+
+                                1 ->
+                                    "Your implementation failed one test."
+
+                                x ->
+                                    "Your implementation failed " ++ String.fromInt x ++ " tests."
+                           )
+                ]
+
+
+problem23 : Model -> Html Msg
+problem23 model =
     li []
-        [ Html.text <|
-            identifier
-                ++ ". "
-                ++ title
-                ++ ": "
-                ++ (case testFunction of
-                        0 ->
-                            "Your implementation passed all tests."
-
-                        1 ->
-                            "Your implementation failed one test."
-
-                        x ->
-                            "Your implementation failed " ++ String.fromInt x ++ " tests."
-                   )
+        [ text ("23. " ++ "Random list elements")
+        , button [ onClick RequestRandomList ] [ text "Generate list" ]
+        , span [] (model.randomList |> List.map (\number -> text (String.fromInt number ++ " ")))
         ]
