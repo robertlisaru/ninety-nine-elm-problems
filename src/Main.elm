@@ -53,34 +53,34 @@ type alias Model =
 type alias Problem =
     { identifier : String
     , title : String
-    , testFunction : Int
+    , failedTests : Int
     }
 
 
 problems : List Problem
 problems =
-    [ { identifier = "1", title = "Last element", testFunction = Problems.LastElement.test }
-    , { identifier = "2", title = "Penultimate", testFunction = Problems.Penultimate.test }
-    , { identifier = "3", title = "Element at", testFunction = Problems.ElementAt.test }
-    , { identifier = "4", title = "Count elements", testFunction = Problems.CountElements.test }
-    , { identifier = "5", title = "Reverse", testFunction = Problems.Reverse.test }
-    , { identifier = "6", title = "Is palindrome", testFunction = Problems.IsPalindrome.test }
-    , { identifier = "7", title = "Flatten nested list", testFunction = Problems.FlattenNestedList.test }
-    , { identifier = "8", title = "No dupes", testFunction = Problems.NoDupes.test }
-    , { identifier = "9", title = "Pack", testFunction = Problems.Pack.test }
-    , { identifier = "10", title = "Run lengths", testFunction = Problems.RunLengths.test }
-    , { identifier = "11", title = "Run lengths encode", testFunction = Problems.RleEncode.test }
-    , { identifier = "12", title = "Run lengths decode", testFunction = Problems.RleDecode.test }
-    , { identifier = "14", title = "Duplicate", testFunction = Problems.Duplicate.test }
-    , { identifier = "15", title = "Repeat elements", testFunction = Problems.RepeatElements.test }
-    , { identifier = "16", title = "Drop nth", testFunction = Problems.DropNth.test }
-    , { identifier = "17", title = "Split", testFunction = Problems.Split.test }
-    , { identifier = "18", title = "Sublist", testFunction = Problems.Sublist.test }
-    , { identifier = "19", title = "Rotate", testFunction = Problems.Rotate.test }
-    , { identifier = "20", title = "Drop at", testFunction = Problems.DropAt.test }
-    , { identifier = "21", title = "Insert at", testFunction = Problems.InsertAt.test }
-    , { identifier = "22", title = "Range", testFunction = Problems.Range.test }
-    , { identifier = "23", title = "Random select", testFunction = 0 }
+    [ { identifier = "1", title = "Last element", failedTests = 0 }
+    , { identifier = "2", title = "Penultimate", failedTests = Problems.Penultimate.test }
+    , { identifier = "3", title = "Element at", failedTests = Problems.ElementAt.test }
+    , { identifier = "4", title = "Count elements", failedTests = Problems.CountElements.test }
+    , { identifier = "5", title = "Reverse", failedTests = Problems.Reverse.test }
+    , { identifier = "6", title = "Is palindrome", failedTests = Problems.IsPalindrome.test }
+    , { identifier = "7", title = "Flatten nested list", failedTests = Problems.FlattenNestedList.test }
+    , { identifier = "8", title = "No dupes", failedTests = Problems.NoDupes.test }
+    , { identifier = "9", title = "Pack", failedTests = Problems.Pack.test }
+    , { identifier = "10", title = "Run lengths", failedTests = Problems.RunLengths.test }
+    , { identifier = "11", title = "Run lengths encode", failedTests = Problems.RleEncode.test }
+    , { identifier = "12", title = "Run lengths decode", failedTests = Problems.RleDecode.test }
+    , { identifier = "14", title = "Duplicate", failedTests = Problems.Duplicate.test }
+    , { identifier = "15", title = "Repeat elements", failedTests = Problems.RepeatElements.test }
+    , { identifier = "16", title = "Drop nth", failedTests = Problems.DropNth.test }
+    , { identifier = "17", title = "Split", failedTests = Problems.Split.test }
+    , { identifier = "18", title = "Sublist", failedTests = Problems.Sublist.test }
+    , { identifier = "19", title = "Rotate", failedTests = Problems.Rotate.test }
+    , { identifier = "20", title = "Drop at", failedTests = Problems.DropAt.test }
+    , { identifier = "21", title = "Insert at", failedTests = Problems.InsertAt.test }
+    , { identifier = "22", title = "Range", failedTests = Problems.Range.test }
+    , { identifier = "23", title = "Random select", failedTests = 0 }
     ]
 
 
@@ -113,7 +113,7 @@ view model =
 
 
 evaluate : Model -> Problem -> Html Msg
-evaluate model { identifier, title, testFunction } =
+evaluate model { identifier, title, failedTests } =
     case identifier of
         "23" ->
             problem23 model
@@ -125,7 +125,7 @@ evaluate model { identifier, title, testFunction } =
                         ++ ". "
                         ++ title
                         ++ ": "
-                        ++ (case testFunction of
+                        ++ (case failedTests of
                                 0 ->
                                     "Your implementation passed all tests."
 
