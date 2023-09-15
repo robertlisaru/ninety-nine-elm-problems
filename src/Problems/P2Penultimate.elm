@@ -1,4 +1,4 @@
-module Problems.Penultimate exposing (penultimate)
+module Problems.P2Penultimate exposing (penultimate)
 
 import List
 

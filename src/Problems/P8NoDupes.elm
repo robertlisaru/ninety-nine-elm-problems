@@ -1,4 +1,4 @@
-module Problems.NoDupes exposing (noDupes)
+module Problems.P8NoDupes exposing (noDupes)
 
 
 noDupes : List a -> List a

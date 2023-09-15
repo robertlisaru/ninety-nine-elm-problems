@@ -1,4 +1,4 @@
-module Problems.Range exposing (range)
+module Problems.P22Range exposing (range)
 
 import List
 

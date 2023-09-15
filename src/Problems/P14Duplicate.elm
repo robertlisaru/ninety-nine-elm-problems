@@ -1,4 +1,4 @@
-module Problems.Duplicate exposing (duplicate)
+module Problems.P14Duplicate exposing (duplicate)
 
 import List
 

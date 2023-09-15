@@ -1,4 +1,4 @@
-module Problems.Split exposing (split)
+module Problems.P17Split exposing (split)
 
 import List
 

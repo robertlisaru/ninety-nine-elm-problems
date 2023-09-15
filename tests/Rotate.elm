@@ -1,7 +1,7 @@
 module Rotate exposing (..)
 
 import Expect
-import Problems.Rotate exposing (rotate)
+import Problems.P19Rotate exposing (rotate)
 import Test exposing (..)
 
 

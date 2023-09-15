@@ -1,4 +1,4 @@
-module Problems.Rotate exposing (rotate)
+module Problems.P19Rotate exposing (rotate)
 
 import List
 

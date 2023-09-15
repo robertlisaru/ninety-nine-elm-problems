@@ -1,7 +1,7 @@
 module DropNth exposing (..)
 
 import Expect
-import Problems.DropNth exposing (dropNth)
+import Problems.P16DropNth exposing (dropNth)
 import Test exposing (..)
 
 

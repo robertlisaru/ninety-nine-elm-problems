@@ -1,7 +1,7 @@
 module Reverse exposing (..)
 
 import Expect
-import Problems.Reverse exposing (myReverse)
+import Problems.P5Reverse exposing (myReverse)
 import Test exposing (..)
 
 

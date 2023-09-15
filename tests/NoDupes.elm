@@ -1,7 +1,7 @@
 module NoDupes exposing (..)
 
 import Expect
-import Problems.NoDupes exposing (noDupes)
+import Problems.P8NoDupes exposing (noDupes)
 import Test exposing (..)
 
 

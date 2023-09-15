@@ -2,7 +2,7 @@ module RleDecode exposing (..)
 
 import Expect
 import List
-import Problems.RleDecode exposing (RleCode(..), rleDecode)
+import Problems.P12RleDecode exposing (RleCode(..), rleDecode)
 import Test exposing (..)
 
 

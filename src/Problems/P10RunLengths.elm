@@ -1,4 +1,4 @@
-module Problems.RunLengths exposing (runLengths)
+module Problems.P10RunLengths exposing (runLengths)
 
 import List
 

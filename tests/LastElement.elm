@@ -1,7 +1,7 @@
 module LastElement exposing (..)
 
 import Expect
-import Problems.LastElement exposing (last)
+import Problems.P1LastElement exposing (last)
 import Test exposing (..)
 
 

@@ -1,7 +1,7 @@
 module Duplicate exposing (..)
 
 import Expect
-import Problems.Duplicate exposing (duplicate)
+import Problems.P14Duplicate exposing (duplicate)
 import Test exposing (..)
 
 

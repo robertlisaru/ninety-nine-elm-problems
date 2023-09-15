@@ -1,7 +1,7 @@
 module Pack exposing (..)
 
 import Expect
-import Problems.Pack exposing (pack)
+import Problems.P9Pack exposing (pack)
 import Test exposing (..)
 
 

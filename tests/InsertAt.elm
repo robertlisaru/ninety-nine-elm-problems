@@ -1,7 +1,7 @@
 module InsertAt exposing (..)
 
 import Expect
-import Problems.InsertAt exposing (insertAt)
+import Problems.P21InsertAt exposing (insertAt)
 import Test exposing (..)
 
 

@@ -1,7 +1,7 @@
 module IsPalindrome exposing (..)
 
 import Expect
-import Problems.IsPalindrome exposing (isPalindrome)
+import Problems.P6IsPalindrome exposing (isPalindrome)
 import Test exposing (..)
 
 

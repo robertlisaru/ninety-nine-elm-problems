@@ -1,4 +1,4 @@
-module Problems.RleDecode exposing (RleCode(..), rleDecode)
+module Problems.P12RleDecode exposing (RleCode(..), rleDecode)
 
 import List
 

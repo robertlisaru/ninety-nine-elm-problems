@@ -1,7 +1,7 @@
 module Range exposing (..)
 
 import Expect
-import Problems.Range exposing (range)
+import Problems.P22Range exposing (range)
 import Test exposing (..)
 
 

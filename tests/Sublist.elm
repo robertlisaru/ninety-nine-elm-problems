@@ -1,7 +1,7 @@
 module Sublist exposing (..)
 
 import Expect
-import Problems.Sublist exposing (sublist)
+import Problems.P18Sublist exposing (sublist)
 import Test exposing (..)
 
 

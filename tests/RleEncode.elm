@@ -1,7 +1,7 @@
 module RleEncode exposing (..)
 
 import Expect
-import Problems.RleEncode exposing (RleCode(..), rleEncode)
+import Problems.P11RleEncode exposing (RleCode(..), rleEncode)
 import Test exposing (..)
 
 

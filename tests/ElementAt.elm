@@ -1,7 +1,7 @@
 module ElementAt exposing (..)
 
 import Expect
-import Problems.ElementAt exposing (elementAt)
+import Problems.P3ElementAt exposing (elementAt)
 import Test exposing (..)
 
 
