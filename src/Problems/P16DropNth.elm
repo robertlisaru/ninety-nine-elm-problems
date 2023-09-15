@@ -1,7 +1,5 @@
 module Problems.P16DropNth exposing (dropNth)
 
-import Html exposing (a)
-import Html.Attributes exposing (list)
 import List
 
 

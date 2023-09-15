@@ -1,4 +1,4 @@
-module P12RleDecode exposing (..)
+module P12RleDecode exposing (suite)
 
 import Expect
 import List

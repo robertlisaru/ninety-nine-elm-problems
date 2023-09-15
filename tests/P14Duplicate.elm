@@ -1,4 +1,4 @@
-module P14Duplicate exposing (..)
+module P14Duplicate exposing (suite)
 
 import Expect
 import Problems.P14Duplicate exposing (duplicate)

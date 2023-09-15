@@ -1,6 +1,5 @@
 module Problems.P9Pack exposing (pack)
 
-import Html.Attributes exposing (list)
 import List
 
 
@@ -26,16 +25,16 @@ getFirstSequence list =
 
 pack : List a -> List (List a)
 pack list =
-    let
-        firstSequence =
-            getFirstSequence list
-
-        remaining =
-            list |> List.drop (List.length firstSequence)
-    in
     case list of
         [] ->
             []
 
         _ ->
+            let
+                firstSequence =
+                    getFirstSequence list
+
+                remaining =
+                    list |> List.drop (List.length firstSequence)
+            in
             firstSequence :: pack remaining

@@ -1,4 +1,4 @@
-module P8NoDupes exposing (..)
+module P8NoDupes exposing (suite)
 
 import Expect
 import Problems.P8NoDupes exposing (noDupes)

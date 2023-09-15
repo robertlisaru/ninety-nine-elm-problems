@@ -1,4 +1,4 @@
-module P22Range exposing (..)
+module P22Range exposing (suite)
 
 import Expect
 import Problems.P22Range exposing (range)

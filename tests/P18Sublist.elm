@@ -1,4 +1,4 @@
-module P18Sublist exposing (..)
+module P18Sublist exposing (suite)
 
 import Expect
 import Problems.P18Sublist exposing (sublist)

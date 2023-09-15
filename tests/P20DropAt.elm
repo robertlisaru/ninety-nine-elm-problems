@@ -1,4 +1,4 @@
-module P20DropAt exposing (..)
+module P20DropAt exposing (suite)
 
 import Expect
 import Problems.P20DropAt exposing (dropAt)

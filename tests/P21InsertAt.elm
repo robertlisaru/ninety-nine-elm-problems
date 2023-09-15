@@ -1,4 +1,4 @@
-module P21InsertAt exposing (..)
+module P21InsertAt exposing (suite)
 
 import Expect
 import Problems.P21InsertAt exposing (insertAt)
