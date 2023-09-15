@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "elm-test"
+    "test": "elm-test",
+    "build": "elm make src/Main.elm"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/robertlisaru/ninety-nine-elm-problems/issues"
   },
-  "homepage": "https://github.com/robertlisaru/ninety-nine-elm-problems#readme"
+  "homepage": "https://github.com/robertlisaru/ninety-nine-elm-problems#readme",
+  "devDependencies": {
+    "elm": "^0.19.1-5",
+    "elm-format": "^0.8.7",
+    "elm-review": "^2.10.2",
+    "elm-test": "^0.19.1-revision12"
+  }
 }

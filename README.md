@@ -34,22 +34,22 @@ The elm tree is also a wonderful tree.
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/34d16f6f-3f13-4c66-b845-8a57cf5d4fd8)
 
 ## Development setup
-Install Elm and its plugins:
+Install dependencies:
 ```shell
-npm install -g elm elm-test elm-format elm-review
+npm install
 ```
-My IDE's Elm extension needs the `-g`, but you may not need a global install.
+
 ## How to run
-Run 
+Run the build script:
 
 ```shell
-elm make src/Main.elm
+npm run build
 ```
  then open `index.html` file locally in your browser.
 
 ## How to test
-Run 
+Run the test script:
 ```shell
-elm-test
+npm run test
 ```
-from the root directory. It will run everything in the `tests` folder.
+It will run everything in the `tests` folder.
