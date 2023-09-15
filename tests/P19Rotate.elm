@@ -2,7 +2,7 @@ module P19Rotate exposing (suite)
 
 import Expect
 import Problems.P19Rotate exposing (rotate)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

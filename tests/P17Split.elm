@@ -2,7 +2,7 @@ module P17Split exposing (suite)
 
 import Expect
 import Problems.P17Split exposing (split)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

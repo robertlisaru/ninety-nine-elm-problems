@@ -2,7 +2,7 @@ module P14Duplicate exposing (suite)
 
 import Expect
 import Problems.P14Duplicate exposing (duplicate)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

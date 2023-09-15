@@ -2,7 +2,7 @@ module P18Sublist exposing (suite)
 
 import Expect
 import Problems.P18Sublist exposing (sublist)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

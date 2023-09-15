@@ -3,7 +3,7 @@ module P12RleDecode exposing (suite)
 import Expect
 import List
 import Problems.P12RleDecode exposing (RleCode(..), rleDecode)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

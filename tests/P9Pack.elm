@@ -2,7 +2,7 @@ module P9Pack exposing (suite)
 
 import Expect
 import Problems.P9Pack exposing (pack)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

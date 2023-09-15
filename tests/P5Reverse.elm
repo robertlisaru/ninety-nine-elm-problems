@@ -2,7 +2,7 @@ module P5Reverse exposing (suite)
 
 import Expect
 import Problems.P5Reverse exposing (myReverse)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

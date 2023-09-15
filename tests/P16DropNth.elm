@@ -2,7 +2,7 @@ module P16DropNth exposing (suite)
 
 import Expect
 import Problems.P16DropNth exposing (dropNth)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test

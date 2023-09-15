@@ -2,7 +2,7 @@ module P6IsPalindrome exposing (suite)
 
 import Expect
 import Problems.P6IsPalindrome exposing (isPalindrome)
-import Test exposing (..)
+import Test exposing (Test, test)
 
 
 suite : Test
