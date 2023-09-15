@@ -1,4 +1,4 @@
-module Problems.RleDecode exposing (test)
+module Problems.RleDecode exposing (RleCode(..), rleDecode)
 
 import List
 
@@ -25,16 +25,3 @@ expand rleCode =
 rleDecode : List (RleCode a) -> List a
 rleDecode list =
     list |> List.concatMap expand
-
-
-test : Int
-test =
-    List.length <|
-        List.filter ((==) False)
-            [ rleDecode [ Run 4 1, Single 2, Run 2 5, Single 2, Single 1 ]
-                == [ 1, 1, 1, 1, 2, 5, 5, 2, 1 ]
-            , rleDecode [ Run 4 1, Single 2, Run 2 5, Single 2, Single 1 ]
-                == [ 1, 1, 1, 1, 2, 5, 5, 2, 1 ]
-            , rleDecode [ Run 4 "1", Single "b", Run 2 "5", Single "2", Single "a" ]
-                == [ "1", "1", "1", "1", "b", "5", "5", "2", "a" ]
-            ]
