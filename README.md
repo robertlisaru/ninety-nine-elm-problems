@@ -53,3 +53,10 @@ Run the test script:
 npm run test
 ```
 It will run everything in the `tests` folder.
+
+## Before commiting
+Run the review script:
+```shell
+npm run review
+```
+It will review the code using the rules from `ReviewConfig.elm` file.

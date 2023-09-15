@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "elm-test",
-    "build": "elm make src/Main.elm"
+    "build": "elm make src/Main.elm",
+    "review": "elm-review"
   },
   "repository": {
     "type": "git",
