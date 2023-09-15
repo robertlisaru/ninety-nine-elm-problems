@@ -35,4 +35,16 @@ The elm tree is also a wonderful tree.
 
 
 ## How to run
-Run `elm make src/Main.elm` then open `index.html` file locally in your browser.
+Run 
+
+```shell
+elm make src/Main.elm
+```
+ then open `index.html` file locally in your browser.
+
+## How to test
+Run 
+```shell
+elm-test
+```
+from the root directory. It will run everything in the `tests` folder.
