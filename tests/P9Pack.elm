@@ -1,4 +1,4 @@
-module Pack exposing (..)
+module P9Pack exposing (..)
 
 import Expect
 import Problems.P9Pack exposing (pack)

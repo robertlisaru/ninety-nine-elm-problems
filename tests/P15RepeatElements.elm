@@ -1,4 +1,4 @@
-module RepeatElements exposing (..)
+module P15RepeatElements exposing (..)
 
 import Expect
 import Problems.P15RepeatElements exposing (repeatElements)

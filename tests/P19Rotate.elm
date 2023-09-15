@@ -1,4 +1,4 @@
-module Rotate exposing (..)
+module P19Rotate exposing (..)
 
 import Expect
 import Problems.P19Rotate exposing (rotate)

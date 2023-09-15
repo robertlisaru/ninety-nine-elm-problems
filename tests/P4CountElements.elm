@@ -1,4 +1,4 @@
-module CountElements exposing (..)
+module P4CountElements exposing (..)
 
 import Expect
 import Problems.P4CountElements exposing (countElements)

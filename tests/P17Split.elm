@@ -1,4 +1,4 @@
-module Split exposing (..)
+module P17Split exposing (..)
 
 import Expect
 import Problems.P17Split exposing (split)

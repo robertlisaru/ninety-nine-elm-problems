@@ -1,4 +1,4 @@
-module DropNth exposing (..)
+module P16DropNth exposing (..)
 
 import Expect
 import Problems.P16DropNth exposing (dropNth)

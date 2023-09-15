@@ -1,4 +1,4 @@
-module IsPalindrome exposing (..)
+module P6IsPalindrome exposing (..)
 
 import Expect
 import Problems.P6IsPalindrome exposing (isPalindrome)

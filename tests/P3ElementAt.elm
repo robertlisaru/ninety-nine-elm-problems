@@ -1,4 +1,4 @@
-module ElementAt exposing (..)
+module P3ElementAt exposing (..)
 
 import Expect
 import Problems.P3ElementAt exposing (elementAt)

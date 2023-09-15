@@ -1,4 +1,4 @@
-module Penultimate exposing (..)
+module P2Penultimate exposing (..)
 
 import Expect
 import Problems.P2Penultimate exposing (penultimate)

@@ -1,4 +1,4 @@
-module FlattenNestedList exposing (..)
+module P7FlattenNestedList exposing (..)
 
 import Expect
 import Problems.P7FlattenNestedList exposing (NestedList(..), flatten)
