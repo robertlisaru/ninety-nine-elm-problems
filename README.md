@@ -33,7 +33,12 @@ The elm tree is also a wonderful tree.
 
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/34d16f6f-3f13-4c66-b845-8a57cf5d4fd8)
 
-
+## Development setup
+Install Elm and its plugins:
+```shell
+npm install -g elm elm-test elm-format elm-review
+```
+My IDE's Elm extension needs the `-g`, but you may not need a global install.
 ## How to run
 Run 
 
