@@ -1,4 +1,4 @@
-module Problems.ElementAt exposing (test)
+module Problems.ElementAt exposing (elementAt)
 
 import List
 
@@ -12,19 +12,3 @@ elementAt list n =
         list
             |> List.drop (n - 1)
             |> List.head
-
-
-test : Int
-test =
-    List.length <|
-        List.filter ((==) False)
-            [ elementAt [ 1, 2, 3, 4 ] 2 == Just 2
-            , elementAt [ 1 ] 2 == Nothing
-            , elementAt [ 1 ] 1 == Just 1
-            , elementAt [] 2 == Nothing
-            , elementAt [] -1 == Nothing
-            , elementAt [] 0 == Nothing
-            , elementAt [ 1, 2, 3, 4 ] -1 == Nothing
-            , elementAt [ 1, 2, 3, 4 ] 0 == Nothing
-            , elementAt [ 'a', 'b', 'c' ] 2 == Just 'b'
-            ]
