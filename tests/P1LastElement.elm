@@ -11,7 +11,7 @@ suite =
         [ test "Returns nothing from empty list" <|
             \_ -> Expect.equal Nothing (last [])
         , test "Returns the element from single element list" <|
-            \_ -> Expect.equal (Just 2) (last [ 1 ])
+            \_ -> Expect.equal (Just 1) (last [ 1 ])
         , test "Returns the last element in rage" <|
             \_ -> Expect.equal (Just 4) (last <| List.range 1 4)
         , test "Returns the last element in list of characters" <|
