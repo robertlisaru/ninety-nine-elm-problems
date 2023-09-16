@@ -4,11 +4,15 @@
 My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
 
 ## To do
+- [x] setup CI
+- [x] setup elm-review
+- [x] refactor into proper unit tests
+- [ ] refactor tests to be more granular
 - [ ] allow input of a custom list to run the problems on
 - [ ] nicer ui
 - [ ] setup dev server
-- [ ] refactor into proper unit tests
-- [ ] setup linter
+
+
 
 ## About Elm
 [Elm](https://elm-lang.org/) is a purely functional programming language and a frontend web framework. If you are not used to functional programming, it will be challenging at first. But once you learn and use it for a while, it becomes a pleasure to write code. 
