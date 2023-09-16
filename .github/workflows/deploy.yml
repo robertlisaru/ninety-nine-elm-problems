@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  lint:
+  build:
     permissions:
       checks: write
     # The type of runner that the job will run on
@@ -33,3 +33,5 @@ jobs:
       - uses: sparksp/elm-review-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run unit tests
+        run: yarn run test
