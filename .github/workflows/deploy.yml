@@ -37,7 +37,7 @@ jobs:
         run: yarn run test
       - name: Make index.html
         run: yarn run build
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-pages-artifact@v2
         with:
           name: github-pages
           path: public/
