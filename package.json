@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "elm-live src/Main.elm --open",
+    "start": "elm-live src/Main.elm --open --dir=public -- --output public/index.html",
     "test": "elm-test",
     "build": "elm make src/Main.elm --output public/index.html",
     "review": "elm-review"
