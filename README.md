@@ -37,21 +37,21 @@ The elm tree is also a wonderful tree.
 
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/34d16f6f-3f13-4c66-b845-8a57cf5d4fd8)
 
-## Development setup
+## Initial setup
 Install dependencies:
 ```shell
 npm install
 ```
 
-## How to run
-Run the build script:
+## Starting live server
+Run the start script:
 
 ```shell
-npm run build
+npm start
 ```
- then open `index.html` file locally in your browser.
+It will open the app in the browser and watch for code changes.
 
-## How to test
+## Running unit tests
 Run the test script:
 ```shell
 npm run test
