@@ -1,8 +1,10 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
-import Browser
+import Browser exposing (Document)
+import Css
 import Html exposing (Html, button, li, span, text, ul)
 import Html.Events exposing (onClick)
+import Html.Styled.Attributes exposing (css)
 import Random
 
 
@@ -12,11 +14,11 @@ import Random
 
 main : Program () Model Msg
 main =
-    Browser.element
+    Browser.document
         { init = always ( Model [], Cmd.none )
+        , view = view
         , update = update
         , subscriptions = always Sub.none
-        , view = view
         }
 
 
@@ -85,9 +87,11 @@ update msg model =
 -- VIEW
 
 
-view : Model -> Html Msg
+view : Model -> Document Msg
 view model =
-    ul [] (problems |> List.map (viewProblem model))
+    { title = "Ninety-nine Elm solutions"
+    , body = [ ul [] (problems |> List.map (viewProblem model)) ]
+    }
 
 
 viewProblem : Model -> Problem -> Html Msg
