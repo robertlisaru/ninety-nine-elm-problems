@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "elm-live src/Main.elm --open",
     "test": "elm-test",
     "build": "elm make src/Main.elm --output public/index.html",
     "review": "elm-review"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "elm": "^0.19.1-5",
     "elm-format": "^0.8.7",
+    "elm-live": "^4.0.2",
     "elm-review": "^2.10.2",
     "elm-test": "^0.19.1-revision12"
   }
