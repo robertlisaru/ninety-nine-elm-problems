@@ -1,7 +1,7 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
-import Css exposing (alignItems, auto, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgba, solid, width)
+import Css exposing (alignItems, auto, backgroundColor, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgb, rgba, solid, width)
 import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
@@ -129,6 +129,7 @@ viewProblem model { identifier, title } =
                     , width (pct 80)
                     , minHeight (px 300)
                     , padding (px 25)
+                    , backgroundColor (rgb 201 255 248)
                     ]
                 ]
                 [ text <| identifier ++ ". " ++ title ]
