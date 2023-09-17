@@ -1,10 +1,10 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
-import Css
-import Html exposing (Html, button, li, span, text, ul)
-import Html.Events exposing (onClick)
+import Css exposing (alignItems, auto, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgba, solid, width)
+import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
+import Html.Styled.Events exposing (onClick)
 import Random
 
 
@@ -90,7 +90,23 @@ update msg model =
 view : Model -> Document Msg
 view model =
     { title = "Ninety-nine Elm solutions"
-    , body = [ ul [] (problems |> List.map (viewProblem model)) ]
+    , body =
+        [ ul
+            [ css
+                [ listStyleType none
+                , padding (px 0)
+                , marginTop (px 25)
+                , marginLeft auto
+                , marginRight auto
+                , width (pct 100)
+                , displayFlex
+                , flexDirection column
+                , alignItems center
+                ]
+            ]
+            (problems |> List.map (viewProblem model))
+        ]
+            |> List.map toUnstyled
     }
 
 
@@ -101,7 +117,21 @@ viewProblem model { identifier, title } =
             problem23 model
 
         _ ->
-            li [] [ text <| identifier ++ ". " ++ title ]
+            li
+                [ css
+                    [ borderWidth (px 2)
+                    , borderStyle solid
+                    , borderRadius (px 15)
+                    , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
+                    , marginBottom (px 25)
+                    , maxWidth (px 775)
+                    , minWidth (px 300)
+                    , width (pct 80)
+                    , minHeight (px 300)
+                    , padding (px 25)
+                    ]
+                ]
+                [ text <| identifier ++ ". " ++ title ]
 
 
 problem23 : Model -> Html Msg
