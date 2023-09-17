@@ -35,9 +35,9 @@ jobs:
         name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
 name: CI
-'on':
+"on":
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch: null
