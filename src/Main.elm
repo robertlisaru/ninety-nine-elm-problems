@@ -112,11 +112,6 @@ view model =
 
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model { identifier, title } =
-    let
-        unusedVariable : String
-        unusedVariable =
-            "this is unused"
-    in
     case identifier of
         "23" ->
             problem23 model
