@@ -33,7 +33,7 @@ config =
     [ NoExposingEverything.rule
     , NoConfusingPrefixOperator.rule
     , NoDeprecated.rule NoDeprecated.defaults
-    , NoImportingEverything.rule []
+    , NoImportingEverything.rule ["Css"]
     , NoMissingTypeAnnotation.rule
     , NoMissingTypeExpose.rule
     , NoPrematureLetComputation.rule

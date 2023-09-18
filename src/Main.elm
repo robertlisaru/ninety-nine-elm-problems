@@ -1,12 +1,11 @@
-module Main exposing (Model, Msg(..), main)
+module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
-import Css exposing (alignItems, auto, backgroundColor, borderColor, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, fontFamilies, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgb, rgba, solid, width)
 import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
-import Problems exposing (Problem, problems)
 import Random
+import Styles exposing (problemListStyles, problemStyles)
 
 
 
@@ -16,7 +15,7 @@ import Random
 main : Program () Model Msg
 main =
     Browser.document
-        { init = always ( Model [], Cmd.none )
+        { init = always ( Model [] initProblems, Cmd.none )
         , view = view
         , update = update
         , subscriptions = always Sub.none
@@ -27,8 +26,42 @@ main =
 -- MODEL
 
 
+type alias Problem =
+    { number : Int
+    , title : String
+    }
+
+
+initProblems : List Problem
+initProblems =
+    [ { number = 1, title = "Last element" }
+    , { number = 2, title = "Penultimate" }
+    , { number = 3, title = "Element at" }
+    , { number = 4, title = "Count elements" }
+    , { number = 5, title = "Reverse" }
+    , { number = 6, title = "Is palindrome" }
+    , { number = 7, title = "Flatten nested list" }
+    , { number = 8, title = "No dupes" }
+    , { number = 9, title = "Pack" }
+    , { number = 10, title = "Run lengths" }
+    , { number = 11, title = "Run lengths encode" }
+    , { number = 12, title = "Run lengths decode" }
+    , { number = 14, title = "Duplicate" }
+    , { number = 15, title = "Repeat elements" }
+    , { number = 16, title = "Drop nth" }
+    , { number = 17, title = "Split" }
+    , { number = 18, title = "Sublist" }
+    , { number = 19, title = "Rotate" }
+    , { number = 20, title = "Drop at" }
+    , { number = 21, title = "Insert at" }
+    , { number = 22, title = "Range" }
+    , { number = 23, title = "Random select" }
+    ]
+
+
 type alias Model =
     { randomList : List Int
+    , problems : List Problem
     }
 
 
@@ -59,22 +92,7 @@ view : Model -> Document Msg
 view model =
     { title = "Ninety-nine Elm solutions"
     , body =
-        [ ul
-            [ css
-                [ listStyleType none
-                , padding (px 0)
-                , marginTop (px 25)
-                , marginLeft auto
-                , marginRight auto
-                , width (pct 100)
-                , displayFlex
-                , flexDirection column
-                , alignItems center
-                , fontFamilies [ "arial", "sans-serif" ]
-                ]
-            ]
-            (problems |> List.map (viewProblem model))
-        ]
+        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model)) ]
             |> List.map toUnstyled
     }
 
@@ -83,35 +101,13 @@ viewProblem : Model -> Problem -> Html Msg
 viewProblem model { number, title } =
     case number of
         23 ->
-            problem23 model
+            li [ css problemStyles ]
+                [ text ("23. " ++ "Random list elements")
+                , button [ onClick RequestRandomList ] [ text "Generate list" ]
+                , span [] (model.randomList |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
+                ]
 
         _ ->
             li
                 [ css problemStyles ]
                 [ text <| String.fromInt number ++ ". " ++ title ]
-
-
-problem23 : Model -> Html Msg
-problem23 model =
-    li [ css problemStyles ]
-        [ text ("23. " ++ "Random list elements")
-        , button [ onClick RequestRandomList ] [ text "Generate list" ]
-        , span [] (model.randomList |> List.map (\number -> text (String.fromInt number ++ " ")))
-        ]
-
-
-problemStyles : List Css.Style
-problemStyles =
-    [ borderWidth (px 1)
-    , borderStyle solid
-    , borderColor (rgb 150 150 150)
-    , borderRadius (px 15)
-    , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
-    , marginBottom (px 25)
-    , maxWidth (px 775)
-    , minWidth (px 300)
-    , width (pct 80)
-    , minHeight (px 300)
-    , padding (px 25)
-    , backgroundColor (rgb 200 255 255)
-    ]
