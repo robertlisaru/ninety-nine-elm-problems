@@ -1,7 +1,7 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
-import Css exposing (alignItems, auto, backgroundColor, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgb, rgba, solid, width)
+import Css exposing (alignItems, auto, backgroundColor, borderColor, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, fontFamilies, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgb, rgba, solid, width)
 import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
@@ -102,6 +102,7 @@ view model =
                 , displayFlex
                 , flexDirection column
                 , alignItems center
+                , fontFamilies [ "arial", "sans-serif" ]
                 ]
             ]
             (problems |> List.map (viewProblem model))
@@ -119,8 +120,9 @@ viewProblem model { identifier, title } =
         _ ->
             li
                 [ css
-                    [ borderWidth (px 2)
+                    [ borderWidth (px 1)
                     , borderStyle solid
+                    , borderColor (rgb 150 150 150)
                     , borderRadius (px 15)
                     , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
                     , marginBottom (px 25)
@@ -129,7 +131,7 @@ viewProblem model { identifier, title } =
                     , width (pct 80)
                     , minHeight (px 300)
                     , padding (px 25)
-                    , backgroundColor (rgb 201 255 248)
+                    , backgroundColor (rgb 200 255 255)
                     ]
                 ]
                 [ text <| identifier ++ ". " ++ title ]
