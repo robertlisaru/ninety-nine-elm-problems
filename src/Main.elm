@@ -1,10 +1,11 @@
-module Main exposing (Model, Msg(..), Problem, main)
+module Main exposing (Model, Msg(..), main)
 
 import Browser exposing (Document)
 import Css exposing (alignItems, auto, backgroundColor, borderColor, borderRadius, borderStyle, borderWidth, boxShadow4, center, column, displayFlex, flexDirection, fontFamilies, listStyleType, marginBottom, marginLeft, marginRight, marginTop, maxWidth, minHeight, minWidth, none, padding, pct, px, rgb, rgba, solid, width)
 import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
+import Problems exposing (Problem, problems)
 import Random
 
 
@@ -29,39 +30,6 @@ main =
 type alias Model =
     { randomList : List Int
     }
-
-
-type alias Problem =
-    { identifier : String
-    , title : String
-    }
-
-
-problems : List Problem
-problems =
-    [ { identifier = "1", title = "Last element" }
-    , { identifier = "2", title = "Penultimate" }
-    , { identifier = "3", title = "Element at" }
-    , { identifier = "4", title = "Count elements" }
-    , { identifier = "5", title = "Reverse" }
-    , { identifier = "6", title = "Is palindrome" }
-    , { identifier = "7", title = "Flatten nested list" }
-    , { identifier = "8", title = "No dupes" }
-    , { identifier = "9", title = "Pack" }
-    , { identifier = "10", title = "Run lengths" }
-    , { identifier = "11", title = "Run lengths encode" }
-    , { identifier = "12", title = "Run lengths decode" }
-    , { identifier = "14", title = "Duplicate" }
-    , { identifier = "15", title = "Repeat elements" }
-    , { identifier = "16", title = "Drop nth" }
-    , { identifier = "17", title = "Split" }
-    , { identifier = "18", title = "Sublist" }
-    , { identifier = "19", title = "Rotate" }
-    , { identifier = "20", title = "Drop at" }
-    , { identifier = "21", title = "Insert at" }
-    , { identifier = "22", title = "Range" }
-    , { identifier = "23", title = "Random select" }
-    ]
 
 
 
