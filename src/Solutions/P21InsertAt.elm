@@ -1,4 +1,4 @@
-module Problems.P21InsertAt exposing (insertAt)
+module Solutions.P21InsertAt exposing (insertAt)
 
 import List
 

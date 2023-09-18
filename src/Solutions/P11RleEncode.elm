@@ -1,4 +1,4 @@
-module Problems.P11RleEncode exposing (RleCode(..), rleEncode)
+module Solutions.P11RleEncode exposing (RleCode(..), rleEncode)
 
 import List
 

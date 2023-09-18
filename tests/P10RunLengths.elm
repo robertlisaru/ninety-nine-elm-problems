@@ -1,7 +1,7 @@
 module P10RunLengths exposing (suite)
 
 import Expect
-import Problems.P10RunLengths exposing (runLengths)
+import Solutions.P10RunLengths exposing (runLengths)
 import Test exposing (Test, test)
 
 

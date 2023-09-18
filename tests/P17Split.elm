@@ -1,7 +1,7 @@
 module P17Split exposing (suite)
 
 import Expect
-import Problems.P17Split exposing (split)
+import Solutions.P17Split exposing (split)
 import Test exposing (Test, test)
 
 

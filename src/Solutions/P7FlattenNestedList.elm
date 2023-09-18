@@ -1,4 +1,4 @@
-module Problems.P7FlattenNestedList exposing (NestedList(..), flatten)
+module Solutions.P7FlattenNestedList exposing (NestedList(..), flatten)
 
 import List
 

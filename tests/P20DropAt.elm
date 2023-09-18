@@ -1,7 +1,7 @@
 module P20DropAt exposing (suite)
 
 import Expect
-import Problems.P20DropAt exposing (dropAt)
+import Solutions.P20DropAt exposing (dropAt)
 import Test exposing (Test, test)
 
 

@@ -1,7 +1,7 @@
 module P3ElementAt exposing (suite)
 
 import Expect
-import Problems.P3ElementAt exposing (elementAt)
+import Solutions.P3ElementAt exposing (elementAt)
 import Test exposing (Test, describe, test)
 
 

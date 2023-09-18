@@ -1,7 +1,7 @@
 module P1LastElement exposing (suite)
 
 import Expect
-import Problems.P1LastElement exposing (last)
+import Solutions.P1LastElement exposing (last)
 import Test exposing (Test, describe, test)
 
 

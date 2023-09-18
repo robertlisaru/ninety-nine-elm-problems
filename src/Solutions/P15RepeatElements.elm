@@ -1,4 +1,4 @@
-module Problems.P15RepeatElements exposing (repeatElements)
+module Solutions.P15RepeatElements exposing (repeatElements)
 
 {- Using foldr
 

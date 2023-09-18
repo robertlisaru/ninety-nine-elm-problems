@@ -1,7 +1,7 @@
 module P7FlattenNestedList exposing (suite)
 
 import Expect
-import Problems.P7FlattenNestedList exposing (NestedList(..), flatten)
+import Solutions.P7FlattenNestedList exposing (NestedList(..), flatten)
 import Test exposing (Test, test)
 
 

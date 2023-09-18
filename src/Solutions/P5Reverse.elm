@@ -1,4 +1,4 @@
-module Problems.P5Reverse exposing (myReverse)
+module Solutions.P5Reverse exposing (myReverse)
 
 
 myReverse : List a -> List a

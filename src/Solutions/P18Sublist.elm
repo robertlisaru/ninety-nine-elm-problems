@@ -1,4 +1,4 @@
-module Problems.P18Sublist exposing (sublist)
+module Solutions.P18Sublist exposing (sublist)
 
 import List
 

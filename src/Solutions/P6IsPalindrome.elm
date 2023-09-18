@@ -1,4 +1,4 @@
-module Problems.P6IsPalindrome exposing (isPalindrome)
+module Solutions.P6IsPalindrome exposing (isPalindrome)
 
 import List
 

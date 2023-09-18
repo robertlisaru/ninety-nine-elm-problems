@@ -119,28 +119,31 @@ viewProblem model { identifier, title } =
 
         _ ->
             li
-                [ css
-                    [ borderWidth (px 1)
-                    , borderStyle solid
-                    , borderColor (rgb 150 150 150)
-                    , borderRadius (px 15)
-                    , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
-                    , marginBottom (px 25)
-                    , maxWidth (px 775)
-                    , minWidth (px 300)
-                    , width (pct 80)
-                    , minHeight (px 300)
-                    , padding (px 25)
-                    , backgroundColor (rgb 200 255 255)
-                    ]
-                ]
+                [ css problemStyles ]
                 [ text <| identifier ++ ". " ++ title ]
 
 
 problem23 : Model -> Html Msg
 problem23 model =
-    li []
+    li [ css problemStyles ]
         [ text ("23. " ++ "Random list elements")
         , button [ onClick RequestRandomList ] [ text "Generate list" ]
         , span [] (model.randomList |> List.map (\number -> text (String.fromInt number ++ " ")))
         ]
+
+
+problemStyles : List Css.Style
+problemStyles =
+    [ borderWidth (px 1)
+    , borderStyle solid
+    , borderColor (rgb 150 150 150)
+    , borderRadius (px 15)
+    , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
+    , marginBottom (px 25)
+    , maxWidth (px 775)
+    , minWidth (px 300)
+    , width (pct 80)
+    , minHeight (px 300)
+    , padding (px 25)
+    , backgroundColor (rgb 200 255 255)
+    ]

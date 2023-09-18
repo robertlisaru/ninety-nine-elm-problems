@@ -1,7 +1,7 @@
 module P2Penultimate exposing (suite)
 
 import Expect
-import Problems.P2Penultimate exposing (penultimate)
+import Solutions.P2Penultimate exposing (penultimate)
 import Test exposing (Test, describe, test)
 
 

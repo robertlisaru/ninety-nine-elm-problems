@@ -1,4 +1,4 @@
-module Problems.P20DropAt exposing (dropAt)
+module Solutions.P20DropAt exposing (dropAt)
 
 import List
 

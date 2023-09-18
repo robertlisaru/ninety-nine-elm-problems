@@ -1,4 +1,4 @@
-module Problems.P3ElementAt exposing (elementAt)
+module Solutions.P3ElementAt exposing (elementAt)
 
 import List
 

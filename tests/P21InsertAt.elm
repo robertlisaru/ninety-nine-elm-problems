@@ -1,7 +1,7 @@
 module P21InsertAt exposing (suite)
 
 import Expect
-import Problems.P21InsertAt exposing (insertAt)
+import Solutions.P21InsertAt exposing (insertAt)
 import Test exposing (Test, test)
 
 

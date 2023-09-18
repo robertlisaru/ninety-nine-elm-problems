@@ -1,4 +1,4 @@
-module Problems.P4CountElements exposing (countElements)
+module Solutions.P4CountElements exposing (countElements)
 
 
 countElements : List a -> Int

@@ -1,4 +1,4 @@
-module Problems.P16DropNth exposing (dropNth)
+module Solutions.P16DropNth exposing (dropNth)
 
 import List
 

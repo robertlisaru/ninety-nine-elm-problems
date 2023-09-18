@@ -1,7 +1,7 @@
 module P4CountElements exposing (suite)
 
 import Expect
-import Problems.P4CountElements exposing (countElements)
+import Solutions.P4CountElements exposing (countElements)
 import Test exposing (Test, test)
 
 

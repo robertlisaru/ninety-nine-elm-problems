@@ -1,4 +1,4 @@
-module Problems.P9Pack exposing (pack)
+module Solutions.P9Pack exposing (pack)
 
 import List
 
