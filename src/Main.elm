@@ -80,15 +80,15 @@ view model =
 
 
 viewProblem : Model -> Problem -> Html Msg
-viewProblem model { identifier, title } =
-    case identifier of
-        "23" ->
+viewProblem model { number, title } =
+    case number of
+        23 ->
             problem23 model
 
         _ ->
             li
                 [ css problemStyles ]
-                [ text <| identifier ++ ". " ++ title ]
+                [ text <| String.fromInt number ++ ". " ++ title ]
 
 
 problem23 : Model -> Html Msg
