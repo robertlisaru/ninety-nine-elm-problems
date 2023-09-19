@@ -14,8 +14,8 @@ problemStyles =
     , maxWidth (px 775)
     , minWidth (px 300)
     , width (pct 80)
-    , minHeight (px 300)
     , padding (px 25)
+    , paddingTop (px 0)
     , backgroundColor (rgb 200 255 255)
     ]
 

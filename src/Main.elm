@@ -1,7 +1,8 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
-import Html.Styled exposing (Html, button, li, span, text, toUnstyled, ul)
+import Css
+import Html.Styled exposing (Html, button, div, h4, input, label, li, p, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
 import Random
@@ -100,9 +101,28 @@ view model =
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model { number, title } =
     case number of
+        1 ->
+            li
+                [ css problemStyles ]
+                [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
+                , p [] [ text "Write a function last that returns the last element of a list. An empty list doesn't have a last element, therefore last must return a Maybe. " ]
+                , div
+                    [ css
+                        [ Css.displayFlex
+                        , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
+                        ]
+                    ]
+                    [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
+                    , input [ css [ Css.flex (Css.int 1) ] ] []
+                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random" ]
+                    ]
+                , button [] [ text "Test" ]
+                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
+                ]
+
         23 ->
             li [ css problemStyles ]
-                [ text ("23. " ++ "Random list elements")
+                [ h4 [] [ text ("23. " ++ "Random list elements") ]
                 , button [ onClick RequestRandomList ] [ text "Generate list" ]
                 , span [] (model.randomList |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
                 ]
@@ -110,4 +130,6 @@ viewProblem model { number, title } =
         _ ->
             li
                 [ css problemStyles ]
-                [ text <| String.fromInt number ++ ". " ++ title ]
+                [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
+                , p [] [ text "Problem requirement here." ]
+                ]
