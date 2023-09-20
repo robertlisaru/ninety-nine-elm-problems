@@ -24,7 +24,7 @@ main =
                 ( Model []
                     initProblems
                     "[]"
-                , Random.generate RandomListReady (Random.list 10 (Random.int 1 100))
+                , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
                 )
         , view = view
         , update = update
@@ -81,8 +81,8 @@ type alias Model =
 
 
 type Msg
-    = RequestRandomList
-    | RandomListReady (List Int)
+    = P1RequestRandomList
+    | P1RandomListReady (List Int)
     | P1InputUpdate String
     | P1InputBlur
 
@@ -90,10 +90,10 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        RequestRandomList ->
-            ( model, Random.generate RandomListReady (Random.list 10 (Random.int 1 100)) )
+        P1RequestRandomList ->
+            ( model, Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100)) )
 
-        RandomListReady randomList ->
+        P1RandomListReady randomList ->
             ( { model
                 | p1List = randomList
                 , p1input = randomList |> Utils.listToString String.fromInt ", "
@@ -112,7 +112,7 @@ update msg model =
                             list
 
                         Err _ ->
-                            []
+                            model.p1List
             in
             ( { model
                 | p1input = input
@@ -168,7 +168,7 @@ viewProblem model { number, title } =
                         , value model.p1input
                         ]
                         []
-                    , button [ css [ Css.marginLeft (Css.px 5) ], onClick RequestRandomList ] [ text "Random" ]
+                    , button [ css [ Css.marginLeft (Css.px 5) ], onClick P1RequestRandomList ] [ text "Random" ]
                     ]
                 , label [] [ text <| "Last element is: " ]
                 , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
@@ -179,7 +179,7 @@ viewProblem model { number, title } =
         23 ->
             li [ css problemStyles ]
                 [ h4 [] [ text ("23. " ++ "Random list elements") ]
-                , button [ onClick RequestRandomList ] [ text "Generate list" ]
+                , button [ onClick P1RequestRandomList ] [ text "Generate list" ]
                 , span [] (model.p1List |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
                 ]
 
