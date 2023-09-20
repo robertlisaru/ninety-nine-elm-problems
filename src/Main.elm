@@ -4,7 +4,8 @@ import Browser exposing (Document)
 import Css
 import Html.Styled exposing (Html, button, code, div, h4, input, label, li, p, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
-import Html.Styled.Events exposing (onClick, onInput)
+import Html.Styled.Events exposing (onBlur, onClick, onInput)
+import Json.Decode
 import Random
 import Solutions.P1LastElement
 import Styles exposing (problemListStyles, problemStyles)
@@ -22,8 +23,8 @@ main =
             always
                 ( Model []
                     initProblems
-                    "[ asfasdf]"
-                , Random.generate RandomListArrived (Random.list 10 (Random.int 1 100))
+                    "[]"
+                , Random.generate RandomListReady (Random.list 10 (Random.int 1 100))
                 )
         , view = view
         , update = update
@@ -69,7 +70,7 @@ initProblems =
 
 
 type alias Model =
-    { randomList : List Int
+    { p1List : List Int
     , problems : List Problem
     , p1input : String
     }
@@ -81,21 +82,47 @@ type alias Model =
 
 type Msg
     = RequestRandomList
-    | RandomListArrived (List Int)
-    | InputUpdated String
+    | RandomListReady (List Int)
+    | P1InputUpdate String
+    | P1InputBlur
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         RequestRandomList ->
-            ( model, Random.generate RandomListArrived (Random.list 10 (Random.int 1 100)) )
+            ( model, Random.generate RandomListReady (Random.list 10 (Random.int 1 100)) )
 
-        RandomListArrived randomList ->
-            ( { model | randomList = randomList }, Cmd.none )
+        RandomListReady randomList ->
+            ( { model
+                | p1List = randomList
+                , p1input = randomList |> Utils.listToString String.fromInt ", "
+              }
+            , Cmd.none
+            )
 
-        InputUpdated input ->
-            ( { model | p1input = input }, Cmd.none )
+        P1InputUpdate input ->
+            let
+                decodeResult =
+                    Json.Decode.decodeString (Json.Decode.list Json.Decode.int) input
+
+                newList =
+                    case decodeResult of
+                        Result.Ok list ->
+                            list
+
+                        Err _ ->
+                            []
+            in
+            ( { model
+                | p1input = input
+                , p1List = newList
+              }
+            , Cmd.none
+            )
+
+        P1InputBlur ->
+            ( { model | p1input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
 
 
 
@@ -121,7 +148,9 @@ viewProblem model { number, title } =
                 , p []
                     [ text "Write a function "
                     , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "last" ]
-                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore last must return a "
+                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore"
+                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "last" ]
+                    , text " must return a "
                     , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "Maybe" ]
                     , text "."
                     ]
@@ -134,15 +163,16 @@ viewProblem model { number, title } =
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
-                        , onInput InputUpdated
-                        , value (model.randomList |> Utils.listToString String.fromInt ", ")
+                        , onInput P1InputUpdate
+                        , onBlur P1InputBlur
+                        , value model.p1input
                         ]
                         []
                     , button [ css [ Css.marginLeft (Css.px 5) ], onClick RequestRandomList ] [ text "Random" ]
                     ]
                 , label [] [ text <| "Last element is: " ]
                 , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
-                    [ text <| (Solutions.P1LastElement.last model.randomList |> Utils.maybeToString String.fromInt) ]
+                    [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
                 ]
 
@@ -150,7 +180,7 @@ viewProblem model { number, title } =
             li [ css problemStyles ]
                 [ h4 [] [ text ("23. " ++ "Random list elements") ]
                 , button [ onClick RequestRandomList ] [ text "Generate list" ]
-                , span [] (model.randomList |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
+                , span [] (model.p1List |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
                 ]
 
         _ ->
