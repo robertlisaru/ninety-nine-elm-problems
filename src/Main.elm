@@ -2,7 +2,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
 import Css
-import Html.Styled exposing (Html, button, div, h4, input, label, li, p, span, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, h4, input, label, li, p, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Random
@@ -134,14 +134,9 @@ viewProblem model { number, title } =
                         []
                     , button [ css [ Css.marginLeft (Css.px 5) ], onClick RequestRandomList ] [ text "Random" ]
                     ]
-                , label []
-                    [ text <|
-                        "Last element is: "
-                            ++ (Solutions.P1LastElement.last model.randomList
-                                    |> Maybe.withDefault 0
-                                    |> String.fromInt
-                               )
-                    ]
+                , label [] [ text <| "Last element is: " ]
+                , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
+                    [ text <| (Solutions.P1LastElement.last model.randomList |> Utils.maybeToString String.fromInt) ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
                 ]
 
