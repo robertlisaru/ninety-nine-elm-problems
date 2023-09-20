@@ -3,6 +3,8 @@
 ## Description
 My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
 
+[Test my solutions](https://robertlisaru.github.io/ninety-nine-elm-problems/)
+
 ## To do
 - [x] setup CI
 - [x] setup elm-review
@@ -65,3 +67,8 @@ Run the review script:
 npm run review
 ```
 It will review the code using the rules from `ReviewConfig.elm` file.
+
+Run te format script:
+```shell
+npm run format
+```
