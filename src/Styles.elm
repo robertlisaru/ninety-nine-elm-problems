@@ -8,8 +8,8 @@ problemStyles =
     [ borderWidth (px 1)
     , borderStyle solid
     , borderColor (rgb 150 150 150)
-    , borderRadius (px 15)
-    , boxShadow4 (px 5) (px 5) (px 5) (rgba 0 0 0 0.5)
+    , borderRadius (px 5)
+    , boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
     , marginBottom (px 25)
     , maxWidth (px 775)
     , minWidth (px 300)
