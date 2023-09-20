@@ -2,13 +2,14 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
 import Css
-import Html.Styled exposing (Html, button, code, div, h4, input, label, li, p, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
 import Styles exposing (problemListStyles, problemStyles)
+import SyntaxHighlight
 import Utils
 
 
@@ -24,6 +25,7 @@ main =
                 ( Model []
                     initProblems
                     "[]"
+                    False
                 , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
                 )
         , view = view
@@ -73,6 +75,7 @@ type alias Model =
     { p1List : List Int
     , problems : List Problem
     , p1input : String
+    , p1showCode : Bool
     }
 
 
@@ -85,6 +88,7 @@ type Msg
     | P1RandomListReady (List Int)
     | P1InputUpdate String
     | P1InputBlur
+    | P1ShowCodeToggle
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -123,6 +127,9 @@ update msg model =
 
         P1InputBlur ->
             ( { model | p1input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
+
+        P1ShowCodeToggle ->
+            ( { model | p1showCode = model.p1showCode |> not }, Cmd.none )
 
 
 
@@ -173,7 +180,36 @@ viewProblem model { number, title } =
                 , label [] [ text <| "Last element is: " ]
                 , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
                     [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
-                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
+                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick P1ShowCodeToggle ]
+                    [ if model.p1showCode then
+                        text "Hide code"
+
+                      else
+                        text "Show code"
+                    ]
+                , if model.p1showCode then
+                    let
+                        codeString =
+                            """import List
+
+
+last : List a -> Maybe a
+last xs =
+    xs
+        |> List.reverse
+        |> List.head
+"""
+                    in
+                    div []
+                        [ SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
+                        , SyntaxHighlight.elm codeString
+                            |> Result.map (SyntaxHighlight.toBlockHtml (Just 1))
+                            |> Result.map fromUnstyled
+                            |> Result.withDefault (code [] [ text codeString ])
+                        ]
+
+                  else
+                    text ""
                 ]
 
         _ ->
