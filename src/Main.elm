@@ -6,6 +6,7 @@ import Html.Styled exposing (Html, button, div, h4, input, label, li, p, span, t
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Random
+import Solutions.P1LastElement
 import Styles exposing (problemListStyles, problemStyles)
 import Utils
 
@@ -133,7 +134,14 @@ viewProblem model { number, title } =
                         []
                     , button [ css [ Css.marginLeft (Css.px 5) ], onClick RequestRandomList ] [ text "Random" ]
                     ]
-                , button [] [ text "Test" ]
+                , label []
+                    [ text <|
+                        "Last element is: "
+                            ++ (Solutions.P1LastElement.last model.randomList
+                                    |> Maybe.withDefault 0
+                                    |> String.fromInt
+                               )
+                    ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
                 ]
 
