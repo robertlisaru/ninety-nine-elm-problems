@@ -2,7 +2,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Browser exposing (Document)
 import Css
-import Html.Styled exposing (Html, button, code, div, h4, input, label, li, p, span, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, h4, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
@@ -174,13 +174,6 @@ viewProblem model { number, title } =
                 , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
                     [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
-                ]
-
-        23 ->
-            li [ css problemStyles ]
-                [ h4 [] [ text ("23. " ++ "Random list elements") ]
-                , button [ onClick P1RequestRandomList ] [ text "Generate list" ]
-                , span [] (model.p1List |> List.map (\randomNumber -> text (String.fromInt randomNumber ++ " ")))
                 ]
 
         _ ->
