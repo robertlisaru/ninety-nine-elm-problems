@@ -7,5 +7,5 @@ listToString convert separator list =
         ++ (list
                 |> List.map convert
                 |> List.intersperse separator
-                |> List.foldl (++) "]"
+                |> List.foldr (++) "]"
            )
