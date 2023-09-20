@@ -118,7 +118,13 @@ viewProblem model { number, title } =
             li
                 [ css problemStyles ]
                 [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
-                , p [] [ text "Write a function last that returns the last element of a list. An empty list doesn't have a last element, therefore last must return a Maybe. " ]
+                , p []
+                    [ text "Write a function "
+                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "last" ]
+                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore last must return a "
+                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "Maybe" ]
+                    , text "."
+                    ]
                 , div
                     [ css
                         [ Css.displayFlex
