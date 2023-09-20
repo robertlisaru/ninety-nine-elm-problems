@@ -3,10 +3,11 @@ module Main exposing (Model, Msg(..), Problem, main)
 import Browser exposing (Document)
 import Css
 import Html.Styled exposing (Html, button, div, h4, input, label, li, p, span, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css)
-import Html.Styled.Events exposing (onClick)
+import Html.Styled.Attributes exposing (css, value)
+import Html.Styled.Events exposing (onClick, onInput)
 import Random
 import Styles exposing (problemListStyles, problemStyles)
+import Utils
 
 
 
@@ -16,7 +17,13 @@ import Styles exposing (problemListStyles, problemStyles)
 main : Program () Model Msg
 main =
     Browser.document
-        { init = always ( Model [] initProblems, Cmd.none )
+        { init =
+            always
+                ( Model []
+                    initProblems
+                    "[ asfasdf]"
+                , Random.generate RandomListArrived (Random.list 10 (Random.int 1 100))
+                )
         , view = view
         , update = update
         , subscriptions = always Sub.none
@@ -63,6 +70,7 @@ initProblems =
 type alias Model =
     { randomList : List Int
     , problems : List Problem
+    , p1input : String
     }
 
 
@@ -73,6 +81,7 @@ type alias Model =
 type Msg
     = RequestRandomList
     | RandomListArrived (List Int)
+    | InputUpdated String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -83,6 +92,9 @@ update msg model =
 
         RandomListArrived randomList ->
             ( { model | randomList = randomList }, Cmd.none )
+
+        InputUpdated input ->
+            ( { model | p1input = input }, Cmd.none )
 
 
 
@@ -113,8 +125,13 @@ viewProblem model { number, title } =
                         ]
                     ]
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
-                    , input [ css [ Css.flex (Css.int 1) ] ] []
-                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random" ]
+                    , input
+                        [ css [ Css.flex (Css.int 1) ]
+                        , onInput InputUpdated
+                        , value (model.randomList |> Utils.listToString String.fromInt ", ")
+                        ]
+                        []
+                    , button [ css [ Css.marginLeft (Css.px 5) ], onClick RequestRandomList ] [ text "Random" ]
                     ]
                 , button [] [ text "Test" ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ] [ text "Show code" ]
