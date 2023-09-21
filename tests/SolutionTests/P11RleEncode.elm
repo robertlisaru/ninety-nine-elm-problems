@@ -1,4 +1,4 @@
-module P11RleEncode exposing (suite)
+module SolutionTests.P11RleEncode exposing (suite)
 
 import Expect
 import Solutions.P11RleEncode exposing (RleCode(..), rleEncode)

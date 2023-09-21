@@ -1,4 +1,4 @@
-module P9Pack exposing (suite)
+module SolutionTests.P9Pack exposing (suite)
 
 import Expect
 import Solutions.P9Pack exposing (pack)

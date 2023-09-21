@@ -1,4 +1,4 @@
-module P5Reverse exposing (suite)
+module SolutionTests.P5Reverse exposing (suite)
 
 import Expect
 import Solutions.P5Reverse exposing (myReverse)

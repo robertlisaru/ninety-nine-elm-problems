@@ -1,4 +1,4 @@
-module P1LastElement exposing (suite)
+module SolutionTests.P1LastElement exposing (suite)
 
 import Expect
 import Solutions.P1LastElement exposing (last)

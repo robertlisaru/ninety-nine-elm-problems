@@ -1,4 +1,4 @@
-module P18Sublist exposing (suite)
+module SolutionTests.P18Sublist exposing (suite)
 
 import Expect
 import Solutions.P18Sublist exposing (sublist)
