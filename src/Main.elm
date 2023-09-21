@@ -8,7 +8,7 @@ import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
-import Styles exposing (codeStyles, problemListStyles, problemStyles)
+import Styles exposing (codeStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
 
@@ -140,7 +140,8 @@ view : Model -> Document Msg
 view model =
     { title = "Ninety-nine Elm solutions"
     , body =
-        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model)) ]
+        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+        ]
             |> List.map toUnstyled
     }
 
@@ -200,10 +201,12 @@ last xs =
         |> List.head
 """
                     in
-                    div []
-                        [ SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
+                    div [ css [ Css.marginTop (Css.px 15) ] ]
+                        [ syntaxHighlightRequiredCssNode
+                        , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
+                        , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
                         , SyntaxHighlight.elm codeString
-                            |> Result.map (SyntaxHighlight.toBlockHtml (Just 1))
+                            |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
                             |> Result.map fromUnstyled
                             |> Result.withDefault (code [] [ text codeString ])
                         ]

@@ -1,6 +1,7 @@
-module Styles exposing (codeStyles, problemListStyles, problemStyles)
+module Styles exposing (codeStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
+import Html.Styled exposing (node, text)
 
 
 problemStyles : List Style
@@ -38,3 +39,103 @@ problemListStyles =
 codeStyles : List Style
 codeStyles =
     [ Css.backgroundColor (Css.hex "#f6f8fa"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ]
+
+
+syntaxHighlightRequiredCssNode : Html.Styled.Html msg
+syntaxHighlightRequiredCssNode =
+    node "style" [] [ text syntaxHighlightRequiredRawCss ]
+
+
+
+{-
+   You need to remove the call to SyntaxHighlight.useTheme in order for this css to apply.
+-}
+
+
+syntaxHighlightThemeCssNode : Html.Styled.Html msg
+syntaxHighlightThemeCssNode =
+    node "style" [] [ text syntaxHighlightThemeRawCss ]
+
+
+syntaxHighlightRequiredRawCss : String
+syntaxHighlightRequiredRawCss =
+    """
+/* Elm Syntax Highlight CSS */
+pre.elmsh {
+  padding: 10px;
+  margin: 0;
+  text-align: left;
+  overflow: auto;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+code.elmsh {
+  padding: 0;
+}
+
+.elmsh-line:before {
+  content: attr(data-elmsh-lc);
+  display: inline-block;
+  text-align: right;
+  width: 40px;
+  padding: 0 20px 0 0;
+  opacity: 0.3;
+}
+
+"""
+
+
+syntaxHighlightThemeRawCss : String
+syntaxHighlightThemeRawCss =
+    """
+.elmsh {
+    color: #24292e;
+    background: #ffffff;
+}
+.elmsh-hl {
+    background: #fffbdd;
+}
+.elmsh-add {
+    background: #eaffea;
+}
+.elmsh-del {
+    background: #ffecec;
+}
+.elmsh-comm {
+    color: #969896;
+}
+.elmsh1 {
+    color: #005cc5;
+}
+.elmsh2 {
+    color: #df5000;
+}
+.elmsh3 {
+    color: #d73a49;
+}
+.elmsh4 {
+    color: #0086b3;
+}
+.elmsh5 {
+    color: #63a35c;
+}
+.elmsh6 {
+    color: #005cc5;
+}
+.elmsh7 {
+    color: #795da3;
+}
+.elmsh-elm-ts, .elmsh-js-dk, .elmsh-css-p {
+    font-style: italic;
+    color: #66d9ef;
+}
+.elmsh-js-ce {
+    font-style: italic;
+    color: #a6e22e;
+}
+.elmsh-css-ar-i {
+    font-weight: bold;
+    color: #f92672;
+}
+"""
