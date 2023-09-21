@@ -1,4 +1,4 @@
-module Styles exposing (problemListStyles, problemStyles)
+module Styles exposing (codeStyles, problemListStyles, problemStyles)
 
 import Css exposing (..)
 
@@ -33,3 +33,8 @@ problemListStyles =
     , alignItems center
     , fontFamilies [ "arial", "sans-serif" ]
     ]
+
+
+codeStyles : List Style
+codeStyles =
+    [ Css.backgroundColor (Css.hex "#f6f8fa"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ]

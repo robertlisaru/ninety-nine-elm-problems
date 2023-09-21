@@ -8,7 +8,7 @@ import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
-import Styles exposing (problemListStyles, problemStyles)
+import Styles exposing (codeStyles, problemListStyles, problemStyles)
 import SyntaxHighlight
 import Utils
 
@@ -154,11 +154,11 @@ viewProblem model { number, title } =
                 [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
                 , p []
                     [ text "Write a function "
-                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "last" ]
-                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore"
-                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "last" ]
+                    , code [ css codeStyles ] [ text "last" ]
+                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore "
+                    , code [ css codeStyles ] [ text "last" ]
                     , text " must return a "
-                    , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ] [ text "Maybe" ]
+                    , code [ css codeStyles ] [ text "Maybe" ]
                     , text "."
                     ]
                 , div
@@ -178,7 +178,7 @@ viewProblem model { number, title } =
                     , button [ css [ Css.marginLeft (Css.px 5) ], onClick P1RequestRandomList ] [ text "Random" ]
                     ]
                 , label [] [ text <| "Last element is: " ]
-                , code [ css [ Css.backgroundColor (Css.hex "#f5f7f9"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ] ]
+                , code [ css codeStyles ]
                     [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick P1ShowCodeToggle ]
                     [ if model.p1showCode then
