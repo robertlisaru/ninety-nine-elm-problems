@@ -186,7 +186,7 @@ viewProblem model { number, title } =
                         text "Hide code"
 
                       else
-                        text "Show code"
+                        text "Show code (spoiler)"
                     ]
                 , if model.p1showCode then
                     let
