@@ -187,7 +187,7 @@ viewProblem model { number, title } =
                       else
                         text "Show code (spoiler)"
                     ]
-                , if model.p1showCode then
+                , Utils.displayIf model.p1showCode <|
                     let
                         codeString =
                             """import List
@@ -209,9 +209,6 @@ last xs =
                             |> Result.map fromUnstyled
                             |> Result.withDefault (code [] [ text codeString ])
                         ]
-
-                  else
-                    text ""
                 ]
 
         _ ->
