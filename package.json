@@ -11,7 +11,8 @@
     "test": "elm-test",
     "build": "elm make src/Main.elm --output public/index.html",
     "review": "elm-review",
-    "format": "elm-format src/ --validate"
+    "format": "elm-format src/ --validate",
+    "checkall": "npm run test && npm run format && npm run review"
   },
   "repository": {
     "type": "git",
