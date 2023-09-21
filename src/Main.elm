@@ -140,8 +140,7 @@ view : Model -> Document Msg
 view model =
     { title = "Ninety-nine Elm solutions"
     , body =
-        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
-        ]
+        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model)) ]
             |> List.map toUnstyled
     }
 
