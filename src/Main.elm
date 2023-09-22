@@ -33,7 +33,7 @@ init flags =
     ( { p1List = []
       , problems = initProblems
       , p1Input = "[]"
-      , p1ShowCode = False
+      , showCode = Array.repeat 100 False
       , solutionsCode = flags
       }
     , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
@@ -81,7 +81,7 @@ type alias Model =
     { p1List : List Int
     , problems : List Problem
     , p1Input : String
-    , p1ShowCode : Bool
+    , showCode : Array Bool
     , solutionsCode : Array String
     }
 
@@ -95,7 +95,7 @@ type Msg
     | P1RandomListReady (List Int)
     | P1InputUpdate String
     | P1InputBlur
-    | P1ShowCodeToggle
+    | ShowCodeToggle Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -135,8 +135,12 @@ update msg model =
         P1InputBlur ->
             ( { model | p1Input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
 
-        P1ShowCodeToggle ->
-            ( { model | p1ShowCode = model.p1ShowCode |> not }, Cmd.none )
+        ShowCodeToggle problemNumber ->
+            let
+                flipped =
+                    model.showCode |> Array.get problemNumber |> Maybe.map not |> Maybe.withDefault False
+            in
+            ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
 
 
 
@@ -183,14 +187,8 @@ viewProblem model problem =
                 , label [] [ text <| "Last element is: " ]
                 , code [ css codeStyles ]
                     [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
-                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick P1ShowCodeToggle ]
-                    [ if model.p1ShowCode then
-                        text "Hide code"
-
-                      else
-                        text "Show code (spoiler)"
-                    ]
-                , Utils.displayIf model.p1ShowCode <|
+                , viewCodeButton model.showCode problem.number
+                , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
                     viewCode model.solutionsCode problem.number
                 ]
 
@@ -215,10 +213,21 @@ viewProblem model problem =
                 , label [] [ text <| "Result is: " ]
                 , code [ css codeStyles ]
                     [ text <| "Result goes here" ]
-                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ]
-                    [ text "Hide code (disabled)" ]
-                , viewCode model.solutionsCode problem.number
+                , viewCodeButton model.showCode problem.number
+                , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
+                    viewCode model.solutionsCode problem.number
                 ]
+
+
+viewCodeButton : Array Bool -> Int -> Html Msg
+viewCodeButton showCode problemNumber =
+    button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick (ShowCodeToggle problemNumber) ]
+        [ if showCode |> Array.get problemNumber |> Maybe.withDefault False then
+            text "Hide code"
+
+          else
+            text "Show code (spoiler)"
+        ]
 
 
 viewCode : Array String -> Int -> Html Msg
