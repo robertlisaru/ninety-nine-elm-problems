@@ -9,11 +9,12 @@ My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncr
 - [x] setup CI
 - [x] setup elm-review
 - [x] refactor into proper unit tests
-- [ ] show code for each problem
+- [x] setup dev server
+- [x] show code for each problem
+- [x] allow input of a custom list to run the problems on
 - [ ] refactor tests to be more granular
-- [ ] allow input of a custom list to run the problems on
 - [ ] nicer ui
-- [ ] setup dev server
+- [ ] responsive ui for mobile
 
 
 
