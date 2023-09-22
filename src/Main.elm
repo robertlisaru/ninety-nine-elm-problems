@@ -208,9 +208,9 @@ viewProblem model problem =
                     ]
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
-                        [ css [ Css.flex (Css.int 1) ] ]
+                        [ css [ Css.flex (Css.int 1) ], value "Unimplemented" ]
                         []
-                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random" ]
+                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random (unimplemented)" ]
                     ]
                 , label [] [ text <| "Result is: " ]
                 , code [ css codeStyles ]
