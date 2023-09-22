@@ -217,19 +217,7 @@ viewProblem model problem =
                     [ text <| "Result goes here" ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ]
                     [ text "Hide code (disabled)" ]
-                , div [ css [ Css.marginTop (Css.px 15) ] ]
-                    [ syntaxHighlightRequiredCssNode
-                    , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
-                    , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-                    , SyntaxHighlight.elm
-                        (model.solutionsCode
-                            |> Array.get problem.number
-                            |> Maybe.withDefault "Error when indexing code for this solution."
-                        )
-                        |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
-                        |> Result.map fromUnstyled
-                        |> Result.withDefault (code [] [ text "Syntax highlight error." ])
-                    ]
+                , viewCode model.solutionsCode problem.number
                 ]
 
 
