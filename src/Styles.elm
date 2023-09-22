@@ -43,7 +43,6 @@ problemListStyles =
     , displayFlex
     , flexDirection column
     , alignItems center
-    , fontFamilies [ "arial", "sans-serif" ]
     ]
 
 
