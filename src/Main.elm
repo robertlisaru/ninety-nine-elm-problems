@@ -1,6 +1,6 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
-import Browser exposing (Document)
+import Browser
 import Css
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
@@ -19,7 +19,7 @@ import Utils
 
 main : Program () Model Msg
 main =
-    Browser.document
+    Browser.element
         { init =
             always
                 ( Model []
@@ -28,7 +28,7 @@ main =
                     False
                 , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
                 )
-        , view = view
+        , view = view >> toUnstyled
         , update = update
         , subscriptions = always Sub.none
         }
@@ -136,13 +136,9 @@ update msg model =
 -- VIEW
 
 
-view : Model -> Document Msg
+view : Model -> Html Msg
 view model =
-    { title = "Ninety-nine Elm solutions"
-    , body =
-        [ ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model)) ]
-            |> List.map toUnstyled
-    }
+    ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
 
 
 viewProblem : Model -> Problem -> Html Msg
