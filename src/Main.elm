@@ -3,13 +3,13 @@ module Main exposing (Model, Msg(..), Problem, main)
 import Array exposing (Array)
 import Browser
 import Css
-import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, input, label, li, p, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
-import Styles exposing (codeStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+import Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
 
@@ -20,9 +20,9 @@ import Utils
 
 main : Program (Array String) Model Msg
 main =
-    Browser.element
+    Browser.document
         { init = init
-        , view = view >> toUnstyled
+        , view = view
         , update = update
         , subscriptions = always Sub.none
         }
@@ -147,9 +147,15 @@ update msg model =
 -- VIEW
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+    { title = "99 Elm problems"
+    , body =
+        [ header [ css headerStyles ] []
+        , ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+        ]
+            |> List.map toUnstyled
+    }
 
 
 viewProblem : Model -> Problem -> Html Msg
