@@ -1,5 +1,6 @@
 module Main exposing (Model, Msg(..), Problem, main)
 
+import Array exposing (Array)
 import Browser
 import Css
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, input, label, li, p, text, toUnstyled, ul)
@@ -17,7 +18,7 @@ import Utils
 -- MAIN
 
 
-main : Program Int Model Msg
+main : Program (Array String) Model Msg
 main =
     Browser.element
         { init = init
@@ -27,13 +28,13 @@ main =
         }
 
 
-init : Int -> ( Model, Cmd Msg )
+init : Array String -> ( Model, Cmd Msg )
 init flags =
     ( { p1List = []
       , problems = initProblems
       , p1Input = "[]"
       , p1ShowCode = False
-      , flags = flags
+      , solutionsCode = flags
       }
     , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
     )
@@ -81,7 +82,7 @@ type alias Model =
     , problems : List Problem
     , p1Input : String
     , p1ShowCode : Bool
-    , flags : Int
+    , solutionsCode : Array String
     }
 
 
@@ -148,12 +149,12 @@ view model =
 
 
 viewProblem : Model -> Problem -> Html Msg
-viewProblem model { number, title } =
-    case number of
+viewProblem model problem =
+    case problem.number of
         1 ->
             li
                 [ css problemStyles ]
-                [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
+                [ h4 [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
                 , p []
                     [ text "Write a function "
                     , code [ css codeStyles ] [ text "last" ]
@@ -190,32 +191,60 @@ viewProblem model { number, title } =
                         text "Show code (spoiler)"
                     ]
                 , Utils.displayIf model.p1ShowCode <|
-                    let
-                        codeString =
-                            """import List
-
-
-last : List a -> Maybe a
-last xs =
-    xs
-        |> List.reverse
-        |> List.head
-"""
-                    in
-                    div [ css [ Css.marginTop (Css.px 15) ] ]
-                        [ syntaxHighlightRequiredCssNode
-                        , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
-                        , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-                        , SyntaxHighlight.elm codeString
-                            |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
-                            |> Result.map fromUnstyled
-                            |> Result.withDefault (code [] [ text codeString ])
-                        ]
+                    viewCode model.solutionsCode problem.number
                 ]
 
         _ ->
             li
                 [ css problemStyles ]
-                [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
-                , p [] [ text <| "Problem requirement here. Flags: " ++ String.fromInt model.flags ]
+                [ h4 [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+                , p []
+                    [ text "Problem requirement here" ]
+                , div
+                    [ css
+                        [ Css.displayFlex
+                        , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
+                        ]
+                    ]
+                    [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
+                    , input
+                        [ css [ Css.flex (Css.int 1) ] ]
+                        []
+                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random" ]
+                    ]
+                , label [] [ text <| "Result is: " ]
+                , code [ css codeStyles ]
+                    [ text <| "Result goes here" ]
+                , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ] ]
+                    [ text "Hide code (disabled)" ]
+                , div [ css [ Css.marginTop (Css.px 15) ] ]
+                    [ syntaxHighlightRequiredCssNode
+                    , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
+                    , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
+                    , SyntaxHighlight.elm
+                        (model.solutionsCode
+                            |> Array.get problem.number
+                            |> Maybe.withDefault "Error when indexing code for this solution."
+                        )
+                        |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
+                        |> Result.map fromUnstyled
+                        |> Result.withDefault (code [] [ text "Syntax highlight error." ])
+                    ]
                 ]
+
+
+viewCode : Array String -> Int -> Html Msg
+viewCode solutionsCode problemNumber =
+    div [ css [ Css.marginTop (Css.px 15) ] ]
+        [ syntaxHighlightRequiredCssNode
+        , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
+        , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
+        , SyntaxHighlight.elm
+            (solutionsCode
+                |> Array.get problemNumber
+                |> Maybe.withDefault "Error when indexing code for this solution."
+            )
+            |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
+            |> Result.map fromUnstyled
+            |> Result.withDefault (code [] [ text "Syntax highlight error." ])
+        ]
