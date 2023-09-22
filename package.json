@@ -7,9 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "elm-live src/Main.elm --open --dir=public -- --output public/index.html",
+    "start": "elm-live src/Main.elm --open --dir=public -- --output public/main.js",
     "test": "elm-test",
-    "build": "elm make src/Main.elm --output public/index.html",
+    "build": "elm make src/Main.elm --output public/main.js",
     "review": "elm-review",
     "format": "elm-format src/ --validate",
     "checkall": "npm run test && npm run format && npm run review"
