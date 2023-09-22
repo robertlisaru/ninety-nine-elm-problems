@@ -3,12 +3,6 @@ module Solutions.P9Pack exposing (pack)
 import List
 
 
-
-{- Convert a list to a list of lists where repeated elements of the source list are packed into sublists.
-   Elements that are not repeated should be placed in a one element sublist.
--}
-
-
 getFirstSequence : List a -> List a
 getFirstSequence list =
     case list of

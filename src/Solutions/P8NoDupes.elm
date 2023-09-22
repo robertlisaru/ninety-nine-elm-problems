@@ -1,5 +1,7 @@
 module Solutions.P8NoDupes exposing (noDupes)
 
+import List
+
 
 noDupes : List a -> List a
 noDupes list =

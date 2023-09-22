@@ -1,13 +1,14 @@
 module Solutions.P4CountElements exposing (countElements)
 
+import List
+
+
+
+{-
+   Without using List.length
+-}
+
 
 countElements : List a -> Int
 countElements list =
-    list |> List.map (\_ -> 1) |> List.sum
-
-
-
-{- countElements2 : List a -> Int
-   countElements2 list =
-       list |> List.foldl ((\_ -> 1) >> (+)) 0
--}
+    list |> List.map (always 1) |> List.sum

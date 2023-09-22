@@ -1,16 +1,6 @@
 module Solutions.P15RepeatElements exposing (repeatElements)
 
-{- Using foldr
-
-   repeat : Int -> a -> List a -> List a
-   repeat count element list =
-       List.repeat count element ++ list
-
-
-   repeatElements : Int -> List a -> List a
-   repeatElements count list =
-       list |> List.foldr (repeat count) []
--}
+import List
 
 
 repeatElements : Int -> List a -> List a
