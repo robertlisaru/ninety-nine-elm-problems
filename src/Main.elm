@@ -17,21 +17,26 @@ import Utils
 -- MAIN
 
 
-main : Program () Model Msg
+main : Program Int Model Msg
 main =
     Browser.element
-        { init =
-            always
-                ( Model []
-                    initProblems
-                    "[]"
-                    False
-                , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
-                )
+        { init = init
         , view = view >> toUnstyled
         , update = update
         , subscriptions = always Sub.none
         }
+
+
+init : Int -> ( Model, Cmd Msg )
+init flags =
+    ( { p1List = []
+      , problems = initProblems
+      , p1Input = "[]"
+      , p1ShowCode = False
+      , flags = flags
+      }
+    , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
+    )
 
 
 
@@ -74,8 +79,9 @@ initProblems =
 type alias Model =
     { p1List : List Int
     , problems : List Problem
-    , p1input : String
-    , p1showCode : Bool
+    , p1Input : String
+    , p1ShowCode : Bool
+    , flags : Int
     }
 
 
@@ -100,7 +106,7 @@ update msg model =
         P1RandomListReady randomList ->
             ( { model
                 | p1List = randomList
-                , p1input = randomList |> Utils.listToString String.fromInt ", "
+                , p1Input = randomList |> Utils.listToString String.fromInt ", "
               }
             , Cmd.none
             )
@@ -119,17 +125,17 @@ update msg model =
                             model.p1List
             in
             ( { model
-                | p1input = input
+                | p1Input = input
                 , p1List = newList
               }
             , Cmd.none
             )
 
         P1InputBlur ->
-            ( { model | p1input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
+            ( { model | p1Input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
 
         P1ShowCodeToggle ->
-            ( { model | p1showCode = model.p1showCode |> not }, Cmd.none )
+            ( { model | p1ShowCode = model.p1ShowCode |> not }, Cmd.none )
 
 
 
@@ -168,7 +174,7 @@ viewProblem model { number, title } =
                         [ css [ Css.flex (Css.int 1) ]
                         , onInput P1InputUpdate
                         , onBlur P1InputBlur
-                        , value model.p1input
+                        , value model.p1Input
                         ]
                         []
                     , button [ css [ Css.marginLeft (Css.px 5) ], onClick P1RequestRandomList ] [ text "Random" ]
@@ -177,13 +183,13 @@ viewProblem model { number, title } =
                 , code [ css codeStyles ]
                     [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
                 , button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick P1ShowCodeToggle ]
-                    [ if model.p1showCode then
+                    [ if model.p1ShowCode then
                         text "Hide code"
 
                       else
                         text "Show code (spoiler)"
                     ]
-                , Utils.displayIf model.p1showCode <|
+                , Utils.displayIf model.p1ShowCode <|
                     let
                         codeString =
                             """import List
@@ -211,5 +217,5 @@ last xs =
             li
                 [ css problemStyles ]
                 [ h4 [] [ text <| String.fromInt number ++ ". " ++ title ]
-                , p [] [ text "Problem requirement here." ]
+                , p [] [ text <| "Problem requirement here. Flags: " ++ String.fromInt model.flags ]
                 ]
