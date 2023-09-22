@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -12,6 +12,15 @@ headerStyles =
     , paddingLeft (px 20)
     , paddingRight (px 20)
     , overflowX hidden
+    ]
+
+
+problemTitleStyles : List Style
+problemTitleStyles =
+    [ color (hex "#1293D8")
+    , textDecoration none
+    , fontSize (em 1.5)
+    , fontWeight normal
     ]
 
 

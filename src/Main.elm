@@ -3,13 +3,13 @@ module Main exposing (Model, Msg(..), Problem, main)
 import Array exposing (Array)
 import Browser
 import Css
-import Html.Styled exposing (Html, button, code, div, fromUnstyled, h4, header, input, label, li, p, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
-import Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+import Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
 
@@ -164,7 +164,7 @@ viewProblem model problem =
         1 ->
             li
                 [ css problemStyles ]
-                [ h4 [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+                [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
                 , p []
                     [ text "Write a function "
                     , code [ css codeStyles ] [ text "last" ]
@@ -201,7 +201,7 @@ viewProblem model problem =
         _ ->
             li
                 [ css problemStyles ]
-                [ h4 [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+                [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
                 , p []
                     [ text "Problem requirement here" ]
                 , div
