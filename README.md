@@ -3,7 +3,7 @@
 ## Description
 My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
 
-[Test my solutions](https://robertlisaru.github.io/ninety-nine-elm-problems/)
+[DEMO: Test my solutions](https://robertlisaru.github.io/ninety-nine-elm-problems/)
 
 ## To do
 - [x] setup CI
