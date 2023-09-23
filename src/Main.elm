@@ -30,13 +30,13 @@ main =
 
 init : Array String -> ( Model, Cmd Msg )
 init flags =
-    ( { p1List = []
+    ( { inputList = Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
       , problems = initProblems
-      , p1Input = "[]"
+      , input = Array.repeat 100 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
       }
-    , Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100))
+    , Cmd.none
     )
 
 
@@ -78,9 +78,9 @@ initProblems =
 
 
 type alias Model =
-    { p1List : List Int
+    { inputList : Array (List Int)
     , problems : List Problem
-    , p1Input : String
+    , input : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
     }
@@ -91,28 +91,28 @@ type alias Model =
 
 
 type Msg
-    = P1RequestRandomList
-    | P1RandomListReady (List Int)
-    | P1InputUpdate String
-    | P1InputBlur
+    = RequestRandomList Int
+    | RandomListReady Int (List Int)
+    | InputUpdate Int String
+    | InputBlur Int
     | ShowCodeToggle Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        P1RequestRandomList ->
-            ( model, Random.generate P1RandomListReady (Random.list 10 (Random.int 1 100)) )
+        RequestRandomList problemNumber ->
+            ( model, Random.generate (RandomListReady problemNumber) (Random.list 10 (Random.int 1 100)) )
 
-        P1RandomListReady randomList ->
+        RandomListReady problemNumber randomList ->
             ( { model
-                | p1List = randomList
-                , p1Input = randomList |> Utils.listToString String.fromInt ", "
+                | inputList = model.inputList |> Array.set problemNumber randomList
+                , input = model.input |> Array.set problemNumber (randomList |> Utils.listToString String.fromInt ", ")
               }
             , Cmd.none
             )
 
-        P1InputUpdate input ->
+        InputUpdate problemNumber input ->
             let
                 decodeResult =
                     Json.Decode.decodeString (Json.Decode.list Json.Decode.int) input
@@ -123,17 +123,28 @@ update msg model =
                             list
 
                         Err _ ->
-                            model.p1List
+                            model.inputList |> Array.get problemNumber |> Maybe.withDefault []
             in
             ( { model
-                | p1Input = input
-                , p1List = newList
+                | input = model.input |> Array.set problemNumber input
+                , inputList = model.inputList |> Array.set problemNumber newList
               }
             , Cmd.none
             )
 
-        P1InputBlur ->
-            ( { model | p1Input = model.p1List |> Utils.listToString String.fromInt ", " }, Cmd.none )
+        InputBlur problemNumber ->
+            ( { model
+                | input =
+                    model.input
+                        |> Array.set problemNumber
+                            (model.inputList
+                                |> Array.get problemNumber
+                                |> Maybe.map (Utils.listToString String.fromInt ", ")
+                                |> Maybe.withDefault "[]"
+                            )
+              }
+            , Cmd.none
+            )
 
         ShowCodeToggle problemNumber ->
             let
@@ -183,16 +194,25 @@ viewProblem model problem =
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
-                        , onInput P1InputUpdate
-                        , onBlur P1InputBlur
-                        , value model.p1Input
+                        , onInput (InputUpdate problem.number)
+                        , onBlur (InputBlur problem.number)
+                        , value (model.input |> Array.get problem.number |> Maybe.withDefault "[]")
                         ]
                         []
-                    , button [ css [ Css.marginLeft (Css.px 5) ], onClick P1RequestRandomList ] [ text "Random" ]
+                    , button
+                        [ css [ Css.marginLeft (Css.px 5) ]
+                        , onClick (RequestRandomList problem.number)
+                        ]
+                        [ text "Random" ]
                     ]
                 , label [] [ text <| "Last element is: " ]
                 , code [ css codeStyles ]
-                    [ text <| (Solutions.P1LastElement.last model.p1List |> Utils.maybeToString String.fromInt) ]
+                    [ text <|
+                        (Solutions.P1LastElement.last
+                            (model.inputList |> Array.get problem.number |> Maybe.withDefault [])
+                            |> Utils.maybeToString String.fromInt
+                        )
+                    ]
                 , viewCodeButton model.showCode problem.number
                 , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
                     viewCode model.solutionsCode problem.number
@@ -212,9 +232,17 @@ viewProblem model problem =
                     ]
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
-                        [ css [ Css.flex (Css.int 1) ], value "Unimplemented" ]
+                        [ css [ Css.flex (Css.int 1) ]
+                        , onInput (InputUpdate problem.number)
+                        , onBlur (InputBlur problem.number)
+                        , value (model.input |> Array.get problem.number |> Maybe.withDefault "[]")
+                        ]
                         []
-                    , button [ css [ Css.marginLeft (Css.px 5) ] ] [ text "Random (unimplemented)" ]
+                    , button
+                        [ css [ Css.marginLeft (Css.px 5) ]
+                        , onClick (RequestRandomList problem.number)
+                        ]
+                        [ text "Random" ]
                     ]
                 , label [] [ text <| "Result is: " ]
                 , code [ css codeStyles ]
