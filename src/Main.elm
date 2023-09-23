@@ -2,14 +2,15 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, marginRight, marginTop, px)
+import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, marginRight, marginTop, px, width)
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, value)
+import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
+import Solutions.P3ElementAt
 import Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
@@ -36,6 +37,8 @@ init flags =
       , input = Array.repeat 100 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
+      , p3Index = 7
+      , p3IndexString = "7"
       }
     , Cmd.none
     )
@@ -84,6 +87,8 @@ type alias Model =
     , input : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
+    , p3Index : Int
+    , p3IndexString : String
     }
 
 
@@ -97,6 +102,10 @@ type Msg
     | InputUpdate Int String
     | InputBlur Int
     | ShowCodeToggle Int
+    | P3RequestRandomIndex
+    | P3RandomIndexReady Int
+    | P3IndexInput String
+    | P3IndexBlur
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -154,6 +163,40 @@ update msg model =
             in
             ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
 
+        P3RequestRandomIndex ->
+            ( model
+            , Random.generate P3RandomIndexReady
+                (Random.int 1 (model.inputList |> Array.get 3 |> Maybe.map List.length |> Maybe.withDefault 10))
+            )
+
+        P3RandomIndexReady randomIndex ->
+            ( { model | p3Index = randomIndex, p3IndexString = randomIndex |> String.fromInt }, Cmd.none )
+
+        P3IndexInput input ->
+            let
+                decodeResult =
+                    Json.Decode.decodeString Json.Decode.int input
+
+                newIndex =
+                    case decodeResult of
+                        Result.Ok list ->
+                            list
+
+                        Err _ ->
+                            model.p3Index
+            in
+            ( { model
+                | p3IndexString = input
+                , p3Index = newIndex
+              }
+            , Cmd.none
+            )
+
+        P3IndexBlur ->
+            ( { model | p3IndexString = model.p3Index |> String.fromInt }
+            , Cmd.none
+            )
+
 
 
 -- VIEW
@@ -204,6 +247,13 @@ problemRequirement problemNumber =
                 , text " to find the next to last element of a list."
                 ]
 
+        3 ->
+            p []
+                [ text "Implement the function "
+                , code [ css codeStyles ] [ text "elementAt" ]
+                , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -227,7 +277,7 @@ problemInteractiveArea model problemNumber =
                         [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
                         [ text "Random" ]
                     ]
-                , label [] [ text <| "Last element is: " ]
+                , label [] [ text "Last element is: " ]
                 , code [ css codeStyles ]
                     [ text <|
                         (Solutions.P1LastElement.last
@@ -252,11 +302,52 @@ problemInteractiveArea model problemNumber =
                         [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
                         [ text "Random" ]
                     ]
-                , label [] [ text <| "Penultimate element is: " ]
+                , label [] [ text "Penultimate element is: " ]
                 , code [ css codeStyles ]
                     [ text <|
                         (Solutions.P2Penultimate.penultimate
                             (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
+                            |> Utils.maybeToString String.fromInt
+                        )
+                    ]
+                ]
+
+            3 ->
+                [ div
+                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
+                    , input
+                        [ css [ flex (Css.int 1) ]
+                        , onInput (InputUpdate problemNumber)
+                        , onBlur (InputBlur problemNumber)
+                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
+                        ]
+                        []
+                    , button
+                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
+                        [ text "Random" ]
+                    ]
+                , div
+                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                    [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
+                    , input
+                        [ css [ width (Css.em 3) ]
+                        , onInput P3IndexInput
+                        , onBlur P3IndexBlur
+                        , value model.p3IndexString
+                        , maxlength 3
+                        ]
+                        []
+                    , button
+                        [ css [ marginLeft (px 5) ], onClick P3RequestRandomIndex ]
+                        [ text "Random" ]
+                    ]
+                , label [] [ text "Indexed element is: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P3ElementAt.elementAt
+                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
+                            model.p3Index
                             |> Utils.maybeToString String.fromInt
                         )
                     ]
@@ -277,9 +368,9 @@ problemInteractiveArea model problemNumber =
                         [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
                         [ text "Random" ]
                     ]
-                , label [] [ text <| "Result is: " ]
+                , label [] [ text "Result is: " ]
                 , code [ css codeStyles ]
-                    [ text <| "Result goes here" ]
+                    [ text "Result goes here" ]
                 ]
 
 
