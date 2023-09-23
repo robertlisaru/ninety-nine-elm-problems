@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -38,6 +38,17 @@ problemStyles =
     , padding (px 25)
     , paddingTop (px 0)
     , backgroundColor (rgb 200 255 255)
+    ]
+
+
+problemInteractiveAreaStyles : List Style
+problemInteractiveAreaStyles =
+    [ borderWidth (px 1)
+    , borderStyle solid
+    , borderColor (rgb 150 150 150)
+    , borderRadius (px 5)
+    , padding (px 10)
+    , paddingTop (px 0)
     ]
 
 

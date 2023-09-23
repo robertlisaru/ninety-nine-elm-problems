@@ -2,14 +2,14 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css
+import Css exposing (displayFlex, margin4, px)
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
-import Styles exposing (codeStyles, headerStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+import Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
 
@@ -202,15 +202,11 @@ problemRequirement problemNumber =
 
 problemInteractiveArea : Model -> Int -> Html Msg
 problemInteractiveArea model problemNumber =
-    case problemNumber of
-        1 ->
-            div []
+    div [ css problemInteractiveAreaStyles ] <|
+        case problemNumber of
+            1 ->
                 [ div
-                    [ css
-                        [ Css.displayFlex
-                        , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
-                        ]
-                    ]
+                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
@@ -235,14 +231,9 @@ problemInteractiveArea model problemNumber =
                     ]
                 ]
 
-        _ ->
-            div []
+            _ ->
                 [ div
-                    [ css
-                        [ Css.displayFlex
-                        , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
-                        ]
-                    ]
+                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
