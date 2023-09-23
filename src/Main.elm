@@ -171,21 +171,41 @@ view model =
 
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model problem =
-    case problem.number of
+    li
+        [ css problemStyles ]
+        [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+        , problemRequirement problem.number
+        , problemInteractiveArea model problem.number
+        , viewCodeButton model.showCode problem.number
+        , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
+            viewCode model.solutionsCode problem.number
+        ]
+
+
+problemRequirement : Int -> Html Msg
+problemRequirement problemNumber =
+    case problemNumber of
         1 ->
-            li
-                [ css problemStyles ]
-                [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
-                , p []
-                    [ text "Write a function "
-                    , code [ css codeStyles ] [ text "last" ]
-                    , text " that returns the last element of a list. An empty list doesn't have a last element, therefore "
-                    , code [ css codeStyles ] [ text "last" ]
-                    , text " must return a "
-                    , code [ css codeStyles ] [ text "Maybe" ]
-                    , text "."
-                    ]
-                , div
+            p []
+                [ text "Write a function "
+                , code [ css codeStyles ] [ text "last" ]
+                , text " that returns the last element of a list. An empty list doesn't have a last element, therefore "
+                , code [ css codeStyles ] [ text "last" ]
+                , text " must return a "
+                , code [ css codeStyles ] [ text "Maybe" ]
+                , text "."
+                ]
+
+        _ ->
+            p [] [ text "Problem requirement here" ]
+
+
+problemInteractiveArea : Model -> Int -> Html Msg
+problemInteractiveArea model problemNumber =
+    case problemNumber of
+        1 ->
+            div []
+                [ div
                     [ css
                         [ Css.displayFlex
                         , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
@@ -194,14 +214,14 @@ viewProblem model problem =
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
-                        , onInput (InputUpdate problem.number)
-                        , onBlur (InputBlur problem.number)
-                        , value (model.input |> Array.get problem.number |> Maybe.withDefault "[]")
+                        , onInput (InputUpdate problemNumber)
+                        , onBlur (InputBlur problemNumber)
+                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
                         ]
                         []
                     , button
                         [ css [ Css.marginLeft (Css.px 5) ]
-                        , onClick (RequestRandomList problem.number)
+                        , onClick (RequestRandomList problemNumber)
                         ]
                         [ text "Random" ]
                     ]
@@ -209,22 +229,15 @@ viewProblem model problem =
                 , code [ css codeStyles ]
                     [ text <|
                         (Solutions.P1LastElement.last
-                            (model.inputList |> Array.get problem.number |> Maybe.withDefault [])
+                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
                             |> Utils.maybeToString String.fromInt
                         )
                     ]
-                , viewCodeButton model.showCode problem.number
-                , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
-                    viewCode model.solutionsCode problem.number
                 ]
 
         _ ->
-            li
-                [ css problemStyles ]
-                [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
-                , p []
-                    [ text "Problem requirement here" ]
-                , div
+            div []
+                [ div
                     [ css
                         [ Css.displayFlex
                         , Css.margin4 (Css.px 15) (Css.px 0) (Css.px 15) (Css.px 0)
@@ -233,23 +246,20 @@ viewProblem model problem =
                     [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
                     , input
                         [ css [ Css.flex (Css.int 1) ]
-                        , onInput (InputUpdate problem.number)
-                        , onBlur (InputBlur problem.number)
-                        , value (model.input |> Array.get problem.number |> Maybe.withDefault "[]")
+                        , onInput (InputUpdate problemNumber)
+                        , onBlur (InputBlur problemNumber)
+                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
                         ]
                         []
                     , button
                         [ css [ Css.marginLeft (Css.px 5) ]
-                        , onClick (RequestRandomList problem.number)
+                        , onClick (RequestRandomList problemNumber)
                         ]
                         [ text "Random" ]
                     ]
                 , label [] [ text <| "Result is: " ]
                 , code [ css codeStyles ]
                     [ text <| "Result goes here" ]
-                , viewCodeButton model.showCode problem.number
-                , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
-                    viewCode model.solutionsCode problem.number
                 ]
 
 
