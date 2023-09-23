@@ -2,13 +2,14 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (displayFlex, margin4, px)
+import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, marginRight, marginTop, px)
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode
 import Random
 import Solutions.P1LastElement
+import Solutions.P2Penultimate
 import Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 import SyntaxHighlight
 import Utils
@@ -196,6 +197,13 @@ problemRequirement problemNumber =
                 , text "."
                 ]
 
+        2 ->
+            p []
+                [ text "Implement the function "
+                , code [ css codeStyles ] [ text "penultimate" ]
+                , text " to find the next to last element of a list."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -207,18 +215,16 @@ problemInteractiveArea model problemNumber =
             1 ->
                 [ div
                     [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
+                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                     , input
-                        [ css [ Css.flex (Css.int 1) ]
+                        [ css [ flex (Css.int 1) ]
                         , onInput (InputUpdate problemNumber)
                         , onBlur (InputBlur problemNumber)
                         , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
                         ]
                         []
                     , button
-                        [ css [ Css.marginLeft (Css.px 5) ]
-                        , onClick (RequestRandomList problemNumber)
-                        ]
+                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
                         [ text "Random" ]
                     ]
                 , label [] [ text <| "Last element is: " ]
@@ -231,21 +237,44 @@ problemInteractiveArea model problemNumber =
                     ]
                 ]
 
-            _ ->
+            2 ->
                 [ div
                     [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ Css.marginRight (Css.px 5) ] ] [ text "Input list: " ]
+                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                     , input
-                        [ css [ Css.flex (Css.int 1) ]
+                        [ css [ flex (Css.int 1) ]
                         , onInput (InputUpdate problemNumber)
                         , onBlur (InputBlur problemNumber)
                         , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
                         ]
                         []
                     , button
-                        [ css [ Css.marginLeft (Css.px 5) ]
-                        , onClick (RequestRandomList problemNumber)
+                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
+                        [ text "Random" ]
+                    ]
+                , label [] [ text <| "Penultimate element is: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P2Penultimate.penultimate
+                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
+                            |> Utils.maybeToString String.fromInt
+                        )
+                    ]
+                ]
+
+            _ ->
+                [ div
+                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
+                    , input
+                        [ css [ flex (Css.int 1) ]
+                        , onInput (InputUpdate problemNumber)
+                        , onBlur (InputBlur problemNumber)
+                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
                         ]
+                        []
+                    , button
+                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
                         [ text "Random" ]
                     ]
                 , label [] [ text <| "Result is: " ]
@@ -256,7 +285,7 @@ problemInteractiveArea model problemNumber =
 
 viewCodeButton : Array Bool -> Int -> Html Msg
 viewCodeButton showCode problemNumber =
-    button [ css [ Css.display Css.block, Css.marginTop (Css.px 15) ], onClick (ShowCodeToggle problemNumber) ]
+    button [ css [ display block, marginTop (px 15) ], onClick (ShowCodeToggle problemNumber) ]
         [ if showCode |> Array.get problemNumber |> Maybe.withDefault False then
             text "Hide code"
 
@@ -267,7 +296,7 @@ viewCodeButton showCode problemNumber =
 
 viewCode : Array String -> Int -> Html Msg
 viewCode solutionsCode problemNumber =
-    div [ css [ Css.marginTop (Css.px 15) ] ]
+    div [ css [ marginTop (px 15) ] ]
         [ syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
