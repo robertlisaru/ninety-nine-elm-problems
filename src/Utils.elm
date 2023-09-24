@@ -1,4 +1,4 @@
-module Utils exposing (displayIf, listToString, maybeToString)
+module Utils exposing (boolToString, displayIf, listToString, maybeToString)
 
 import Html.Styled exposing (Html, text)
 
@@ -20,3 +20,12 @@ displayIf shouldDisplay element =
 
     else
         text ""
+
+
+boolToString : Bool -> String
+boolToString b =
+    if b then
+        "True"
+
+    else
+        "False"

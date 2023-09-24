@@ -13,6 +13,7 @@ import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
+import Solutions.P6IsPalindrome
 import Styles
     exposing
         ( codeStyles
@@ -44,15 +45,21 @@ main =
 
 init : Array String -> ( Model, Cmd Msg )
 init flags =
-    ( { inputList = Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+    let
+        inputLists =
+            Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                |> Array.set 4 [ 1, 2, 3, 4, 5 ]
+                |> Array.set 6 [ 1, 2, 3, 4, 5, 4, 3, 2, 1 ]
+    in
+    ( { inputLists = inputLists
       , problems = initProblems
-      , input = Array.repeat 100 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
       , p3Index = 7
       , p3IndexString = "7"
       }
-    , Cmd.none
+    , requestRandomListCmd 3
     )
 
 
@@ -94,9 +101,9 @@ initProblems =
 
 
 type alias Model =
-    { inputList : Array (List Int)
+    { inputLists : Array (List Int)
     , problems : List Problem
-    , input : Array String
+    , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
     , p3Index : Int
@@ -120,16 +127,21 @@ type Msg
     | P3IndexBlur
 
 
+requestRandomListCmd : Int -> Cmd Msg
+requestRandomListCmd problemNumber =
+    Random.generate (RandomListReady problemNumber) (Random.list 10 (Random.int 1 100))
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         RequestRandomList problemNumber ->
-            ( model, Random.generate (RandomListReady problemNumber) (Random.list 10 (Random.int 1 100)) )
+            ( model, requestRandomListCmd problemNumber )
 
         RandomListReady problemNumber randomList ->
             ( { model
-                | inputList = model.inputList |> Array.set problemNumber randomList
-                , input = model.input |> Array.set problemNumber (randomList |> Utils.listToString String.fromInt ", ")
+                | inputLists = model.inputLists |> Array.set problemNumber randomList
+                , inputStrings = model.inputStrings |> Array.set problemNumber (randomList |> Utils.listToString String.fromInt ", ")
               }
             , Cmd.none
             )
@@ -145,21 +157,21 @@ update msg model =
                             list
 
                         Err _ ->
-                            model.inputList |> Array.get problemNumber |> Maybe.withDefault []
+                            model.inputLists |> Array.get problemNumber |> Maybe.withDefault []
             in
             ( { model
-                | input = model.input |> Array.set problemNumber input
-                , inputList = model.inputList |> Array.set problemNumber newList
+                | inputStrings = model.inputStrings |> Array.set problemNumber input
+                , inputLists = model.inputLists |> Array.set problemNumber newList
               }
             , Cmd.none
             )
 
         InputBlur problemNumber ->
             ( { model
-                | input =
-                    model.input
+                | inputStrings =
+                    model.inputStrings
                         |> Array.set problemNumber
-                            (model.inputList
+                            (model.inputLists
                                 |> Array.get problemNumber
                                 |> Maybe.map (Utils.listToString String.fromInt ", ")
                                 |> Maybe.withDefault "[]"
@@ -178,7 +190,7 @@ update msg model =
         P3RequestRandomIndex ->
             ( model
             , Random.generate P3RandomIndexReady
-                (Random.int 1 (model.inputList |> Array.get 3 |> Maybe.map List.length |> Maybe.withDefault 10))
+                (Random.int 1 (model.inputLists |> Array.get 3 |> Maybe.map List.length |> Maybe.withDefault 10))
             )
 
         P3RandomIndexReady randomIndex ->
@@ -280,6 +292,10 @@ problemRequirement problemNumber =
                 , text " to reverse the order of elements in a list. See if you can implement it."
                 ]
 
+        6 ->
+            p []
+                [ text "Determine if a list is a palindrome, that is, the list is identical when read forward or backward." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -295,7 +311,7 @@ problemInteractiveArea model problemNumber =
                     [ css [ flex (Css.int 1) ]
                     , onInput (InputUpdate problemNumber)
                     , onBlur (InputBlur problemNumber)
-                    , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
+                    , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
                 , button
@@ -306,7 +322,7 @@ problemInteractiveArea model problemNumber =
         displayResult basicListFunc toString =
             code [ css codeStyles ]
                 [ text <|
-                    (basicListFunc (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
+                    (basicListFunc (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
                         |> toString
                     )
                 ]
@@ -360,6 +376,12 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Reversed list: " ]
                 , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
+                ]
+
+            6 ->
+                [ basicListInput
+                , label [] [ text "Is palindrome: " ]
+                , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
                 ]
 
             _ ->
