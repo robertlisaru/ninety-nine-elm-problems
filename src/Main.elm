@@ -313,35 +313,7 @@ nestedListDecoder : Decoder (NestedList Int)
 nestedListDecoder =
     Decode.oneOf
         [ Decode.int |> Decode.map Elem
-        , Decode.list
-            (Decode.oneOf
-                [ Decode.int |> Decode.map Elem
-                , Decode.list
-                    (Decode.oneOf
-                        [ Decode.int |> Decode.map Elem
-                        , Decode.list
-                            (Decode.oneOf
-                                [ Decode.int |> Decode.map Elem
-                                , Decode.list
-                                    (Decode.oneOf
-                                        [ Decode.int |> Decode.map Elem
-                                        , Decode.list
-                                            (Decode.oneOf
-                                                [ Decode.int |> Decode.map Elem ]
-                                            )
-                                            |> Decode.map SubList
-                                        ]
-                                    )
-                                    |> Decode.map SubList
-                                ]
-                            )
-                            |> Decode.map SubList
-                        ]
-                    )
-                    |> Decode.map SubList
-                ]
-            )
-            |> Decode.map SubList
+        , Decode.list (Decode.lazy (\_ -> nestedListDecoder)) |> Decode.map SubList
         ]
 
 
