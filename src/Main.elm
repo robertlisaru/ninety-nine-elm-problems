@@ -146,7 +146,7 @@ type Msg
 
 requestRandomListCmd : Int -> Cmd Msg
 requestRandomListCmd problemNumber =
-    Random.generate (RandomListReady problemNumber) (Random.list 10 (Random.int 1 100))
+    Random.generate (RandomListReady problemNumber) (Random.int 0 10 |> Random.andThen (\n -> Random.list n (Random.int 1 100)))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
