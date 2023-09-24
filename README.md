@@ -1,9 +1,9 @@
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/9a2e1778-1e23-4ac0-8689-c0470aad64b8)
 
 ## Description
-My solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
+Solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/).
 
-[DEMO: Test my solutions](https://robertlisaru.github.io/ninety-nine-elm-problems/)
+[DEMO: Test the solutions interactively](https://robertlisaru.github.io/ninety-nine-elm-problems/)
 
 ## To do
 - [x] setup CI
