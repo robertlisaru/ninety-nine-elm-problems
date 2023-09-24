@@ -270,117 +270,74 @@ problemRequirement problemNumber =
 
 problemInteractiveArea : Model -> Int -> Html Msg
 problemInteractiveArea model problemNumber =
+    let
+        basicListInput =
+            div
+                [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
+                , input
+                    [ css [ flex (Css.int 1) ]
+                    , onInput (InputUpdate problemNumber)
+                    , onBlur (InputBlur problemNumber)
+                    , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
+                    ]
+                    []
+                , button
+                    [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
+                    [ text "Random" ]
+                ]
+
+        displayResult basicListFunc =
+            code [ css codeStyles ]
+                [ text <|
+                    (basicListFunc (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
+                        |> Utils.maybeToString String.fromInt
+                    )
+                ]
+    in
     div [ css problemInteractiveAreaStyles ] <|
         case problemNumber of
             1 ->
-                [ div
-                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
-                    , input
-                        [ css [ flex (Css.int 1) ]
-                        , onInput (InputUpdate problemNumber)
-                        , onBlur (InputBlur problemNumber)
-                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
-                        ]
-                        []
-                    , button
-                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
-                        [ text "Random" ]
-                    ]
+                [ basicListInput
                 , label [] [ text "Last element is: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P1LastElement.last
-                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
-                            |> Utils.maybeToString String.fromInt
-                        )
-                    ]
+                , displayResult Solutions.P1LastElement.last
                 ]
 
             2 ->
-                [ div
-                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
-                    , input
-                        [ css [ flex (Css.int 1) ]
-                        , onInput (InputUpdate problemNumber)
-                        , onBlur (InputBlur problemNumber)
-                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
-                        ]
-                        []
-                    , button
-                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
-                        [ text "Random" ]
-                    ]
+                [ basicListInput
                 , label [] [ text "Penultimate element is: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P2Penultimate.penultimate
-                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
-                            |> Utils.maybeToString String.fromInt
-                        )
-                    ]
+                , displayResult Solutions.P2Penultimate.penultimate
                 ]
 
             3 ->
-                [ div
-                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
-                    , input
-                        [ css [ flex (Css.int 1) ]
-                        , onInput (InputUpdate problemNumber)
-                        , onBlur (InputBlur problemNumber)
-                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
-                        ]
-                        []
-                    , button
-                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
-                        [ text "Random" ]
-                    ]
-                , div
-                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
-                    , input
-                        [ css [ width (Css.em 3) ]
-                        , onInput P3IndexInput
-                        , onBlur P3IndexBlur
-                        , value model.p3IndexString
-                        , maxlength 3
-                        ]
-                        []
-                    , button
-                        [ css [ marginLeft (px 5) ], onClick P3RequestRandomIndex ]
-                        [ text "Random" ]
-                    ]
+                let
+                    p3IndexInput =
+                        div
+                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
+                            , input
+                                [ css [ width (Css.em 3) ]
+                                , onInput P3IndexInput
+                                , onBlur P3IndexBlur
+                                , value model.p3IndexString
+                                , maxlength 3
+                                ]
+                                []
+                            , button
+                                [ css [ marginLeft (px 5) ], onClick P3RequestRandomIndex ]
+                                [ text "Random" ]
+                            ]
+                in
+                [ basicListInput
+                , p3IndexInput
                 , label [] [ text "Indexed element is: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P3ElementAt.elementAt
-                            (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
-                            model.p3Index
-                            |> Utils.maybeToString String.fromInt
-                        )
-                    ]
+                , displayResult (Solutions.P3ElementAt.elementAt model.p3Index)
                 ]
 
             _ ->
-                [ div
-                    [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
-                    [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
-                    , input
-                        [ css [ flex (Css.int 1) ]
-                        , onInput (InputUpdate problemNumber)
-                        , onBlur (InputBlur problemNumber)
-                        , value (model.input |> Array.get problemNumber |> Maybe.withDefault "[]")
-                        ]
-                        []
-                    , button
-                        [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
-                        [ text "Random" ]
-                    ]
+                [ basicListInput
                 , label [] [ text "Result is: " ]
-                , code [ css codeStyles ]
-                    [ text "Result goes here" ]
+                , code [ css codeStyles ] [ text "Result goes here" ]
                 ]
 
 

@@ -3,8 +3,8 @@ module Solutions.P3ElementAt exposing (elementAt)
 import List
 
 
-elementAt : List a -> Int -> Maybe a
-elementAt list n =
+elementAt : Int -> List a -> Maybe a
+elementAt n list =
     if n < 1 then
         Nothing
 
