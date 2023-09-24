@@ -12,6 +12,7 @@ import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
+import Solutions.P5Reverse
 import Styles
     exposing
         ( codeStyles
@@ -272,6 +273,13 @@ problemRequirement problemNumber =
                 , text ". See if you can implement it yourself."
                 ]
 
+        5 ->
+            p []
+                [ text "Elm provides the function "
+                , code [ css codeStyles ] [ text "List.reverse" ]
+                , text " to reverse the order of elements in a list. See if you can implement it."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -346,6 +354,12 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Count: " ]
                 , displayResult Solutions.P4CountElements.countElements String.fromInt
+                ]
+
+            5 ->
+                [ basicListInput
+                , label [] [ text "Reversed list: " ]
+                , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->
