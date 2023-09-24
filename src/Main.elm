@@ -11,6 +11,7 @@ import Random
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
+import Solutions.P4CountElements
 import Styles
     exposing
         ( codeStyles
@@ -264,6 +265,13 @@ problemRequirement problemNumber =
                 , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
                 ]
 
+        4 ->
+            p []
+                [ text "Elm provides the function "
+                , code [ css codeStyles ] [ text "List.length" ]
+                , text ". See if you can implement it yourself."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -287,11 +295,11 @@ problemInteractiveArea model problemNumber =
                     [ text "Random" ]
                 ]
 
-        displayResult basicListFunc =
+        displayResult basicListFunc toString =
             code [ css codeStyles ]
                 [ text <|
                     (basicListFunc (model.inputList |> Array.get problemNumber |> Maybe.withDefault [])
-                        |> Utils.maybeToString String.fromInt
+                        |> toString
                     )
                 ]
     in
@@ -300,13 +308,13 @@ problemInteractiveArea model problemNumber =
             1 ->
                 [ basicListInput
                 , label [] [ text "Last element is: " ]
-                , displayResult Solutions.P1LastElement.last
+                , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
                 ]
 
             2 ->
                 [ basicListInput
                 , label [] [ text "Penultimate element is: " ]
-                , displayResult Solutions.P2Penultimate.penultimate
+                , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
                 ]
 
             3 ->
@@ -331,7 +339,13 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , p3IndexInput
                 , label [] [ text "Indexed element is: " ]
-                , displayResult (Solutions.P3ElementAt.elementAt model.p3Index)
+                , displayResult (Solutions.P3ElementAt.elementAt model.p3Index) (Utils.maybeToString String.fromInt)
+                ]
+
+            4 ->
+                [ basicListInput
+                , label [] [ text "Count: " ]
+                , displayResult Solutions.P4CountElements.countElements String.fromInt
                 ]
 
             _ ->
