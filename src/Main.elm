@@ -11,7 +11,17 @@ import Random
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
-import Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+import Styles
+    exposing
+        ( codeStyles
+        , headerStyles
+        , problemInteractiveAreaStyles
+        , problemListStyles
+        , problemStyles
+        , problemTitleStyles
+        , syntaxHighlightRequiredCssNode
+        , syntaxHighlightThemeCssNode
+        )
 import SyntaxHighlight
 import Utils
 
