@@ -32,6 +32,7 @@
     "elm-format": "^0.8.7",
     "elm-live": "^4.0.2",
     "elm-review": "^2.10.2",
-    "elm-test": "^0.19.1-revision12"
+    "elm-test": "^0.19.1-revision12",
+    "uglify-js": "^3.17.4"
   }
 }
