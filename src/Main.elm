@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 import Array exposing (Array)
 import Browser
 import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, marginRight, marginTop, px, width)
-import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
+import Html.Styled exposing (Html, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
@@ -19,10 +19,13 @@ import Styles
     exposing
         ( codeStyles
         , headerStyles
+        , leftContentStyles
+        , pageContainerStyles
         , problemInteractiveAreaStyles
         , problemListStyles
         , problemStyles
         , problemTitleStyles
+        , sideBarStyles
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode
         )
@@ -326,17 +329,36 @@ view model =
     { title = "99 Elm problems"
     , body =
         [ header [ css headerStyles ] []
-        , ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+        , div [ css pageContainerStyles ]
+            [ div [ css leftContentStyles ]
+                [ appIntroView
+                , ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+                ]
+            , sideBarView
+            ]
         ]
             |> List.map toUnstyled
     }
+
+
+appIntroView : Html Msg
+appIntroView =
+    div []
+        [ h1 [] [ text "99 Elm problems" ]
+        , h2 [] [ text "Sharpen your functional programming skills." ]
+        ]
+
+
+sideBarView : Html Msg
+sideBarView =
+    div [ css sideBarStyles ] []
 
 
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model problem =
     li
         [ css problemStyles ]
-        [ h2 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+        [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , problemRequirement problem.number
         , problemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number

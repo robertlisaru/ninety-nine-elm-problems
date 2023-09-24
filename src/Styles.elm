@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, leftContentStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -12,6 +12,44 @@ headerStyles =
     , paddingLeft (px 20)
     , paddingRight (px 20)
     , overflowX hidden
+    ]
+
+
+pageContainerStyles : List Style
+pageContainerStyles =
+    [ maxWidth (px 920)
+    , marginLeft auto
+    , marginRight auto
+    ]
+
+
+leftContentStyles : List Style
+leftContentStyles =
+    [ maxWidth (px 600)
+    , width (pct 75)
+    , display inlineBlock
+    , verticalAlign top
+    ]
+
+
+sideBarStyles : List Style
+sideBarStyles =
+    [ maxWidth (px 200)
+    , width (pct 25)
+    , display inlineBlock
+    , verticalAlign top
+    , padding (px 20)
+    , margin4 (px 20) (px 20) (px 20) (px 40)
+    , borderLeft3 (px 1) solid (hex "#eeeeee")
+    , minHeight (px 500)
+    ]
+
+
+problemListStyles : List Style
+problemListStyles =
+    [ listStyleType none
+    , padding (px 0)
+    , marginTop (px 25)
     ]
 
 
@@ -32,9 +70,6 @@ problemStyles =
     , borderRadius (px 5)
     , boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
     , marginBottom (px 25)
-    , maxWidth (px 775)
-    , minWidth (px 300)
-    , width (pct 80)
     , padding (px 25)
     , paddingTop (px 0)
     , backgroundColor (rgb 200 255 255)
@@ -49,20 +84,6 @@ problemInteractiveAreaStyles =
     , borderRadius (px 5)
     , padding (px 10)
     , paddingTop (px 0)
-    ]
-
-
-problemListStyles : List Style
-problemListStyles =
-    [ listStyleType none
-    , padding (px 0)
-    , marginTop (px 25)
-    , marginLeft auto
-    , marginRight auto
-    , width (pct 100)
-    , displayFlex
-    , flexDirection column
-    , alignItems center
     ]
 
 
