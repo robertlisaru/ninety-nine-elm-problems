@@ -1,6 +1,7 @@
-module Utils exposing (boolToString, displayIf, listToString, maybeToString)
+module Utils exposing (boolToString, displayIf, listToString, maybeToString, nestedListToString)
 
 import Html.Styled exposing (Html, text)
+import Solutions.P7FlattenNestedList exposing (NestedList(..))
 
 
 listToString : (a -> String) -> String -> List a -> String
@@ -29,3 +30,13 @@ boolToString b =
 
     else
         "False"
+
+
+nestedListToString : Solutions.P7FlattenNestedList.NestedList Int -> String
+nestedListToString nl =
+    case nl of
+        Elem a ->
+            String.fromInt a
+
+        SubList list ->
+            list |> listToString nestedListToString ", "

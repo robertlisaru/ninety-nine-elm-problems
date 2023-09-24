@@ -6,7 +6,7 @@ import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, mar
 import Html.Styled exposing (Html, button, code, div, fromUnstyled, h2, header, input, label, li, p, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
-import Json.Decode
+import Json.Decode as Decode exposing (Decoder)
 import Random
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
@@ -14,6 +14,7 @@ import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
+import Solutions.P7FlattenNestedList exposing (NestedList(..))
 import Styles
     exposing
         ( codeStyles
@@ -50,6 +51,14 @@ init flags =
             Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
                 |> Array.set 4 [ 1, 2, 3, 4, 5 ]
                 |> Array.set 6 [ 1, 2, 3, 4, 5, 4, 3, 2, 1 ]
+
+        p7nestedList =
+            SubList
+                [ Elem 1
+                , SubList [ SubList [ Elem 2, SubList [ Elem 3, Elem 4 ] ], Elem 5 ]
+                , Elem 6
+                , SubList [ Elem 7, Elem 8, Elem 9 ]
+                ]
     in
     ( { inputLists = inputLists
       , problems = initProblems
@@ -58,6 +67,8 @@ init flags =
       , solutionsCode = flags
       , p3Index = 7
       , p3IndexString = "7"
+      , p7nestedList = p7nestedList
+      , p7inputString = p7nestedList |> Utils.nestedListToString
       }
     , requestRandomListCmd 3
     )
@@ -108,6 +119,8 @@ type alias Model =
     , solutionsCode : Array String
     , p3Index : Int
     , p3IndexString : String
+    , p7nestedList : Solutions.P7FlattenNestedList.NestedList Int
+    , p7inputString : String
     }
 
 
@@ -125,6 +138,10 @@ type Msg
     | P3RandomIndexReady Int
     | P3IndexInput String
     | P3IndexBlur
+    | P7InputUpdate String
+    | P7InputBlur
+    | P7RequestRandomNestedList
+    | P7RandomNestedListReady (NestedList Int)
 
 
 requestRandomListCmd : Int -> Cmd Msg
@@ -149,7 +166,7 @@ update msg model =
         InputUpdate problemNumber input ->
             let
                 decodeResult =
-                    Json.Decode.decodeString (Json.Decode.list Json.Decode.int) input
+                    Decode.decodeString (Decode.list Decode.int) input
 
                 newList =
                     case decodeResult of
@@ -199,7 +216,7 @@ update msg model =
         P3IndexInput input ->
             let
                 decodeResult =
-                    Json.Decode.decodeString Json.Decode.int input
+                    Decode.decodeString Decode.int input
 
                 newIndex =
                     case decodeResult of
@@ -220,6 +237,112 @@ update msg model =
             ( { model | p3IndexString = model.p3Index |> String.fromInt }
             , Cmd.none
             )
+
+        P7InputUpdate input ->
+            let
+                decodeResult =
+                    Decode.decodeString nestedListDecoder input
+
+                newNestedList =
+                    case decodeResult of
+                        Result.Ok nestedList ->
+                            nestedList
+
+                        Err _ ->
+                            model.p7nestedList
+            in
+            ( { model
+                | p7inputString = input
+                , p7nestedList = newNestedList
+              }
+            , Cmd.none
+            )
+
+        P7InputBlur ->
+            ( { model | p7inputString = model.p7nestedList |> Utils.nestedListToString }
+            , Cmd.none
+            )
+
+        P7RequestRandomNestedList ->
+            ( model
+            , Random.generate P7RandomNestedListReady (randomNestedListGenerator 1.0)
+            )
+
+        P7RandomNestedListReady nestedList ->
+            ( { model
+                | p7nestedList = nestedList
+                , p7inputString = nestedList |> Utils.nestedListToString
+              }
+            , Cmd.none
+            )
+
+
+randomNestedListGenerator : Float -> Random.Generator (NestedList Int)
+randomNestedListGenerator initialSubListProbability =
+    let
+        clampedSubListProbability =
+            if initialSubListProbability < 0 then
+                0.0
+
+            else if initialSubListProbability > 1.0 then
+                1.0
+
+            else
+                initialSubListProbability
+
+        maxSubListLength =
+            3
+    in
+    Random.weighted ( clampedSubListProbability, True ) [ ( 1 - clampedSubListProbability, False ) ]
+        |> Random.andThen
+            (\generateSubList ->
+                if generateSubList then
+                    Random.int 1 maxSubListLength
+                        |> Random.andThen
+                            (\n ->
+                                Random.list n (Random.lazy (\_ -> randomNestedListGenerator (clampedSubListProbability / 2)))
+                                    |> Random.map SubList
+                            )
+
+                else
+                    Random.int 1 100 |> Random.map Elem
+            )
+
+
+nestedListDecoder : Decoder (NestedList Int)
+nestedListDecoder =
+    Decode.oneOf
+        [ Decode.int |> Decode.map Elem
+        , Decode.list
+            (Decode.oneOf
+                [ Decode.int |> Decode.map Elem
+                , Decode.list
+                    (Decode.oneOf
+                        [ Decode.int |> Decode.map Elem
+                        , Decode.list
+                            (Decode.oneOf
+                                [ Decode.int |> Decode.map Elem
+                                , Decode.list
+                                    (Decode.oneOf
+                                        [ Decode.int |> Decode.map Elem
+                                        , Decode.list
+                                            (Decode.oneOf
+                                                [ Decode.int |> Decode.map Elem ]
+                                            )
+                                            |> Decode.map SubList
+                                        ]
+                                    )
+                                    |> Decode.map SubList
+                                ]
+                            )
+                            |> Decode.map SubList
+                        ]
+                    )
+                    |> Decode.map SubList
+                ]
+            )
+            |> Decode.map SubList
+        ]
 
 
 
@@ -295,6 +418,12 @@ problemRequirement problemNumber =
         6 ->
             p []
                 [ text "Determine if a list is a palindrome, that is, the list is identical when read forward or backward." ]
+
+        7 ->
+            p []
+                [ text "Flatten a nested lists into a single list. Because Lists in Elm are homogeneous we need to define what a nested list is."
+                , p [] [ code [ css codeStyles ] [ text "type NestedList a = Elem a | List [NestedList a]" ] ]
+                ]
 
         _ ->
             p [] [ text "Problem requirement here" ]
@@ -382,6 +511,30 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Is palindrome: " ]
                 , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
+                ]
+
+            7 ->
+                let
+                    nestedListInput =
+                        div
+                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
+                            , input
+                                [ css [ flex (Css.int 1) ]
+                                , onInput P7InputUpdate
+                                , onBlur P7InputBlur
+                                , value model.p7inputString
+                                ]
+                                []
+                            , button
+                                [ css [ marginLeft (px 5) ], onClick P7RequestRandomNestedList ]
+                                [ text "Random" ]
+                            ]
+                in
+                [ nestedListInput
+                , label [] [ text "Flattened list: " ]
+                , code [ css codeStyles ]
+                    [ text <| (Solutions.P7FlattenNestedList.flatten model.p7nestedList |> Utils.listToString String.fromInt ", ") ]
                 ]
 
             _ ->
