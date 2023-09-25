@@ -2,8 +2,8 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (alignItems, auto, block, center, color, display, displayFlex, flex, fontSize, fontWeight, hex, hover, listStyleType, margin, margin2, margin4, marginLeft, marginRight, marginTop, maxWidth, none, normal, padding, px, textDecoration, underline, width)
-import Html.Styled exposing (Html, a, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, p, span, text, toUnstyled, ul)
+import Css exposing (alignItems, auto, block, center, color, display, displayFlex, em, flex, fontSize, fontWeight, height, hex, hover, lineHeight, listStyleType, margin, margin2, margin4, marginBottom, marginLeft, marginRight, marginTop, maxWidth, none, normal, padding, paddingLeft, pct, px, textDecoration, underline, width)
+import Html.Styled exposing (Html, a, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, p, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
@@ -25,10 +25,12 @@ import Styles
         , problemListStyles
         , problemStyles
         , problemTitleStyles
+        , searchBarStyles
         , sideBarStyles
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode
         )
+import SvgItems
 import SyntaxHighlight
 import Utils
 
@@ -329,23 +331,16 @@ view model =
     { title = "99 Elm problems"
     , body =
         [ header [ css headerStyles ]
-            [ div
+            [ nav
                 [ css
                     [ maxWidth (px 920)
                     , displayFlex
                     , alignItems center
                     , margin2 (px 0) auto
+                    , height (pct 100)
                     ]
                 ]
-                [ a
-                    [ css
-                        [ textDecoration Css.none
-                        , marginRight (px 32)
-                        , displayFlex
-                        , alignItems center
-                        ]
-                    ]
-                    [ text "LOGO" ]
+                [ logoView
                 , h1
                     [ css
                         [ fontSize (px 24)
@@ -354,13 +349,13 @@ view model =
                         ]
                     ]
                     [ a
-                        [ css [ textDecoration Css.none, hover [ textDecoration underline ] ]
+                        [ css [ textDecoration Css.none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
                         , href "https://github.com/robertlisaru"
                         ]
                         [ text "robertlisaru" ]
                     , span [ css [ margin2 (px 0) (px 10) ] ] [ text "/" ]
                     , a
-                        [ css [ textDecoration Css.none, hover [ textDecoration underline ] ]
+                        [ css [ textDecoration Css.none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
                         , href "https://github.com/robertlisaru/ninety-nine-elm-problems"
                         ]
                         [ text "ninety-nine-elm-problems" ]
@@ -379,25 +374,43 @@ view model =
     }
 
 
+logoView : Html Msg
+logoView =
+    a
+        [ css
+            [ textDecoration Css.none
+            , marginRight (px 32)
+            , displayFlex
+            , alignItems center
+            ]
+        ]
+        [ SvgItems.elmLogo
+        , div [ css [ paddingLeft (px 8), color (hex "#ffffff") ] ]
+            [ div [ css [ lineHeight (px 24), fontSize (px 30) ] ] [ text "elm" ]
+            , div [ css [ fontSize (px 12) ] ] [ text "99 problems" ]
+            ]
+        ]
+
+
 appIntroView : Html Msg
 appIntroView =
     div []
-        [ h1 [] [ text "99 Elm problems" ]
-        , h2 [] [ text "Sharpen your functional programming skills." ]
+        [ h1 [ css [ fontSize (em 3), marginBottom (px 0), fontWeight normal ] ] [ text "99 Elm problems" ]
+        , h2 [ css [ fontSize (px 16), marginTop (px 0), marginBottom (px 50), lineHeight (em 1.5), fontWeight normal ] ] [ text "Sharpen your functional programming skills." ]
         ]
 
 
 sideBarView : Html Msg
 sideBarView =
     div [ css sideBarStyles ]
-        [ ul [ css [ listStyleType none, margin (px 0), padding (px 0) ] ]
-            [ li [] [ text "README" ]
+        [ ul [ css [ listStyleType none, margin (px 0), padding (px 0), color (hex "#1293D8"), fontSize (px 16), lineHeight (em 1.5) ] ]
+            [ li [] [ a [] [ text "README" ] ]
             , li [] [ text "About" ]
             , li [] [ text "Source" ]
             ]
-        , h2 [] [ text "Problems" ]
-        , input [ placeholder "Search" ] []
-        , ul [ css [ listStyleType none, margin (px 0), padding (px 0) ] ]
+        , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
+        , input [ placeholder "Search", css searchBarStyles ] []
+        , ul [ css [ listStyleType none, margin (px 0), padding (px 0), color (hex "#1293D8"), fontSize (px 16), lineHeight (em 1.5) ] ]
             [ li [] [ text "1. Last element" ]
             , li [] [ text "2. Penultimate" ]
             , li [] [ text "3. Element at" ]

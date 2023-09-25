@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, leftContentStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, leftContentStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -46,6 +46,16 @@ sideBarStyles =
     ]
 
 
+searchBarStyles : List Style
+searchBarStyles =
+    [ fontSize (em 1)
+    , padding (px 4)
+    , margin2 (px 10) (px 0)
+    , border3 (px 1) solid (hex "#eeeeee")
+    , borderRadius (px 6)
+    ]
+
+
 problemListStyles : List Style
 problemListStyles =
     [ listStyleType none
@@ -68,9 +78,9 @@ problemStyles =
     [ borderWidth (px 1)
     , borderStyle solid
     , borderColor (rgb 150 150 150)
-    , borderRadius (px 5)
+    , borderRadius (px 6)
     , boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
-    , marginBottom (px 25)
+    , marginBottom (px 50)
     , padding (px 25)
     , paddingTop (px 0)
     , backgroundColor (rgb 200 255 255)
@@ -82,7 +92,7 @@ problemInteractiveAreaStyles =
     [ borderWidth (px 1)
     , borderStyle solid
     , borderColor (rgb 150 150 150)
-    , borderRadius (px 5)
+    , borderRadius (px 6)
     , padding (px 10)
     , paddingTop (px 0)
     ]
@@ -118,7 +128,7 @@ pre.elmsh {
   margin: 0;
   text-align: left;
   overflow: auto;
-  border-radius: 5px;
+  border-radius: 6px;
   background-color: #ffffff;
 }
 
