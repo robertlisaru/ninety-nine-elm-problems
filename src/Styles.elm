@@ -108,8 +108,8 @@ problemStyles =
     , borderColor (hex "#f5f5f5")
     , borderRadius (px 6)
     , hover
-        [ boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
-        , borderColor (hex "#9c9c9c")
+        [ boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.1)
+        , borderColor (hex "#e0e0e0")
         ]
     , marginBottom (px 50)
     , padding (px 25)
