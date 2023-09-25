@@ -2,7 +2,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (alignItems, auto, block, center, color, display, displayFlex, em, flex, fontSize, fontWeight, height, hex, hover, lineHeight, listStyleType, margin, margin2, margin4, marginBottom, marginLeft, marginRight, marginTop, maxWidth, none, normal, padding, paddingLeft, pct, px, textDecoration, underline, width)
+import Css exposing (alignItems, auto, block, center, color, display, displayFlex, em, flex, fontSize, fontWeight, height, hex, hover, lineHeight, margin2, margin4, marginBottom, marginLeft, marginRight, marginTop, maxWidth, normal, paddingLeft, pct, px, textDecoration, underline, width)
 import Html.Styled exposing (Html, a, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, p, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
@@ -20,12 +20,14 @@ import Styles
         ( codeStyles
         , headerStyles
         , leftContentStyles
+        , linkStyles
         , pageContainerStyles
         , problemInteractiveAreaStyles
         , problemListStyles
         , problemStyles
         , problemTitleStyles
         , searchBarStyles
+        , sideBarItemListStyles
         , sideBarStyles
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode
@@ -402,19 +404,24 @@ appIntroView =
 
 sideBarView : Html Msg
 sideBarView =
+    let
+        linkItem url label =
+            li [] [ a [ href url, css linkStyles ] [ text label ] ]
+    in
     div [ css sideBarStyles ]
-        [ ul [ css [ listStyleType none, margin (px 0), padding (px 0), color (hex "#1293D8"), fontSize (px 16), lineHeight (em 1.5) ] ]
-            [ li [] [ a [] [ text "README" ] ]
-            , li [] [ text "About" ]
-            , li [] [ text "Source" ]
+        [ ul [ css sideBarItemListStyles ]
+            [ linkItem "" "README"
+            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
+            , linkItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "Source"
             ]
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
-        , input [ placeholder "Search", css searchBarStyles ] []
-        , ul [ css [ listStyleType none, margin (px 0), padding (px 0), color (hex "#1293D8"), fontSize (px 16), lineHeight (em 1.5) ] ]
+        , input [ placeholder "Search unimplemented", css searchBarStyles ] []
+        , ul [ css sideBarItemListStyles ]
             [ li [] [ text "1. Last element" ]
             , li [] [ text "2. Penultimate" ]
             , li [] [ text "3. Element at" ]
             , li [] [ text "4. Count elements" ]
+            , li [] [ text "..." ]
             ]
         ]
 

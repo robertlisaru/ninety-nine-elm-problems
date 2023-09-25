@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, leftContentStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, leftContentStyles, linkStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarItemListStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -101,6 +101,30 @@ problemInteractiveAreaStyles =
 codeStyles : List Style
 codeStyles =
     [ Css.backgroundColor (Css.hex "#f6f8fa"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ]
+
+
+linkStyles : List Style
+linkStyles =
+    [ textDecoration none
+    , color (hex "#1293D8")
+    , hover
+        [ textDecoration underline ]
+    ]
+
+
+sideBarItemListStyles : List Style
+sideBarItemListStyles =
+    [ listStyleType none
+    , margin (px 0)
+    , padding (px 0)
+    , color (hex "#1293D8")
+    , fontSize (px 16)
+    , lineHeight (em 1.5)
+    ]
+
+
+
+-- SYNTAX HIGHLIGHT
 
 
 syntaxHighlightRequiredCssNode : Html.Styled.Html msg
