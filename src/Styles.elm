@@ -87,13 +87,15 @@ problemStyles : List Style
 problemStyles =
     [ borderWidth (px 1)
     , borderStyle solid
-    , borderColor (rgb 150 150 150)
+    , borderColor (hex "#f5f5f5")
     , borderRadius (px 6)
-    , boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
+    , hover
+        [ boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.5)
+        , borderColor (hex "#9c9c9c")
+        ]
     , marginBottom (px 50)
     , padding (px 25)
     , paddingTop (px 0)
-    , backgroundColor (rgb 200 255 255)
     ]
 
 
@@ -105,6 +107,7 @@ problemInteractiveAreaStyles =
     , borderRadius (px 6)
     , padding (px 10)
     , paddingTop (px 0)
+    , backgroundColor (hex "#fdfdfd")
     ]
 
 
