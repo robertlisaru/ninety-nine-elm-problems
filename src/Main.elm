@@ -2,38 +2,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css
-    exposing
-        ( alignItems
-        , auto
-        , block
-        , center
-        , color
-        , display
-        , displayFlex
-        , em
-        , flex
-        , fontSize
-        , fontWeight
-        , height
-        , hex
-        , hover
-        , lineHeight
-        , margin2
-        , margin4
-        , marginBottom
-        , marginLeft
-        , marginRight
-        , marginTop
-        , maxWidth
-        , normal
-        , paddingLeft
-        , pct
-        , px
-        , textDecoration
-        , underline
-        , width
-        )
+import Css exposing (..)
 import Html.Styled
     exposing
         ( Html
@@ -73,6 +42,7 @@ import Styles
         , headerStyles
         , leftContentStyles
         , linkStyles
+        , navStyles
         , pageContainerStyles
         , problemInteractiveAreaStyles
         , problemListStyles
@@ -384,38 +354,7 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "99 Elm problems"
     , body =
-        [ header [ css headerStyles ]
-            [ nav
-                [ css
-                    [ maxWidth (px 920)
-                    , displayFlex
-                    , alignItems center
-                    , margin2 (px 0) auto
-                    , height (pct 100)
-                    ]
-                ]
-                [ logoView
-                , h1
-                    [ css
-                        [ fontSize (px 24)
-                        , fontWeight normal
-                        , color (hex "#ffffff")
-                        ]
-                    ]
-                    [ a
-                        [ css [ textDecoration Css.none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
-                        , href "https://github.com/robertlisaru"
-                        ]
-                        [ text "robertlisaru" ]
-                    , span [ css [ margin2 (px 0) (px 10) ] ] [ text "/" ]
-                    , a
-                        [ css [ textDecoration Css.none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
-                        , href "https://github.com/robertlisaru/ninety-nine-elm-problems"
-                        ]
-                        [ text "ninety-nine-elm-problems" ]
-                    ]
-                ]
-            ]
+        [ header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
@@ -428,11 +367,31 @@ view model =
     }
 
 
+navView : Html Msg
+navView =
+    let
+        navItem url label =
+            a
+                [ css [ textDecoration none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
+                , href url
+                ]
+                [ text label ]
+    in
+    nav [ css navStyles ]
+        [ logoView
+        , h1 [ css [ fontSize (px 24), fontWeight normal, color (hex "#ffffff") ] ]
+            [ navItem "https://github.com/robertlisaru" "robertlisaru"
+            , span [ css [ margin2 (px 0) (px 10) ] ] [ text "/" ]
+            , navItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "ninety-nine-elm-problems"
+            ]
+        ]
+
+
 logoView : Html Msg
 logoView =
     a
         [ css
-            [ textDecoration Css.none
+            [ textDecoration none
             , marginRight (px 32)
             , displayFlex
             , alignItems center
@@ -555,7 +514,7 @@ problemInteractiveArea model problemNumber =
                 [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
                 [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                 , input
-                    [ css [ flex (Css.int 1) ]
+                    [ css [ flex (int 1) ]
                     , onInput (InputUpdate problemNumber)
                     , onBlur (InputBlur problemNumber)
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
@@ -595,7 +554,7 @@ problemInteractiveArea model problemNumber =
                             [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
                             [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
                             , input
-                                [ css [ width (Css.em 3) ]
+                                [ css [ width (em 3) ]
                                 , onInput P3IndexInput
                                 , onBlur P3IndexBlur
                                 , value model.p3IndexString
@@ -638,7 +597,7 @@ problemInteractiveArea model problemNumber =
                             [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
                             [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
                             , input
-                                [ css [ flex (Css.int 1) ]
+                                [ css [ flex (int 1) ]
                                 , onInput P7InputUpdate
                                 , onBlur P7InputBlur
                                 , value model.p7inputString

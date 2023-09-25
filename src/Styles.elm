@@ -1,4 +1,4 @@
-module Styles exposing (codeStyles, headerStyles, leftContentStyles, linkStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarItemListStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing (codeStyles, headerStyles, leftContentStyles, linkStyles, navStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarItemListStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -13,6 +13,16 @@ headerStyles =
     , paddingLeft (px 20)
     , paddingRight (px 20)
     , overflowX hidden
+    ]
+
+
+navStyles : List Style
+navStyles =
+    [ maxWidth (px 920)
+    , displayFlex
+    , alignItems center
+    , margin2 (px 0) auto
+    , height (pct 100)
     ]
 
 
