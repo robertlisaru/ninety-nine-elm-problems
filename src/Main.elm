@@ -175,7 +175,10 @@ type Msg
 
 requestRandomListCmd : Int -> Cmd Msg
 requestRandomListCmd problemNumber =
-    Random.generate (RandomListReady problemNumber) (Random.int 0 10 |> Random.andThen (\n -> Random.list n (Random.int 1 100)))
+    Random.generate (RandomListReady problemNumber)
+        (Random.int 0 10
+            |> Random.andThen (\n -> Random.list n (Random.int 1 100))
+        )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -187,7 +190,10 @@ update msg model =
         RandomListReady problemNumber randomList ->
             ( { model
                 | inputLists = model.inputLists |> Array.set problemNumber randomList
-                , inputStrings = model.inputStrings |> Array.set problemNumber (randomList |> Utils.listToString String.fromInt ", ")
+                , inputStrings =
+                    model.inputStrings
+                        |> Array.set problemNumber
+                            (randomList |> Utils.listToString String.fromInt ", ")
               }
             , Cmd.none
             )
@@ -309,7 +315,7 @@ update msg model =
 randomNestedListGenerator : Float -> Random.Generator (NestedList Int)
 randomNestedListGenerator initialSubListProbability =
     let
-        clampedSubListProbability =
+        clampedProbability =
             if initialSubListProbability < 0 then
                 0.0
 
@@ -321,20 +327,32 @@ randomNestedListGenerator initialSubListProbability =
 
         maxSubListLength =
             3
+
+        sometimesTrue =
+            Random.weighted ( clampedProbability, True ) [ ( 1 - clampedProbability, False ) ]
+
+        randomLength =
+            Random.int 1 maxSubListLength
+
+        randomSubList =
+            randomLength
+                |> Random.andThen randomSubListOfLength
+                |> Random.map SubList
+
+        randomSubListOfLength length =
+            Random.list length (Random.lazy (\_ -> randomNestedListGenerator (clampedProbability / 2)))
+
+        randomElem =
+            Random.int 1 100 |> Random.map Elem
     in
-    Random.weighted ( clampedSubListProbability, True ) [ ( 1 - clampedSubListProbability, False ) ]
+    sometimesTrue
         |> Random.andThen
-            (\generateSubList ->
-                if generateSubList then
-                    Random.int 1 maxSubListLength
-                        |> Random.andThen
-                            (\n ->
-                                Random.list n (Random.lazy (\_ -> randomNestedListGenerator (clampedSubListProbability / 2)))
-                                    |> Random.map SubList
-                            )
+            (\isTrue ->
+                if isTrue then
+                    randomSubList
 
                 else
-                    Random.int 1 100 |> Random.map Elem
+                    randomElem
             )
 
 
@@ -409,7 +427,8 @@ appIntroView : Html Msg
 appIntroView =
     div []
         [ h1 [ css [ fontSize (em 3), marginBottom (px 0), fontWeight normal ] ] [ text "99 Elm problems" ]
-        , h2 [ css [ fontSize (px 16), marginTop (px 0), marginBottom (px 50), lineHeight (em 1.5), fontWeight normal ] ] [ text "Sharpen your functional programming skills." ]
+        , h2 [ css [ fontSize (px 16), marginTop (px 0), marginBottom (px 50), lineHeight (em 1.5), fontWeight normal ] ]
+            [ text "Sharpen your functional programming skills." ]
         ]
 
 
@@ -611,7 +630,11 @@ problemInteractiveArea model problemNumber =
                 [ nestedListInput
                 , label [] [ text "Flattened list: " ]
                 , code [ css codeStyles ]
-                    [ text <| (Solutions.P7FlattenNestedList.flatten model.p7nestedList |> Utils.listToString String.fromInt ", ") ]
+                    [ text <|
+                        (Solutions.P7FlattenNestedList.flatten model.p7nestedList
+                            |> Utils.listToString String.fromInt ", "
+                        )
+                    ]
                 ]
 
             _ ->
