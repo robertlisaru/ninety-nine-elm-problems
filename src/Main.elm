@@ -2,8 +2,60 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (alignItems, auto, block, center, color, display, displayFlex, em, flex, fontSize, fontWeight, height, hex, hover, lineHeight, margin2, margin4, marginBottom, marginLeft, marginRight, marginTop, maxWidth, normal, paddingLeft, pct, px, textDecoration, underline, width)
-import Html.Styled exposing (Html, a, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, p, span, text, toUnstyled, ul)
+import Css
+    exposing
+        ( alignItems
+        , auto
+        , block
+        , center
+        , color
+        , display
+        , displayFlex
+        , em
+        , flex
+        , fontSize
+        , fontWeight
+        , height
+        , hex
+        , hover
+        , lineHeight
+        , margin2
+        , margin4
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , marginTop
+        , maxWidth
+        , normal
+        , paddingLeft
+        , pct
+        , px
+        , textDecoration
+        , underline
+        , width
+        )
+import Html.Styled
+    exposing
+        ( Html
+        , a
+        , button
+        , code
+        , div
+        , fromUnstyled
+        , h1
+        , h2
+        , h3
+        , header
+        , input
+        , label
+        , li
+        , nav
+        , p
+        , span
+        , text
+        , toUnstyled
+        , ul
+        )
 import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
