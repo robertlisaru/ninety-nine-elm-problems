@@ -450,7 +450,7 @@ sideBarView =
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Credits" ]
         , ul [ css sideBarItemListStyles ]
             [ linkItem "https://github.com/evancz" "Elm was created by Evan Czaplicki"
-            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The problems are adapted to Elm in a gitbook by johncrane"
+            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The 99 problems are adapted to Elm in a gitbook by johncrane"
             , linkItem "https://package.elm-lang.org/" "This page layout is inspired by the official Elm Packages website"
             , linkItem "https://elm-lang.org/" "Visit the official Elm Website"
             ]
