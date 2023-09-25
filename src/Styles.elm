@@ -8,6 +8,7 @@ headerStyles : List Style
 headerStyles =
     [ height (px 64)
     , backgroundColor (hex "#5FABDC")
+    , color (hex "#ffffff")
     , width (calc (pct 100) minus (px 40))
     , paddingLeft (px 20)
     , paddingRight (px 20)

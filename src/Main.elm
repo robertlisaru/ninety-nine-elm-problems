@@ -2,9 +2,9 @@ module Main exposing (Model, Msg(..), Problem, main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (block, display, displayFlex, flex, margin4, marginLeft, marginRight, marginTop, px, width)
-import Html.Styled exposing (Html, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, p, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, maxlength, value)
+import Css exposing (alignItems, auto, block, center, color, display, displayFlex, flex, fontSize, fontWeight, hex, hover, listStyleType, margin, margin2, margin4, marginLeft, marginRight, marginTop, maxWidth, none, normal, padding, px, textDecoration, underline, width)
+import Html.Styled exposing (Html, a, button, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, p, span, text, toUnstyled, ul)
+import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
 import Random
@@ -328,7 +328,45 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "99 Elm problems"
     , body =
-        [ header [ css headerStyles ] []
+        [ header [ css headerStyles ]
+            [ div
+                [ css
+                    [ maxWidth (px 920)
+                    , displayFlex
+                    , alignItems center
+                    , margin2 (px 0) auto
+                    ]
+                ]
+                [ a
+                    [ css
+                        [ textDecoration Css.none
+                        , marginRight (px 32)
+                        , displayFlex
+                        , alignItems center
+                        ]
+                    ]
+                    [ text "LOGO" ]
+                , h1
+                    [ css
+                        [ fontSize (px 24)
+                        , fontWeight normal
+                        , color (hex "#ffffff")
+                        ]
+                    ]
+                    [ a
+                        [ css [ textDecoration Css.none, hover [ textDecoration underline ] ]
+                        , href "https://github.com/robertlisaru"
+                        ]
+                        [ text "robertlisaru" ]
+                    , span [ css [ margin2 (px 0) (px 10) ] ] [ text "/" ]
+                    , a
+                        [ css [ textDecoration Css.none, hover [ textDecoration underline ] ]
+                        , href "https://github.com/robertlisaru/ninety-nine-elm-problems"
+                        ]
+                        [ text "ninety-nine-elm-problems" ]
+                    ]
+                ]
+            ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
@@ -351,7 +389,21 @@ appIntroView =
 
 sideBarView : Html Msg
 sideBarView =
-    div [ css sideBarStyles ] []
+    div [ css sideBarStyles ]
+        [ ul [ css [ listStyleType none, margin (px 0), padding (px 0) ] ]
+            [ li [] [ text "README" ]
+            , li [] [ text "About" ]
+            , li [] [ text "Source" ]
+            ]
+        , h2 [] [ text "Problems" ]
+        , input [ placeholder "Search" ] []
+        , ul [ css [ listStyleType none, margin (px 0), padding (px 0) ] ]
+            [ li [] [ text "1. Last element" ]
+            , li [] [ text "2. Penultimate" ]
+            , li [] [ text "3. Element at" ]
+            , li [] [ text "4. Count elements" ]
+            ]
+        ]
 
 
 viewProblem : Model -> Problem -> Html Msg
