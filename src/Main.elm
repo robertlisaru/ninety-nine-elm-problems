@@ -38,7 +38,9 @@ import Solutions.P6IsPalindrome
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 import Styles
     exposing
-        ( codeStyles
+        ( buttonStyles
+        , codeStyles
+        , genericStylesNode
         , headerStyles
         , leftContentStyles
         , linkStyles
@@ -372,7 +374,8 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "99 Elm problems"
     , body =
-        [ header [ css headerStyles ] [ navView ]
+        [ genericStylesNode
+        , header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
@@ -535,20 +538,28 @@ problemRequirement problemNumber =
 problemInteractiveArea : Model -> Int -> Html Msg
 problemInteractiveArea model problemNumber =
     let
+        listInputAreaStyles =
+            [ displayFlex
+            , marginBottom (px 15)
+            , height (px 32)
+            , alignItems center
+            ]
+
+        listInputStyles =
+            [ flex (int 1), marginRight (px 8) ]
+
         basicListInput =
             div
-                [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                [ css listInputAreaStyles ]
                 [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                 , input
-                    [ css [ flex (int 1) ]
+                    [ css listInputStyles
                     , onInput (InputUpdate problemNumber)
                     , onBlur (InputBlur problemNumber)
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
-                , button
-                    [ css [ marginLeft (px 5) ], onClick (RequestRandomList problemNumber) ]
-                    [ text "Random" ]
+                , niceButton SvgItems.dice "Random" (RequestRandomList problemNumber)
                 ]
 
         displayResult basicListFunc toString =
@@ -577,19 +588,17 @@ problemInteractiveArea model problemNumber =
                 let
                     p3IndexInput =
                         div
-                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
                             [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
                             , input
-                                [ css [ width (em 3) ]
+                                [ css [ width (em 3), marginRight (px 8) ]
                                 , onInput P3IndexInput
                                 , onBlur P3IndexBlur
                                 , value model.p3IndexString
                                 , maxlength 3
                                 ]
                                 []
-                            , button
-                                [ css [ marginLeft (px 5) ], onClick P3RequestRandomIndex ]
-                                [ text "Random" ]
+                            , niceButton SvgItems.dice "Random" P3RequestRandomIndex
                             ]
                 in
                 [ basicListInput
@@ -620,18 +629,16 @@ problemInteractiveArea model problemNumber =
                 let
                     nestedListInput =
                         div
-                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0) ] ]
+                            [ css listInputAreaStyles ]
                             [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
                             , input
-                                [ css [ flex (int 1) ]
+                                [ css listInputStyles
                                 , onInput P7InputUpdate
                                 , onBlur P7InputBlur
                                 , value model.p7inputString
                                 ]
                                 []
-                            , button
-                                [ css [ marginLeft (px 5) ], onClick P7RequestRandomNestedList ]
-                                [ text "Random" ]
+                            , niceButton SvgItems.dice "Random" P7RequestRandomNestedList
                             ]
                 in
                 [ nestedListInput
@@ -651,15 +658,31 @@ problemInteractiveArea model problemNumber =
                 ]
 
 
-viewCodeButton : Array Bool -> Int -> Html Msg
-viewCodeButton showCode problemNumber =
-    button [ css [ display block, marginTop (px 15) ], onClick (ShowCodeToggle problemNumber) ]
-        [ if showCode |> Array.get problemNumber |> Maybe.withDefault False then
-            text "Hide code"
+niceButton : Html msg -> String -> msg -> Html msg
+niceButton icon label onClickMsg =
+    button
+        [ css buttonStyles, onClick onClickMsg ]
+        [ icon
+        , if label /= "" then
+            span
+                [ css [ marginLeft (em 0.2) ] ]
+                [ text label ]
 
           else
-            text "Show code (spoiler)"
+            text ""
         ]
+
+
+viewCodeButton : Array Bool -> Int -> Html Msg
+viewCodeButton showCode problemNumber =
+    niceButton SvgItems.elmColoredLogo
+        (if showCode |> Array.get problemNumber |> Maybe.withDefault False then
+            "Hide code"
+
+         else
+            "Show code (spoiler)"
+        )
+        (ShowCodeToggle problemNumber)
 
 
 viewCode : Array String -> Int -> Html Msg

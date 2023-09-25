@@ -1,4 +1,22 @@
-module Styles exposing (codeStyles, headerStyles, leftContentStyles, linkStyles, navStyles, pageContainerStyles, problemInteractiveAreaStyles, problemListStyles, problemStyles, problemTitleStyles, searchBarStyles, sideBarItemListStyles, sideBarStyles, syntaxHighlightRequiredCssNode, syntaxHighlightThemeCssNode)
+module Styles exposing
+    ( buttonStyles
+    , codeStyles
+    , genericStylesNode
+    , headerStyles
+    , leftContentStyles
+    , linkStyles
+    , navStyles
+    , pageContainerStyles
+    , problemInteractiveAreaStyles
+    , problemListStyles
+    , problemStyles
+    , problemTitleStyles
+    , searchBarStyles
+    , sideBarItemListStyles
+    , sideBarStyles
+    , syntaxHighlightRequiredCssNode
+    , syntaxHighlightThemeCssNode
+    )
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
@@ -103,11 +121,11 @@ problemInteractiveAreaStyles : List Style
 problemInteractiveAreaStyles =
     [ borderWidth (px 1)
     , borderStyle solid
-    , borderColor (rgb 150 150 150)
+    , borderColor (hex "#f5f5f5")
     , borderRadius (px 6)
     , padding (px 10)
-    , paddingTop (px 0)
     , backgroundColor (hex "#fdfdfd")
+    , marginBottom (px 15)
     ]
 
 
@@ -122,6 +140,25 @@ linkStyles =
     , color (hex "#1293D8")
     , hover
         [ textDecoration underline ]
+    ]
+
+
+buttonStyles : List Style
+buttonStyles =
+    [ backgroundColor inherit
+    , color (hex "#596277")
+    , border (px 0)
+    , padding (px 0)
+    , fontFamily inherit
+    , fontSize inherit
+    , cursor pointer
+    , outline inherit
+    , displayFlex
+    , alignItems center
+    , hover
+        [ color (hex "#8CD636")
+        , textDecoration underline
+        ]
     ]
 
 
@@ -236,5 +273,31 @@ syntaxHighlightThemeRawCss =
 .elmsh-css-ar-i {
     font-weight: bold;
     color: #f92672;
+}
+"""
+
+
+
+-- GENERIC STYLES
+
+
+genericStylesNode : Html.Styled.Html msg
+genericStylesNode =
+    node "style" [] [ text genericRawCss ]
+
+
+genericRawCss : String
+genericRawCss =
+    """
+input {
+    padding: 4px;
+    border: 1px solid #eeeeee;
+    border-radius: 6px;
+}
+
+input:focus {
+    outline-color: #a6e22e;
+    outline-style: solid;
+    outline-width: 1px;
 }
 """
