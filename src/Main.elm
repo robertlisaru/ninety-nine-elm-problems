@@ -177,10 +177,15 @@ type Msg
 
 requestRandomListCmd : Int -> Cmd Msg
 requestRandomListCmd problemNumber =
-    Random.generate (RandomListReady problemNumber)
-        (Random.int 0 10
-            |> Random.andThen (\n -> Random.list n (Random.int 1 100))
-        )
+    case problemNumber of
+        6 ->
+            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
+
+        _ ->
+            Random.generate (RandomListReady problemNumber)
+                (Random.int 0 10
+                    |> Random.andThen (\n -> Random.list n (Random.int 1 100))
+                )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

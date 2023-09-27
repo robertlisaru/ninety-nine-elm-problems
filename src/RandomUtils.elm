@@ -1,4 +1,4 @@
-module RandomUtils exposing (nestedListGenerator)
+module RandomUtils exposing (nestedListGenerator, sometimesPalindrome)
 
 import Random
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
@@ -45,4 +45,28 @@ nestedListGenerator initialSubListProbability =
 
                 else
                     randomElem
+            )
+
+
+sometimesPalindrome : Random.Generator (List Int)
+sometimesPalindrome =
+    let
+        sometimesTrue =
+            Random.weighted ( 0.5, True ) [ ( 1 - 0.5, False ) ]
+
+        randomList maxLength =
+            Random.int 0 maxLength
+                |> Random.andThen (\n -> Random.list n (Random.int 1 10))
+
+        palindrome =
+            randomList 5 |> Random.andThen (\list -> Random.constant ((list |> List.reverse) ++ list))
+    in
+    sometimesTrue
+        |> Random.andThen
+            (\isTrue ->
+                if isTrue then
+                    palindrome
+
+                else
+                    randomList 10
             )
