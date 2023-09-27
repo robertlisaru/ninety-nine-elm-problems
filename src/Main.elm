@@ -535,7 +535,7 @@ problemRequirement problemNumber =
         7 ->
             p []
                 [ text "Flatten a nested lists into a single list. Because Lists in Elm are homogeneous we need to define what a nested list is."
-                , p [] [ code [ css codeStyles ] [ text "type NestedList a = Elem a | List [NestedList a]" ] ]
+                , viewCode "type NestedList a = Elem a | List [NestedList a]"
                 ]
 
         _ ->
