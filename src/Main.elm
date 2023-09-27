@@ -38,6 +38,7 @@ import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 import Solutions.P8NoDupes
+import Solutions.P9Pack
 import Styles
     exposing
         ( buttonStyles
@@ -182,6 +183,9 @@ requestRandomListCmd problemNumber =
             Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
 
         8 ->
+            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesConsecutiveDuplicates
+
+        9 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.sometimesConsecutiveDuplicates
 
         _ ->
@@ -503,6 +507,10 @@ problemRequirement problemNumber =
             p []
                 [ text "Write a function to remove consecutive duplicates of list elements." ]
 
+        9 ->
+            p []
+                [ text "Convert a list to a list of lists where repeated elements of the source list are packed into sublists. Elements that are not repeated should be placed in a one element sublist." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -627,6 +635,12 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Duplicates removed: " ]
                 , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
+                ]
+
+            9 ->
+                [ basicListInput
+                , label [] [ text "Duplicates packed: " ]
+                , displayResult Solutions.P9Pack.pack (Utils.listToString (Utils.listToString String.fromInt ", ") ", ")
                 ]
 
             _ ->
