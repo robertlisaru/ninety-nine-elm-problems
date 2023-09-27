@@ -29,6 +29,7 @@ import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
 import Random
+import RandomUtils
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -301,7 +302,7 @@ update msg model =
 
         P7RequestRandomNestedList ->
             ( model
-            , Random.generate P7RandomNestedListReady (randomNestedListGenerator 1.0)
+            , Random.generate P7RandomNestedListReady (RandomUtils.nestedListGenerator 1.0)
             )
 
         P7RandomNestedListReady nestedList ->
@@ -310,50 +311,6 @@ update msg model =
                 , p7inputString = nestedList |> Utils.nestedListToString
               }
             , Cmd.none
-            )
-
-
-randomNestedListGenerator : Float -> Random.Generator (NestedList Int)
-randomNestedListGenerator initialSubListProbability =
-    let
-        clampedProbability =
-            if initialSubListProbability < 0 then
-                0.0
-
-            else if initialSubListProbability > 1.0 then
-                1.0
-
-            else
-                initialSubListProbability
-
-        maxSubListLength =
-            3
-
-        sometimesTrue =
-            Random.weighted ( clampedProbability, True ) [ ( 1 - clampedProbability, False ) ]
-
-        randomLength =
-            Random.int 1 maxSubListLength
-
-        randomSubList =
-            randomLength
-                |> Random.andThen randomSubListOfLength
-                |> Random.map SubList
-
-        randomSubListOfLength length =
-            Random.list length (Random.lazy (\_ -> randomNestedListGenerator (clampedProbability / 2)))
-
-        randomElem =
-            Random.int 1 100 |> Random.map Elem
-    in
-    sometimesTrue
-        |> Random.andThen
-            (\isTrue ->
-                if isTrue then
-                    randomSubList
-
-                else
-                    randomElem
             )
 
 
