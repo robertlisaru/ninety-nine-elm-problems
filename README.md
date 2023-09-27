@@ -15,6 +15,8 @@ Solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane
 - [ ] refactor tests to be more granular
 - [ ] nicer ui
 - [ ] responsive ui for mobile
+- [ ] search functionality
+- [ ] dark theme
 
 
 
