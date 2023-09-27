@@ -1,4 +1,4 @@
-module RandomUtils exposing (nestedListGenerator, sometimesConsecutiveDuplicates, sometimesPalindrome)
+module RandomUtils exposing (duplicateSequences, nestedListGenerator, sometimesPalindrome)
 
 import Random
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
@@ -35,7 +35,7 @@ nestedListGenerator initialSubListProbability =
             Random.list length (Random.lazy (\_ -> nestedListGenerator (clampedProbability / 2)))
 
         randomElem =
-            Random.int 1 100 |> Random.map Elem
+            Random.int 1 10 |> Random.map Elem
     in
     sometimesTrue
         |> Random.andThen
@@ -72,28 +72,19 @@ sometimesPalindrome =
             )
 
 
-sometimesConsecutiveDuplicates : Random.Generator (List Int)
-sometimesConsecutiveDuplicates =
+duplicateSequences : Random.Generator (List Int)
+duplicateSequences =
     let
-        sometimesTrue =
-            Random.weighted ( 0.5, True ) [ ( 1 - 0.5, False ) ]
+        getSequence sequenceLength =
+            Random.int 1 10 |> Random.map (List.repeat sequenceLength)
 
-        randomList =
-            Random.int 0 5
-                |> Random.andThen (\n -> Random.list n (Random.int 1 10))
+        maxSequenceLength =
+            3
 
-        duplicates length =
-            Random.int 1 10 |> Random.map (List.repeat length)
+        sequenceOfRandomLength =
+            Random.int 0 maxSequenceLength |> Random.andThen getSequence
 
-        sometimesDuplicates =
-            sometimesTrue
-                |> Random.andThen
-                    (\isTrue ->
-                        if isTrue then
-                            Random.int 0 5 |> Random.andThen duplicates
-
-                        else
-                            randomList
-                    )
+        nrOfSequences =
+            5
     in
-    Random.list 3 sometimesDuplicates |> Random.map List.concat
+    Random.list nrOfSequences sequenceOfRandomLength |> Random.map List.concat

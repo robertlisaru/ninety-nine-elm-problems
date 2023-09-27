@@ -1,4 +1,4 @@
-module Utils exposing (boolToString, displayIf, listToString, maybeToString, nestedListToString)
+module Utils exposing (boolToString, displayIf, listOfListsToString, listToString, maybeToString, nestedListToString, tupleToString)
 
 import Html.Styled exposing (Html, text)
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
@@ -40,3 +40,13 @@ nestedListToString nl =
 
         SubList list ->
             list |> listToString nestedListToString ", "
+
+
+tupleToString : ( Int, Int ) -> String
+tupleToString ( a, b ) =
+    "(" ++ String.fromInt a ++ ", " ++ String.fromInt b ++ ")"
+
+
+listOfListsToString : List (List Int) -> String
+listOfListsToString listOfLists =
+    listOfLists |> listToString (listToString String.fromInt ", ") ", "

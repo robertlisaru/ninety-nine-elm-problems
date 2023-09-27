@@ -30,6 +30,7 @@ import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
 import Random
 import RandomUtils
+import Solutions.P10RunLengths
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -83,7 +84,6 @@ init flags =
     let
         inputLists =
             Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
-                |> Array.set 4 [ 1, 2, 3, 4, 5 ]
                 |> Array.set 6 [ 1, 2, 3, 4, 5, 4, 3, 2, 1 ]
 
         p7nestedList =
@@ -93,17 +93,22 @@ init flags =
                 , Elem 6
                 , SubList [ Elem 7, Elem 8, Elem 9 ]
                 ]
+
+        p10listOfLists =
+            [ [ 1, 1 ], [ 2, 2, 2 ] ]
     in
     ( { inputLists = inputLists
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p3Index = 7
-      , p3IndexString = "7"
+      , p3Index = 5
+      , p3IndexString = "5"
       , p7nestedList = p7nestedList
       , p7inputString = p7nestedList |> Utils.nestedListToString
+      , p10listOfLists = p10listOfLists
+      , p10inputString = p10listOfLists |> Utils.listOfListsToString
       }
-    , requestRandomListCmd 3
+    , Cmd.none
     )
 
 
@@ -153,6 +158,8 @@ type alias Model =
     , p3IndexString : String
     , p7nestedList : Solutions.P7FlattenNestedList.NestedList Int
     , p7inputString : String
+    , p10listOfLists : List (List Int)
+    , p10inputString : String
     }
 
 
@@ -174,6 +181,10 @@ type Msg
     | P7InputBlur
     | P7RequestRandomNestedList
     | P7RandomNestedListReady (NestedList Int)
+    | P10InputUpdate String
+    | P10InputBlur
+    | P10RequestRandomListOfLists
+    | P10RandomListOfListsReady (List (List Int))
 
 
 requestRandomListCmd : Int -> Cmd Msg
@@ -183,15 +194,15 @@ requestRandomListCmd problemNumber =
             Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
 
         8 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesConsecutiveDuplicates
+            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
 
         9 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesConsecutiveDuplicates
+            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
 
         _ ->
             Random.generate (RandomListReady problemNumber)
                 (Random.int 0 10
-                    |> Random.andThen (\n -> Random.list n (Random.int 1 100))
+                    |> Random.andThen (\n -> Random.list n (Random.int 1 10))
                 )
 
 
@@ -321,6 +332,60 @@ update msg model =
             ( { model
                 | p7nestedList = nestedList
                 , p7inputString = nestedList |> Utils.nestedListToString
+              }
+            , Cmd.none
+            )
+
+        P10InputUpdate input ->
+            let
+                failIfListHasDifferentElements list =
+                    case list of
+                        first :: _ ->
+                            if list /= List.repeat (List.length list) first then
+                                Decode.fail "Invalid input"
+
+                            else
+                                Decode.succeed list
+
+                        [] ->
+                            Decode.succeed list
+
+                decodeResult =
+                    Decode.decodeString
+                        (Decode.list
+                            (Decode.list Decode.int |> Decode.andThen failIfListHasDifferentElements)
+                        )
+                        input
+
+                newNestedList =
+                    case decodeResult of
+                        Result.Ok nestedList ->
+                            nestedList
+
+                        Err _ ->
+                            model.p10listOfLists
+            in
+            ( { model
+                | p10inputString = input
+                , p10listOfLists = newNestedList
+              }
+            , Cmd.none
+            )
+
+        P10InputBlur ->
+            ( { model | p10inputString = model.p10listOfLists |> Utils.listOfListsToString }
+            , Cmd.none
+            )
+
+        P10RequestRandomListOfLists ->
+            ( model
+            , Random.generate P10RandomListOfListsReady (RandomUtils.duplicateSequences |> Random.map Solutions.P9Pack.pack)
+            )
+
+        P10RandomListOfListsReady listOfLists ->
+            ( { model
+                | p10listOfLists = listOfLists
+                , p10inputString = listOfLists |> Utils.listOfListsToString
               }
             , Cmd.none
             )
@@ -511,6 +576,10 @@ problemRequirement problemNumber =
             p []
                 [ text "Convert a list to a list of lists where repeated elements of the source list are packed into sublists. Elements that are not repeated should be placed in a one element sublist." ]
 
+        10 ->
+            p []
+                [ text "Run-length encode a list of list to a list of tuples. Unlike lists, tuples can mix types. Use tuples (n, e) to encode a list where n is the number of duplicates of the element e." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -640,7 +709,33 @@ problemInteractiveArea model problemNumber =
             9 ->
                 [ basicListInput
                 , label [] [ text "Duplicates packed: " ]
-                , displayResult Solutions.P9Pack.pack (Utils.listToString (Utils.listToString String.fromInt ", ") ", ")
+                , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
+                ]
+
+            10 ->
+                let
+                    listOfListsInput =
+                        div
+                            [ css listInputAreaStyles ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Input duplicates: " ]
+                            , input
+                                [ css listInputStyles
+                                , onInput P10InputUpdate
+                                , onBlur P10InputBlur
+                                , value model.p10inputString
+                                ]
+                                []
+                            , niceButton SvgItems.dice "Random" P10RequestRandomListOfLists
+                            ]
+                in
+                [ listOfListsInput
+                , label [] [ text "Run lengths: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P10RunLengths.runLengths model.p10listOfLists
+                            |> Utils.listToString Utils.tupleToString ", "
+                        )
+                    ]
                 ]
 
             _ ->
