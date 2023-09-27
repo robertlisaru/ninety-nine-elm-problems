@@ -375,6 +375,9 @@ view model =
     { title = "99 Elm problems"
     , body =
         [ genericStylesNode
+        , syntaxHighlightRequiredCssNode
+        , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
+        , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
         , header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
@@ -475,7 +478,11 @@ viewProblem model problem =
         , problemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number
         , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
-            viewCode model.solutionsCode problem.number
+            (model.solutionsCode
+                |> Array.get problem.number
+                |> Maybe.withDefault "Error when indexing code for this solution."
+                |> viewCode
+            )
         ]
 
 
@@ -685,17 +692,10 @@ viewCodeButton showCode problemNumber =
         (ShowCodeToggle problemNumber)
 
 
-viewCode : Array String -> Int -> Html Msg
-viewCode solutionsCode problemNumber =
+viewCode : String -> Html Msg
+viewCode solutionCode =
     div [ css [ marginTop (px 15) ] ]
-        [ syntaxHighlightRequiredCssNode
-        , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
-        , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-        , SyntaxHighlight.elm
-            (solutionsCode
-                |> Array.get problemNumber
-                |> Maybe.withDefault "Error when indexing code for this solution."
-            )
+        [ SyntaxHighlight.elm solutionCode
             |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
             |> Result.map fromUnstyled
             |> Result.withDefault (code [] [ text "Syntax highlight error." ])
