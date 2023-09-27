@@ -36,6 +36,7 @@ import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
+import Solutions.P8NoDupes
 import Styles
     exposing
         ( buttonStyles
@@ -538,6 +539,10 @@ problemRequirement problemNumber =
                 , viewCode "type NestedList a = Elem a | List [NestedList a]"
                 ]
 
+        8 ->
+            p []
+                [ text "Write a function to remove consecutive duplicates of list elements." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -656,6 +661,12 @@ problemInteractiveArea model problemNumber =
                             |> Utils.listToString String.fromInt ", "
                         )
                     ]
+                ]
+
+            8 ->
+                [ basicListInput
+                , label [] [ text "Duplicates removed: " ]
+                , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->
