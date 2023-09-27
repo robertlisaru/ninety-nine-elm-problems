@@ -1,4 +1,4 @@
-module RandomUtils exposing (nestedListGenerator, sometimesPalindrome)
+module RandomUtils exposing (nestedListGenerator, sometimesConsecutiveDuplicates, sometimesPalindrome)
 
 import Random
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
@@ -70,3 +70,30 @@ sometimesPalindrome =
                 else
                     randomList 10
             )
+
+
+sometimesConsecutiveDuplicates : Random.Generator (List Int)
+sometimesConsecutiveDuplicates =
+    let
+        sometimesTrue =
+            Random.weighted ( 0.5, True ) [ ( 1 - 0.5, False ) ]
+
+        randomList =
+            Random.int 0 5
+                |> Random.andThen (\n -> Random.list n (Random.int 1 10))
+
+        duplicates length =
+            Random.int 1 10 |> Random.map (List.repeat length)
+
+        sometimesDuplicates =
+            sometimesTrue
+                |> Random.andThen
+                    (\isTrue ->
+                        if isTrue then
+                            Random.int 0 5 |> Random.andThen duplicates
+
+                        else
+                            randomList
+                    )
+    in
+    Random.list 3 sometimesDuplicates |> Random.map List.concat

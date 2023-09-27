@@ -181,6 +181,9 @@ requestRandomListCmd problemNumber =
         6 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
 
+        8 ->
+            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesConsecutiveDuplicates
+
         _ ->
             Random.generate (RandomListReady problemNumber)
                 (Random.int 0 10
