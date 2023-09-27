@@ -93,7 +93,6 @@ init flags =
                 ]
     in
     ( { inputLists = inputLists
-      , problems = initProblems
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
@@ -116,8 +115,8 @@ type alias Problem =
     }
 
 
-initProblems : List Problem
-initProblems =
+problems : List Problem
+problems =
     [ { number = 1, title = "Last element" }
     , { number = 2, title = "Penultimate" }
     , { number = 3, title = "Element at" }
@@ -145,7 +144,6 @@ initProblems =
 
 type alias Model =
     { inputLists : Array (List Int)
-    , problems : List Problem
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
@@ -383,7 +381,7 @@ view model =
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
-                , ul [ css problemListStyles ] <| (model.problems |> List.map (viewProblem model))
+                , ul [ css problemListStyles ] <| (problems |> List.map (viewProblem model))
                 ]
             , sideBarView
             ]
@@ -461,12 +459,9 @@ sideBarView =
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
         , input [ placeholder "Search unimplemented", css searchBarStyles ] []
         , ul [ css sideBarItemListStyles ]
-            [ li [] [ text "1. Last element" ]
-            , li [] [ text "2. Penultimate" ]
-            , li [] [ text "3. Element at" ]
-            , li [] [ text "4. Count elements" ]
-            , li [] [ text "..." ]
-            ]
+            (problems
+                |> List.map (\problem -> li [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ])
+            )
         ]
 
 
