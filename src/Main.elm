@@ -394,7 +394,14 @@ update msg model =
             )
 
         SearchProblem keyWord ->
-            ( { model | filteredProblems = problems |> List.filter (.title >> String.contains keyWord) }, Cmd.none )
+            ( { model
+                | filteredProblems =
+                    problems
+                        |> List.filter
+                            (.title >> String.toLower >> String.contains (keyWord |> String.toLower))
+              }
+            , Cmd.none
+            )
 
 
 nestedListDecoder : Decoder (NestedList Int)
