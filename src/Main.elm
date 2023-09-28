@@ -97,7 +97,8 @@ init flags =
         p10listOfLists =
             [ [ 1, 1 ], [ 2, 2, 2 ] ]
     in
-    ( { inputLists = inputLists
+    ( { filteredProblems = problems
+      , inputLists = inputLists
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
@@ -150,7 +151,8 @@ problems =
 
 
 type alias Model =
-    { inputLists : Array (List Int)
+    { filteredProblems : List Problem
+    , inputLists : Array (List Int)
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
@@ -185,6 +187,7 @@ type Msg
     | P10InputBlur
     | P10RequestRandomListOfLists
     | P10RandomListOfListsReady (List (List Int))
+    | SearchProblem String
 
 
 requestRandomListCmd : Int -> Cmd Msg
@@ -390,6 +393,9 @@ update msg model =
             , Cmd.none
             )
 
+        SearchProblem keyWord ->
+            ( { model | filteredProblems = problems |> List.filter (.title >> String.contains keyWord) }, Cmd.none )
+
 
 nestedListDecoder : Decoder (NestedList Int)
 nestedListDecoder =
@@ -417,7 +423,7 @@ view model =
                 [ appIntroView
                 , ul [ css problemListStyles ] <| (problems |> List.map (viewProblem model))
                 ]
-            , sideBarView
+            , sideBarView model.filteredProblems
             ]
         ]
             |> List.map toUnstyled
@@ -471,8 +477,8 @@ appIntroView =
         ]
 
 
-sideBarView : Html Msg
-sideBarView =
+sideBarView : List Problem -> Html Msg
+sideBarView filteredProblems =
     let
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
@@ -491,9 +497,9 @@ sideBarView =
             , linkItem "https://elm-lang.org/" "Visit the official Elm Website"
             ]
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
-        , input [ placeholder "Search unimplemented", css searchBarStyles ] []
+        , input [ placeholder "Search", css searchBarStyles, onInput SearchProblem ] []
         , ul [ css sideBarItemListStyles ]
-            (problems
+            (filteredProblems
                 |> List.map
                     (\problem ->
                         li []
