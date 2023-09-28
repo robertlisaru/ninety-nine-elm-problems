@@ -25,7 +25,7 @@ import Html.Styled
         , toUnstyled
         , ul
         )
-import Html.Styled.Attributes exposing (css, href, maxlength, placeholder, value)
+import Html.Styled.Attributes exposing (css, href, id, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode exposing (Decoder)
 import Random
@@ -494,7 +494,16 @@ sideBarView =
         , input [ placeholder "Search unimplemented", css searchBarStyles ] []
         , ul [ css sideBarItemListStyles ]
             (problems
-                |> List.map (\problem -> li [] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ])
+                |> List.map
+                    (\problem ->
+                        li []
+                            [ a
+                                [ href ("#" ++ (problem.number |> String.fromInt))
+                                , css linkStyles
+                                ]
+                                [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+                            ]
+                    )
             )
         ]
 
@@ -502,7 +511,7 @@ sideBarView =
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model problem =
     li
-        [ css problemStyles ]
+        [ css problemStyles, id (problem.number |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , problemRequirement problem.number
         , problemInteractiveArea model problem.number
