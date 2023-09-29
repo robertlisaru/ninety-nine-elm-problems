@@ -519,7 +519,20 @@ sideBarView filteredProblems =
                     )
             )
         , div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
-            [ a [ css linkStyles, href "#" ] [ text "Back to top" ] ]
+            [ a
+                [ css
+                    (linkStyles
+                        ++ [ displayFlex
+                           , alignItems center
+                           ]
+                    )
+                , href "#"
+                ]
+                [ SvgItems.top
+                , div [ css [ marginRight (em 0.6) ] ] []
+                , text "Back to top"
+                ]
+            ]
         ]
 
 
