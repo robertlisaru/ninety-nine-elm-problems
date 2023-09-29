@@ -46,31 +46,24 @@ navStyles =
 
 pageContainerStyles : List Style
 pageContainerStyles =
-    [ maxWidth (px 920)
-    , marginLeft auto
-    , marginRight auto
+    [ displayFlex
+    , justifyContent center
+    , width (pct 100)
     ]
 
 
 leftContentStyles : List Style
 leftContentStyles =
     [ maxWidth (px 600)
-    , width (pct 75)
-    , display inlineBlock
-    , verticalAlign top
     ]
 
 
 sideBarStyles : List Style
 sideBarStyles =
     [ maxWidth (px 200)
-    , width (pct 25)
-    , display inlineBlock
-    , verticalAlign top
     , padding (px 20)
-    , margin4 (px 20) (px 20) (px 20) (px 40)
+    , margin4 (px 20) (px 40) (px 20) (px 40)
     , borderLeft3 (px 1) solid (hex "#eeeeee")
-    , minHeight (px 500)
     ]
 
 
