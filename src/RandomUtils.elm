@@ -59,7 +59,21 @@ sometimesPalindrome =
                 |> Random.andThen (\n -> Random.list n (Random.int 1 10))
 
         palindrome =
-            randomList 5 |> Random.andThen (\list -> Random.constant ((list |> List.reverse) ++ list))
+            sometimesTrue
+                |> Random.andThen
+                    (\isTrue ->
+                        if isTrue then
+                            evenLengthPalindrome
+
+                        else
+                            oddLengthPalindrome
+                    )
+
+        evenLengthPalindrome =
+            randomList 4 |> Random.andThen (\list -> Random.constant ((list |> List.reverse) ++ list))
+
+        oddLengthPalindrome =
+            randomList 4 |> Random.andThen (\list -> Random.constant ((list |> List.reverse) ++ (list |> List.drop 1)))
     in
     sometimesTrue
         |> Random.andThen
@@ -68,7 +82,7 @@ sometimesPalindrome =
                     palindrome
 
                 else
-                    randomList 10
+                    randomList 8
             )
 
 
