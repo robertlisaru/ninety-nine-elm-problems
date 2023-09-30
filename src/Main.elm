@@ -618,6 +618,21 @@ sideBarView filteredProblems =
         ]
 
 
+niceButton : Html msg -> String -> msg -> Html msg
+niceButton icon label onClickMsg =
+    button
+        [ css buttonStyles, onClick onClickMsg ]
+        [ icon
+        , if label /= "" then
+            span
+                [ css [ marginLeft (em 0.2) ] ]
+                [ text label ]
+
+          else
+            text ""
+        ]
+
+
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model problem =
     let
@@ -866,18 +881,3 @@ problemInteractiveArea model problemNumber =
                 , label [] [ text "Result is: " ]
                 , code [ css codeStyles ] [ text "Result goes here" ]
                 ]
-
-
-niceButton : Html msg -> String -> msg -> Html msg
-niceButton icon label onClickMsg =
-    button
-        [ css buttonStyles, onClick onClickMsg ]
-        [ icon
-        , if label /= "" then
-            span
-                [ css [ marginLeft (em 0.2) ] ]
-                [ text label ]
-
-          else
-            text ""
-        ]
