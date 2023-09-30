@@ -31,6 +31,7 @@ import Json.Decode as Decode exposing (Decoder)
 import Random
 import RandomUtils
 import Solutions.P10RunLengths
+import Solutions.P11RleEncode
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -84,7 +85,10 @@ init flags =
     let
         inputLists =
             Array.repeat 100 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
-                |> Array.set 6 [ 1, 2, 3, 4, 5, 4, 3, 2, 1 ]
+                |> Array.set 6 [ 1, 2, 3, 2, 1 ]
+                |> Array.set 8 [ 1, 1, 2, 2, 2 ]
+                |> Array.set 9 [ 1, 1, 2, 2, 2 ]
+                |> Array.set 11 [ 1, 1, 2, 2, 2 ]
 
         p7nestedList =
             SubList
@@ -200,6 +204,9 @@ requestRandomListCmd problemNumber =
             Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
 
         9 ->
+            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
+
+        11 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
 
         _ ->
@@ -617,6 +624,12 @@ problemRequirement problemNumber =
             p []
                 [ text "Run-length encode a list of list to a list of tuples. Unlike lists, tuples can mix types. Use tuples (n, e) to encode a list where n is the number of duplicates of the element e." ]
 
+        11 ->
+            p []
+                [ text "Write a function to run length encode a list, but instead of using a tuple as in problem 10, use a union data type."
+                , viewCode "type RleCode a = Run Int a | Single a"
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -773,6 +786,12 @@ problemInteractiveArea model problemNumber =
                             |> Utils.listToString Utils.tupleToString ", "
                         )
                     ]
+                ]
+
+            11 ->
+                [ basicListInput
+                , label [] [ text "Encoded: " ]
+                , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
                 ]
 
             _ ->

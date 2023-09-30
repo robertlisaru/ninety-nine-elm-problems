@@ -1,6 +1,7 @@
-module Utils exposing (boolToString, displayIf, listOfListsToString, listToString, maybeToString, nestedListToString, tupleToString)
+module Utils exposing (boolToString, displayIf, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
 import Html.Styled exposing (Html, text)
+import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 
 
@@ -50,3 +51,13 @@ tupleToString ( a, b ) =
 listOfListsToString : List (List Int) -> String
 listOfListsToString listOfLists =
     listOfLists |> listToString (listToString String.fromInt ", ") ", "
+
+
+rleCodeToString : RleCode Int -> String
+rleCodeToString rleCode =
+    case rleCode of
+        Run count element ->
+            "Run " ++ String.fromInt count ++ " " ++ String.fromInt element
+
+        Single element ->
+            "Single " ++ String.fromInt element
