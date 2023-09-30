@@ -34,6 +34,7 @@ import RandomUtils
 import Solutions.P10RunLengths
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
+import Solutions.P14Duplicate
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -91,6 +92,7 @@ init flags =
                 |> Array.set 8 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 9 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
+                |> Array.set 14 [ 1, 2, 3, 4, 5 ]
 
         p7nestedList =
             SubList
@@ -663,6 +665,10 @@ problemRequirement problemNumber =
             p []
                 [ text "Decompress the run-length encoded list generated in Problem 11." ]
 
+        14 ->
+            p []
+                [ text "Duplicate each element of a list." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -851,6 +857,12 @@ problemInteractiveArea model problemNumber =
                             |> Utils.listToString String.fromInt ", "
                         )
                     ]
+                ]
+
+            14 ->
+                [ basicListInput
+                , label [] [ text "Duplicated: " ]
+                , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->
