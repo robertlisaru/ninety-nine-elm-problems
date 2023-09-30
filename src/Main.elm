@@ -31,7 +31,8 @@ import Json.Decode as Decode exposing (Decoder)
 import Random
 import RandomUtils
 import Solutions.P10RunLengths
-import Solutions.P11RleEncode
+import Solutions.P11RleEncode exposing (RleCode(..))
+import Solutions.P12RleDecode
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -100,6 +101,10 @@ init flags =
 
         p10listOfLists =
             [ [ 1, 1 ], [ 2, 2, 2 ] ]
+
+        p12rleCodes : List (RleCode Int)
+        p12rleCodes =
+            [ Run 2 1, Run 3 2 ]
     in
     ( { filteredProblems = problems
       , inputLists = inputLists
@@ -112,6 +117,8 @@ init flags =
       , p7inputString = p7nestedList |> Utils.nestedListToString
       , p10listOfLists = p10listOfLists
       , p10inputString = p10listOfLists |> Utils.listOfListsToString
+      , p12rleCodes = p12rleCodes
+      , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       }
     , Cmd.none
     )
@@ -166,6 +173,8 @@ type alias Model =
     , p7inputString : String
     , p10listOfLists : List (List Int)
     , p10inputString : String
+    , p12rleCodes : List (RleCode Int)
+    , p12inputString : String
     }
 
 
@@ -191,6 +200,10 @@ type Msg
     | P10InputBlur
     | P10RequestRandomListOfLists
     | P10RandomListOfListsReady (List (List Int))
+    | P12InputUpdate String
+    | P12InputBlur
+    | P12RequestRandomRleCodes
+    | P12RleCodesReady (List (RleCode Int))
     | SearchProblem String
 
 
@@ -406,6 +419,113 @@ update msg model =
                     problems
                         |> List.filter
                             (.title >> String.toLower >> String.contains (keyWord |> String.toLower))
+              }
+            , Cmd.none
+            )
+
+        P12InputUpdate input ->
+            let
+                rleDecoder =
+                    Decode.string
+                        |> Decode.andThen
+                            (\rleString ->
+                                let
+                                    tokens =
+                                        rleString
+                                            |> String.split " "
+                                            |> List.filter (\token -> token /= "")
+                                            |> Array.fromList
+
+                                    rleType =
+                                        tokens |> Array.get 0
+                                in
+                                case rleType of
+                                    Just "Single" ->
+                                        if Array.length tokens /= 2 then
+                                            Decode.fail "invalid rle single"
+
+                                        else
+                                            let
+                                                singleElement =
+                                                    tokens
+                                                        |> Array.get 1
+                                                        |> Maybe.withDefault ""
+                                                        |> String.toInt
+                                            in
+                                            case singleElement of
+                                                Just element ->
+                                                    Decode.succeed (Single element)
+
+                                                _ ->
+                                                    Decode.fail "invalid rle single"
+
+                                    Just "Run" ->
+                                        if Array.length tokens /= 3 then
+                                            Decode.fail "invalid rle run"
+
+                                        else
+                                            let
+                                                runLength =
+                                                    tokens
+                                                        |> Array.get 1
+                                                        |> Maybe.withDefault ""
+                                                        |> String.toInt
+
+                                                repeatedElement =
+                                                    tokens
+                                                        |> Array.get 2
+                                                        |> Maybe.withDefault ""
+                                                        |> String.toInt
+                                            in
+                                            case ( runLength, repeatedElement ) of
+                                                ( Just runLength_, Just repeatedElement_ ) ->
+                                                    Decode.succeed (Run runLength_ repeatedElement_)
+
+                                                _ ->
+                                                    Decode.fail "invalid rle run"
+
+                                    _ ->
+                                        Decode.fail "Invalid rle type"
+                            )
+
+                decodeResult =
+                    Decode.decodeString
+                        (Decode.list rleDecoder)
+                        (input
+                            |> String.replace "[" "[\""
+                            |> String.replace "]" "\"]"
+                            |> String.replace "," "\", \""
+                        )
+
+                newRleCodes =
+                    case decodeResult of
+                        Result.Ok rleCodes ->
+                            rleCodes
+
+                        Err _ ->
+                            model.p12rleCodes
+            in
+            ( { model
+                | p12inputString = input
+                , p12rleCodes = newRleCodes
+              }
+            , Cmd.none
+            )
+
+        P12InputBlur ->
+            ( { model | p12inputString = model.p12rleCodes |> Utils.listToString Utils.rleCodeToString ", " }
+            , Cmd.none
+            )
+
+        P12RequestRandomRleCodes ->
+            ( model
+            , Random.generate P12RleCodesReady (RandomUtils.duplicateSequences |> Random.map Solutions.P11RleEncode.rleEncode)
+            )
+
+        P12RleCodesReady rleCodes ->
+            ( { model
+                | p12rleCodes = rleCodes
+                , p12inputString = rleCodes |> Utils.listToString Utils.rleCodeToString ", "
               }
             , Cmd.none
             )
@@ -630,6 +750,10 @@ problemRequirement problemNumber =
                 , viewCode "type RleCode a = Run Int a | Single a"
                 ]
 
+        12 ->
+            p []
+                [ text "Decompress the run-length encoded list generated in Problem 11." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -792,6 +916,32 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Encoded: " ]
                 , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
+                ]
+
+            12 ->
+                let
+                    rleCodesInput =
+                        div
+                            [ css listInputAreaStyles ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Input codes: " ]
+                            , input
+                                [ css listInputStyles
+                                , onInput P12InputUpdate
+                                , onBlur P12InputBlur
+                                , value model.p12inputString
+                                ]
+                                []
+                            , niceButton SvgItems.dice "Random" P12RequestRandomRleCodes
+                            ]
+                in
+                [ rleCodesInput
+                , label [] [ text "Decoded: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P12RleDecode.rleDecode model.p12rleCodes
+                            |> Utils.listToString String.fromInt ", "
+                        )
+                    ]
                 ]
 
             _ ->

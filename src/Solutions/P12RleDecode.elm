@@ -1,11 +1,7 @@
-module Solutions.P12RleDecode exposing (RleCode(..), rleDecode)
+module Solutions.P12RleDecode exposing (rleDecode)
 
 import List
-
-
-type RleCode a
-    = Run Int a
-    | Single a
+import Solutions.P11RleEncode exposing (RleCode(..))
 
 
 expand : RleCode a -> List a

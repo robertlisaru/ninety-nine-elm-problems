@@ -2,7 +2,8 @@ module SolutionTests.P12RleDecode exposing (suite)
 
 import Expect
 import List
-import Solutions.P12RleDecode exposing (RleCode(..), rleDecode)
+import Solutions.P11RleEncode exposing (RleCode(..))
+import Solutions.P12RleDecode exposing (rleDecode)
 import Test exposing (Test, test)
 
 
