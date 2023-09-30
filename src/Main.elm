@@ -620,6 +620,17 @@ sideBarView filteredProblems =
 
 viewProblem : Model -> Problem -> Html Msg
 viewProblem model problem =
+    let
+        viewCodeButton showCode problemNumber =
+            niceButton SvgItems.elmColoredLogo
+                (if showCode |> Array.get problemNumber |> Maybe.withDefault False then
+                    "Hide code"
+
+                 else
+                    "Show code (spoiler)"
+                )
+                (ShowCodeToggle problemNumber)
+    in
     li
         [ css problemStyles, id (problem.number |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
@@ -870,15 +881,3 @@ niceButton icon label onClickMsg =
           else
             text ""
         ]
-
-
-viewCodeButton : Array Bool -> Int -> Html Msg
-viewCodeButton showCode problemNumber =
-    niceButton SvgItems.elmColoredLogo
-        (if showCode |> Array.get problemNumber |> Maybe.withDefault False then
-            "Hide code"
-
-         else
-            "Show code (spoiler)"
-        )
-        (ShowCodeToggle problemNumber)
