@@ -1,4 +1,4 @@
-module RandomUtils exposing (duplicateSequences, nestedListGenerator, sometimesPalindrome)
+module RandomUtils exposing (duplicateSequences, nestedListGenerator, randomList, sometimesPalindrome)
 
 import Random
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
@@ -54,10 +54,6 @@ sometimesPalindrome =
         sometimesTrue =
             Random.weighted ( 0.5, True ) [ ( 1 - 0.5, False ) ]
 
-        randomList maxLength =
-            Random.int 0 maxLength
-                |> Random.andThen (\n -> Random.list n (Random.int 1 10))
-
         palindrome =
             sometimesTrue
                 |> Random.andThen
@@ -102,3 +98,9 @@ duplicateSequences =
             5
     in
     Random.list nrOfSequences sequenceOfRandomLength |> Random.map List.concat
+
+
+randomList : Int -> Random.Generator (List Int)
+randomList maxLength =
+    Random.int 0 maxLength
+        |> Random.andThen (\n -> Random.list n (Random.int 1 10))

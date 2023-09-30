@@ -35,6 +35,7 @@ import Solutions.P10RunLengths
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
 import Solutions.P14Duplicate
+import Solutions.P15RepeatElements
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -93,6 +94,7 @@ init flags =
                 |> Array.set 9 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
+                |> Array.set 15 [ 1, 2, 3 ]
 
         p7nestedList =
             SubList
@@ -122,6 +124,8 @@ init flags =
       , p10inputString = p10listOfLists |> Utils.listOfListsToString
       , p12rleCodes = p12rleCodes
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
+      , p15repeatTimes = 3
+      , p15repeatTimesString = "3"
       }
     , Cmd.none
     )
@@ -178,6 +182,8 @@ type alias Model =
     , p10inputString : String
     , p12rleCodes : List (RleCode Int)
     , p12inputString : String
+    , p15repeatTimesString : String
+    , p15repeatTimes : Int
     }
 
 
@@ -208,6 +214,10 @@ type Msg
     | P12RequestRandomRleCodes
     | P12RleCodesReady (List (RleCode Int))
     | SearchProblem String
+    | P15RequestRandomRepeatTimes
+    | P15RandomRandomRepeatTimesReady Int
+    | P15InputRepeatTimes String
+    | P15RepeatTimesBlur
 
 
 requestRandomListCmd : Int -> Cmd Msg
@@ -225,11 +235,11 @@ requestRandomListCmd problemNumber =
         11 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
 
+        15 ->
+            Random.generate (RandomListReady problemNumber) (RandomUtils.randomList 5)
+
         _ ->
-            Random.generate (RandomListReady problemNumber)
-                (Random.int 0 10
-                    |> Random.andThen (\n -> Random.list n (Random.int 1 10))
-                )
+            Random.generate (RandomListReady problemNumber) (RandomUtils.randomList 10)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -448,6 +458,40 @@ update msg model =
               }
             , Cmd.none
             )
+
+        P15RequestRandomRepeatTimes ->
+            ( model, Random.generate P15RandomRandomRepeatTimesReady (Random.int 0 3) )
+
+        P15RandomRandomRepeatTimesReady randomRepeatTimes ->
+            ( { model
+                | p15repeatTimes = randomRepeatTimes
+                , p15repeatTimesString = randomRepeatTimes |> String.fromInt
+              }
+            , Cmd.none
+            )
+
+        P15InputRepeatTimes input ->
+            let
+                decodeResult =
+                    Decode.decodeString Decode.int input
+
+                newRepeatTimes =
+                    case decodeResult of
+                        Result.Ok list ->
+                            list
+
+                        Err _ ->
+                            model.p3Index
+            in
+            ( { model
+                | p15repeatTimesString = input
+                , p15repeatTimes = newRepeatTimes
+              }
+            , Cmd.none
+            )
+
+        P15RepeatTimesBlur ->
+            ( { model | p15repeatTimesString = model.p15repeatTimes |> String.fromInt }, Cmd.none )
 
 
 
@@ -669,6 +713,10 @@ problemRequirement problemNumber =
             p []
                 [ text "Duplicate each element of a list." ]
 
+        15 ->
+            p []
+                [ text "Repeat each element of a list a given number of times." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
 
@@ -863,6 +911,29 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Duplicated: " ]
                 , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
+                ]
+
+            15 ->
+                let
+                    repeatTimesInput =
+                        div
+                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
+                            , input
+                                [ css [ width (em 3), marginRight (px 8) ]
+                                , onInput P15InputRepeatTimes
+                                , onBlur P15RepeatTimesBlur
+                                , value model.p15repeatTimesString
+                                , maxlength 3
+                                ]
+                                []
+                            , niceButton SvgItems.dice "Random" P15RequestRandomRepeatTimes
+                            ]
+                in
+                [ basicListInput
+                , repeatTimesInput
+                , label [] [ text "Repeat times: " ]
+                , displayResult (Solutions.P15RepeatElements.repeatElements model.p15repeatTimes) (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->
