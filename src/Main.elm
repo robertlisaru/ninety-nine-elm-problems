@@ -3,6 +3,7 @@ module Main exposing (Model, Msg(..), Problem, main)
 import Array exposing (Array)
 import Browser
 import Css exposing (..)
+import DecoderUtils
 import Html.Styled
     exposing
         ( Html
@@ -27,7 +28,7 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css, href, id, maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P10RunLengths
@@ -324,7 +325,7 @@ update msg model =
         P7InputUpdate input ->
             let
                 decodeResult =
-                    Decode.decodeString nestedListDecoder input
+                    Decode.decodeString DecoderUtils.nestedListDecoder input
 
                 newNestedList =
                     case decodeResult of
@@ -361,24 +362,8 @@ update msg model =
 
         P10InputUpdate input ->
             let
-                failIfListHasDifferentElements list =
-                    case list of
-                        first :: _ ->
-                            if list /= List.repeat (List.length list) first then
-                                Decode.fail "Invalid input"
-
-                            else
-                                Decode.succeed list
-
-                        [] ->
-                            Decode.succeed list
-
                 decodeResult =
-                    Decode.decodeString
-                        (Decode.list
-                            (Decode.list Decode.int |> Decode.andThen failIfListHasDifferentElements)
-                        )
-                        input
+                    Decode.decodeString DecoderUtils.decodeDuplicates input
 
                 newNestedList =
                     case decodeResult of
@@ -425,77 +410,9 @@ update msg model =
 
         P12InputUpdate input ->
             let
-                rleDecoder =
-                    Decode.string
-                        |> Decode.andThen
-                            (\rleString ->
-                                let
-                                    tokens =
-                                        rleString
-                                            |> String.split " "
-                                            |> List.filter (\token -> token /= "")
-                                            |> Array.fromList
-
-                                    rleType =
-                                        tokens |> Array.get 0
-                                in
-                                case rleType of
-                                    Just "Single" ->
-                                        if Array.length tokens /= 2 then
-                                            Decode.fail "invalid rle single"
-
-                                        else
-                                            let
-                                                singleElement =
-                                                    tokens
-                                                        |> Array.get 1
-                                                        |> Maybe.withDefault ""
-                                                        |> String.toInt
-                                            in
-                                            case singleElement of
-                                                Just element ->
-                                                    Decode.succeed (Single element)
-
-                                                _ ->
-                                                    Decode.fail "invalid rle single"
-
-                                    Just "Run" ->
-                                        if Array.length tokens /= 3 then
-                                            Decode.fail "invalid rle run"
-
-                                        else
-                                            let
-                                                runLength =
-                                                    tokens
-                                                        |> Array.get 1
-                                                        |> Maybe.withDefault ""
-                                                        |> String.toInt
-
-                                                repeatedElement =
-                                                    tokens
-                                                        |> Array.get 2
-                                                        |> Maybe.withDefault ""
-                                                        |> String.toInt
-                                            in
-                                            case ( runLength, repeatedElement ) of
-                                                ( Just runLength_, Just repeatedElement_ ) ->
-                                                    Decode.succeed (Run runLength_ repeatedElement_)
-
-                                                _ ->
-                                                    Decode.fail "invalid rle run"
-
-                                    _ ->
-                                        Decode.fail "Invalid rle type"
-                            )
-
                 decodeResult =
-                    Decode.decodeString
-                        (Decode.list rleDecoder)
-                        (input
-                            |> String.replace "[" "[\""
-                            |> String.replace "]" "\"]"
-                            |> String.replace "," "\", \""
-                        )
+                    (input |> String.replace "[" "[\"" |> String.replace "]" "\"]" |> String.replace "," "\", \"")
+                        |> Decode.decodeString (Decode.list DecoderUtils.rleDecoder)
 
                 newRleCodes =
                     case decodeResult of
@@ -529,14 +446,6 @@ update msg model =
               }
             , Cmd.none
             )
-
-
-nestedListDecoder : Decoder (NestedList Int)
-nestedListDecoder =
-    Decode.oneOf
-        [ Decode.int |> Decode.map Elem
-        , Decode.list (Decode.lazy (\_ -> nestedListDecoder)) |> Decode.map SubList
-        ]
 
 
 
