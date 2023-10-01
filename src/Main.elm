@@ -111,7 +111,7 @@ init flags =
         p12rleCodes =
             [ Run 2 1, Run 3 2 ]
     in
-    ( { filteredProblemNames = problemNames
+    ( { searchKeyWord = ""
       , inputLists = inputLists
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
@@ -169,7 +169,7 @@ problemNames =
 
 
 type alias Model =
-    { filteredProblemNames : List ProblemName
+    { searchKeyWord : String
     , inputLists : Array (List Int)
     , inputStrings : Array String
     , showCode : Array Bool
@@ -411,14 +411,7 @@ update msg model =
             )
 
         SearchProblem keyWord ->
-            ( { model
-                | filteredProblemNames =
-                    problemNames
-                        |> List.filter
-                            (.title >> String.toLower >> String.contains (keyWord |> String.toLower))
-              }
-            , Cmd.none
-            )
+            ( { model | searchKeyWord = keyWord }, Cmd.none )
 
         P12InputUpdate input ->
             let
@@ -512,7 +505,11 @@ view model =
                 [ appIntroView
                 , ul [ css problemListStyles ] <| (problemNames |> List.map (viewProblem model))
                 ]
-            , sideBarView model.filteredProblemNames
+            , sideBarView
+                (problemNames
+                    |> List.filter
+                        (.title >> String.toLower >> String.contains (model.searchKeyWord |> String.toLower))
+                )
             ]
         ]
             |> List.map toUnstyled
