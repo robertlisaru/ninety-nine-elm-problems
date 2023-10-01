@@ -858,7 +858,7 @@ problemInteractiveArea model problemNumber =
                     repeatTimesInput =
                         div
                             [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
+                            [ label [ css [ marginRight (px 5) ] ] [ text "Repeat times: " ]
                             , input
                                 [ css [ width (em 3), marginRight (px 8) ]
                                 , onInput P15InputRepeatTimes
@@ -872,7 +872,7 @@ problemInteractiveArea model problemNumber =
                 in
                 [ basicListInput
                 , repeatTimesInput
-                , label [] [ text "Repeat times: " ]
+                , label [] [ text "Repeated elements: " ]
                 , displayResult (Solutions.P15RepeatElements.repeatElements model.p15repeatTimes) (Utils.listToString String.fromInt ", ")
                 ]
 
