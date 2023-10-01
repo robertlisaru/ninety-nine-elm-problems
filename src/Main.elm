@@ -176,7 +176,7 @@ type alias Model =
     , solutionsCode : Array String
     , p3Index : Int
     , p3IndexString : String
-    , p7nestedList : Solutions.P7FlattenNestedList.NestedList Int
+    , p7nestedList : NestedList Int
     , p7inputString : String
     , p10listOfLists : List (List Int)
     , p10inputString : String
