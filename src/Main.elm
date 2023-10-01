@@ -514,6 +514,7 @@ view model =
                                 |> String.contains (model.searchKeyWord |> String.toLower)
                         )
                 )
+                model.searchKeyWord
             ]
         ]
             |> List.map toUnstyled
@@ -567,8 +568,8 @@ appIntroView =
         ]
 
 
-sideBarView : List ProblemName -> Html Msg
-sideBarView filteredProblems =
+sideBarView : List ProblemName -> String -> Html Msg
+sideBarView filteredProblems searchKeyWord =
     let
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
@@ -587,7 +588,7 @@ sideBarView filteredProblems =
             , linkItem "https://elm-lang.org/" "Visit the official Elm Website"
             ]
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
-        , input [ placeholder "Search", css searchBarStyles, onInput SearchProblem ] []
+        , input [ placeholder "Search", Html.Styled.Attributes.type_ "search", css searchBarStyles, value searchKeyWord, onInput SearchProblem ] []
         , ul [ css sideBarItemListStyles ]
             (filteredProblems
                 |> List.map
