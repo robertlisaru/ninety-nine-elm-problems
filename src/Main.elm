@@ -508,7 +508,11 @@ view model =
             , sideBarView
                 (problemNames
                     |> List.filter
-                        (.title >> String.toLower >> String.contains (model.searchKeyWord |> String.toLower))
+                        (\problem ->
+                            (String.fromInt problem.number ++ ". " ++ problem.title)
+                                |> String.toLower
+                                |> String.contains (model.searchKeyWord |> String.toLower)
+                        )
                 )
             ]
         ]
