@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), Problem, main)
+module Main exposing (Model, Msg(..), ProblemName, main)
 
 import Array exposing (Array)
 import Browser
@@ -111,7 +111,7 @@ init flags =
         p12rleCodes =
             [ Run 2 1, Run 3 2 ]
     in
-    ( { filteredProblems = problems
+    ( { filteredProblemNames = problemNames
       , inputLists = inputLists
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
@@ -135,14 +135,14 @@ init flags =
 -- MODEL
 
 
-type alias Problem =
+type alias ProblemName =
     { number : Int
     , title : String
     }
 
 
-problems : List Problem
-problems =
+problemNames : List ProblemName
+problemNames =
     [ { number = 1, title = "Last element" }
     , { number = 2, title = "Penultimate" }
     , { number = 3, title = "Element at" }
@@ -169,7 +169,7 @@ problems =
 
 
 type alias Model =
-    { filteredProblems : List Problem
+    { filteredProblemNames : List ProblemName
     , inputLists : Array (List Int)
     , inputStrings : Array String
     , showCode : Array Bool
@@ -412,8 +412,8 @@ update msg model =
 
         SearchProblem keyWord ->
             ( { model
-                | filteredProblems =
-                    problems
+                | filteredProblemNames =
+                    problemNames
                         |> List.filter
                             (.title >> String.toLower >> String.contains (keyWord |> String.toLower))
               }
@@ -510,9 +510,9 @@ view model =
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
-                , ul [ css problemListStyles ] <| (problems |> List.map (viewProblem model))
+                , ul [ css problemListStyles ] <| (problemNames |> List.map (viewProblem model))
                 ]
-            , sideBarView model.filteredProblems
+            , sideBarView model.filteredProblemNames
             ]
         ]
             |> List.map toUnstyled
@@ -566,7 +566,7 @@ appIntroView =
         ]
 
 
-sideBarView : List Problem -> Html Msg
+sideBarView : List ProblemName -> Html Msg
 sideBarView filteredProblems =
     let
         linkItem url label =
@@ -633,7 +633,7 @@ niceButton icon label onClickMsg =
         ]
 
 
-viewProblem : Model -> Problem -> Html Msg
+viewProblem : Model -> ProblemName -> Html Msg
 viewProblem model problem =
     let
         viewCodeButton showCode problemNumber =
