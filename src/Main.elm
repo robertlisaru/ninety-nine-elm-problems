@@ -607,7 +607,7 @@ viewProblem model problem =
             (model.solutionsCode
                 |> Array.get problem.number
                 |> Maybe.withDefault "Error when indexing code for this solution."
-                |> ProblemText.viewCode
+                |> HtmlUtils.viewCode
             )
         ]
 

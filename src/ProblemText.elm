@@ -1,10 +1,9 @@
-module ProblemText exposing (requirement, viewCode)
+module ProblemText exposing (requirement)
 
-import Css exposing (..)
-import Html.Styled exposing (Html, code, div, fromUnstyled, p, text)
+import Html.Styled exposing (Html, code, p, text)
 import Html.Styled.Attributes exposing (css)
+import HtmlUtils exposing (viewCode)
 import Styles exposing (codeStyles)
-import SyntaxHighlight
 
 
 requirement : Int -> Html msg
@@ -91,13 +90,3 @@ requirement problemNumber =
 
         _ ->
             p [] [ text "Problem requirement here" ]
-
-
-viewCode : String -> Html msg
-viewCode solutionCode =
-    div [ css [ marginTop (px 15) ] ]
-        [ SyntaxHighlight.elm solutionCode
-            |> Result.map (SyntaxHighlight.toBlockHtml Nothing)
-            |> Result.map fromUnstyled
-            |> Result.withDefault (code [] [ text "Syntax highlight error." ])
-        ]

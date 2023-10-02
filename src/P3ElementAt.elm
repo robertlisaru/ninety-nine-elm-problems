@@ -159,7 +159,7 @@ view model =
         , ProblemText.requirement model.problemNumber
         , problemInteractiveArea model
         , viewCodeButton model.showCode
-        , Utils.displayIf model.showCode <| (model.solutionCode |> ProblemText.viewCode)
+        , Utils.displayIf model.showCode <| (model.solutionCode |> HtmlUtils.viewCode)
         ]
 
 
