@@ -10,6 +10,7 @@ import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import ProblemText
+import Problems.P1LastElement
 import Problems.P3ElementAt
 import Random
 import RandomUtils
@@ -18,7 +19,6 @@ import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
 import Solutions.P14Duplicate
 import Solutions.P15RepeatElements
-import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -106,6 +106,10 @@ init flags =
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       , p15repeatTimes = 3
       , p15repeatTimesString = "3"
+      , p1model =
+            Problems.P1LastElement.initModel 1
+                "Last element"
+                (flags |> Array.get 1 |> Maybe.withDefault "-- No code found.")
       , p3model =
             Problems.P3ElementAt.initModel 3
                 "Element at"
@@ -166,6 +170,7 @@ type alias Model =
     , p12inputString : String
     , p15repeatTimesString : String
     , p15repeatTimes : Int
+    , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
     }
 
@@ -197,6 +202,7 @@ type Msg
     | P15RandomRandomRepeatTimesReady Int
     | P15InputRepeatTimes String
     | P15RepeatTimesBlur
+    | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
 
 
@@ -432,6 +438,13 @@ update msg model =
         P15RepeatTimesBlur ->
             ( { model | p15repeatTimesString = model.p15repeatTimes |> String.fromInt }, Cmd.none )
 
+        P1Msg p1msg ->
+            let
+                ( newP1model, p1cmd ) =
+                    Problems.P1LastElement.update p1msg model.p1model
+            in
+            ( { model | p1model = newP1model }, p1cmd |> Cmd.map P1Msg )
+
         P3Msg p3msg ->
             let
                 ( newP3model, p3cmd ) =
@@ -461,6 +474,9 @@ view model =
                         |> List.map
                             (\problemName ->
                                 case problemName.number of
+                                    1 ->
+                                        Problems.P1LastElement.view model.p1model |> Html.map P1Msg
+
                                     3 ->
                                         Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
 
@@ -639,12 +655,6 @@ problemInteractiveArea model problemNumber =
     in
     div [ css problemInteractiveAreaStyles ] <|
         case problemNumber of
-            1 ->
-                [ basicListInput
-                , label [] [ text "Last element is: " ]
-                , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
-                ]
-
             2 ->
                 [ basicListInput
                 , label [] [ text "Penultimate element is: " ]
