@@ -9,8 +9,8 @@ import Html.Styled.Attributes exposing (css, href, id, maxlength, placeholder, v
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
-import P3ElementAt
 import ProblemText
+import Problems.P3ElementAt
 import Random
 import RandomUtils
 import Solutions.P10RunLengths
@@ -107,7 +107,7 @@ init flags =
       , p15repeatTimes = 3
       , p15repeatTimesString = "3"
       , p3model =
-            P3ElementAt.initModel 3
+            Problems.P3ElementAt.initModel 3
                 "Element at"
                 (flags |> Array.get 3 |> Maybe.withDefault "-- No code found.")
       }
@@ -166,7 +166,7 @@ type alias Model =
     , p12inputString : String
     , p15repeatTimesString : String
     , p15repeatTimes : Int
-    , p3model : P3ElementAt.Model
+    , p3model : Problems.P3ElementAt.Model
     }
 
 
@@ -197,7 +197,7 @@ type Msg
     | P15RandomRandomRepeatTimesReady Int
     | P15InputRepeatTimes String
     | P15RepeatTimesBlur
-    | P3Msg P3ElementAt.Msg
+    | P3Msg Problems.P3ElementAt.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -435,7 +435,7 @@ update msg model =
         P3Msg p3msg ->
             let
                 ( newP3model, p3cmd ) =
-                    P3ElementAt.update p3msg model.p3model
+                    Problems.P3ElementAt.update p3msg model.p3model
             in
             ( { model | p3model = newP3model }, p3cmd |> Cmd.map P3Msg )
 
@@ -462,7 +462,7 @@ view model =
                             (\problemName ->
                                 case problemName.number of
                                     3 ->
-                                        P3ElementAt.view model.p3model |> Html.map P3Msg
+                                        Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
 
                                     _ ->
                                         viewProblem model problemName
