@@ -4,30 +4,12 @@ import Array exposing (Array)
 import Browser
 import Css exposing (..)
 import DecoderUtils
-import Html.Styled
-    exposing
-        ( Html
-        , a
-        , button
-        , code
-        , div
-        , fromUnstyled
-        , h1
-        , h2
-        , h3
-        , header
-        , input
-        , label
-        , li
-        , nav
-        , span
-        , text
-        , toUnstyled
-        , ul
-        )
+import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, placeholder, value)
-import Html.Styled.Events exposing (onBlur, onClick, onInput)
+import Html.Styled.Events exposing (onBlur, onInput)
+import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
+import P3ElementAt
 import ProblemText
 import Random
 import RandomUtils
@@ -38,7 +20,6 @@ import Solutions.P14Duplicate
 import Solutions.P15RepeatElements
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
-import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
@@ -47,8 +28,7 @@ import Solutions.P8NoDupes
 import Solutions.P9Pack
 import Styles
     exposing
-        ( buttonStyles
-        , codeStyles
+        ( codeStyles
         , genericStylesNode
         , headerStyles
         , leftContentStyles
@@ -116,8 +96,6 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p3Index = 5
-      , p3IndexString = "5"
       , p7nestedList = p7nestedList
       , p7inputString = p7nestedList |> Utils.nestedListToString
       , p10listOfLists = p10listOfLists
@@ -126,6 +104,10 @@ init flags =
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       , p15repeatTimes = 3
       , p15repeatTimesString = "3"
+      , p3model =
+            P3ElementAt.initModel 3
+                "Element at"
+                (flags |> Array.get 3 |> Maybe.withDefault "-- No code found.")
       }
     , Cmd.none
     )
@@ -174,8 +156,6 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p3Index : Int
-    , p3IndexString : String
     , p7nestedList : NestedList Int
     , p7inputString : String
     , p10listOfLists : List (List Int)
@@ -184,6 +164,7 @@ type alias Model =
     , p12inputString : String
     , p15repeatTimesString : String
     , p15repeatTimes : Int
+    , p3model : P3ElementAt.Model
     }
 
 
@@ -197,10 +178,6 @@ type Msg
     | InputUpdate Int String
     | InputBlur Int
     | ShowCodeToggle Int
-    | P3GenerateRandomIndex
-    | P3RandomIndexReady Int
-    | P3IndexInput String
-    | P3IndexBlur
     | P7InputUpdate String
     | P7InputBlur
     | P7GenerateRandomNestedList
@@ -218,6 +195,7 @@ type Msg
     | P15RandomRandomRepeatTimesReady Int
     | P15InputRepeatTimes String
     | P15RepeatTimesBlur
+    | P3Msg P3ElementAt.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -299,40 +277,6 @@ update msg model =
                     model.showCode |> Array.get problemNumber |> Maybe.map not |> Maybe.withDefault False
             in
             ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
-
-        P3GenerateRandomIndex ->
-            ( model
-            , Random.generate P3RandomIndexReady
-                (Random.int 1 (model.inputLists |> Array.get 3 |> Maybe.map List.length |> Maybe.withDefault 10))
-            )
-
-        P3RandomIndexReady randomIndex ->
-            ( { model | p3Index = randomIndex, p3IndexString = randomIndex |> String.fromInt }, Cmd.none )
-
-        P3IndexInput input ->
-            let
-                decodeResult =
-                    Decode.decodeString Decode.int input
-
-                newIndex =
-                    case decodeResult of
-                        Result.Ok list ->
-                            list
-
-                        Err _ ->
-                            model.p3Index
-            in
-            ( { model
-                | p3IndexString = input
-                , p3Index = newIndex
-              }
-            , Cmd.none
-            )
-
-        P3IndexBlur ->
-            ( { model | p3IndexString = model.p3Index |> String.fromInt }
-            , Cmd.none
-            )
 
         P7InputUpdate input ->
             let
@@ -486,6 +430,13 @@ update msg model =
         P15RepeatTimesBlur ->
             ( { model | p15repeatTimesString = model.p15repeatTimes |> String.fromInt }, Cmd.none )
 
+        P3Msg p3msg ->
+            let
+                ( newP3model, p3cmd ) =
+                    P3ElementAt.update p3msg model.p3model
+            in
+            ( { model | p3model = newP3model }, p3cmd |> Cmd.map P3Msg )
+
 
 
 -- VIEW
@@ -503,7 +454,18 @@ view model =
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ]
                 [ appIntroView
-                , ul [ css problemListStyles ] <| (problemNames |> List.map (viewProblem model))
+                , ul [ css problemListStyles ] <|
+                    (problemNames
+                        |> List.map
+                            (\problemName ->
+                                case problemName.number of
+                                    3 ->
+                                        P3ElementAt.view model.p3model |> Html.map P3Msg
+
+                                    _ ->
+                                        viewProblem model problemName
+                            )
+                    )
                 ]
             , sideBarView
                 (problemNames
@@ -620,21 +582,6 @@ sideBarView filteredProblems searchKeyWord =
         ]
 
 
-niceButton : Html msg -> String -> msg -> Html msg
-niceButton icon label onClickMsg =
-    button
-        [ css buttonStyles, onClick onClickMsg ]
-        [ icon
-        , if label /= "" then
-            span
-                [ css [ marginLeft (em 0.2) ] ]
-                [ text label ]
-
-          else
-            text ""
-        ]
-
-
 viewProblem : Model -> ProblemName -> Html Msg
 viewProblem model problem =
     let
@@ -710,29 +657,6 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Penultimate element is: " ]
                 , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
-                ]
-
-            3 ->
-                let
-                    p3IndexInput =
-                        div
-                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Index: " ]
-                            , input
-                                [ css [ width (em 3), marginRight (px 8) ]
-                                , onInput P3IndexInput
-                                , onBlur P3IndexBlur
-                                , value model.p3IndexString
-                                , maxlength 3
-                                ]
-                                []
-                            , niceButton SvgItems.dice "Random" P3GenerateRandomIndex
-                            ]
-                in
-                [ basicListInput
-                , p3IndexInput
-                , label [] [ text "Indexed element is: " ]
-                , displayResult (Solutions.P3ElementAt.elementAt model.p3Index) (Utils.maybeToString String.fromInt)
                 ]
 
             4 ->

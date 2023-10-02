@@ -5,6 +5,8 @@ module Styles exposing
     , headerStyles
     , leftContentStyles
     , linkStyles
+    , listInputAreaStyles
+    , listInputStyles
     , navStyles
     , pageContainerStyles
     , problemInteractiveAreaStyles
@@ -120,6 +122,20 @@ problemInteractiveAreaStyles =
     , backgroundColor (hex "#fdfdfd")
     , marginBottom (px 15)
     ]
+
+
+listInputAreaStyles : List Style
+listInputAreaStyles =
+    [ displayFlex
+    , marginBottom (px 15)
+    , height (px 32)
+    , alignItems center
+    ]
+
+
+listInputStyles : List Style
+listInputStyles =
+    [ flex (int 1), marginRight (px 8) ]
 
 
 codeStyles : List Style
