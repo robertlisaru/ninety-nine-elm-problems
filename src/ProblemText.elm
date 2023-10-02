@@ -66,9 +66,5 @@ requirement problemNumber =
             p []
                 [ text "Duplicate each element of a list." ]
 
-        15 ->
-            p []
-                [ text "Repeat each element of a list a given number of times." ]
-
         _ ->
             p [] [ text "Problem requirement here" ]

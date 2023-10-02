@@ -5,11 +5,12 @@ import Browser
 import Css exposing (..)
 import DecoderUtils
 import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, span, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, href, id, maxlength, placeholder, value)
+import Html.Styled.Attributes exposing (css, href, id, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import ProblemText
+import Problems.P15RepeatElements
 import Problems.P1LastElement
 import Problems.P3ElementAt
 import Random
@@ -18,7 +19,6 @@ import Solutions.P10RunLengths
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
 import Solutions.P14Duplicate
-import Solutions.P15RepeatElements
 import Solutions.P2Penultimate
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -76,7 +76,6 @@ init flags =
                 |> Array.set 9 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
-                |> Array.set 15 [ 1, 2, 3 ]
 
         p7nestedList =
             SubList
@@ -104,8 +103,6 @@ init flags =
       , p10inputString = p10listOfLists |> Utils.listOfListsToString
       , p12rleCodes = p12rleCodes
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
-      , p15repeatTimes = 3
-      , p15repeatTimesString = "3"
       , p1model =
             Problems.P1LastElement.initModel 1
                 "Last element"
@@ -114,6 +111,10 @@ init flags =
             Problems.P3ElementAt.initModel 3
                 "Element at"
                 (flags |> Array.get 3 |> Maybe.withDefault "-- No code found.")
+      , p15model =
+            Problems.P15RepeatElements.initModel 15
+                "Repeat elements"
+                (flags |> Array.get 15 |> Maybe.withDefault "-- No code found.")
       }
     , Cmd.none
     )
@@ -168,10 +169,9 @@ type alias Model =
     , p10inputString : String
     , p12rleCodes : List (RleCode Int)
     , p12inputString : String
-    , p15repeatTimesString : String
-    , p15repeatTimes : Int
     , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
+    , p15model : Problems.P15RepeatElements.Model
     }
 
 
@@ -198,12 +198,9 @@ type Msg
     | P12GenerateRandomRleCodes
     | P12RleCodesReady (List (RleCode Int))
     | SearchProblem String
-    | P15GenerateRandomRepeatTimes
-    | P15RandomRandomRepeatTimesReady Int
-    | P15InputRepeatTimes String
-    | P15RepeatTimesBlur
     | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
+    | P15Msg Problems.P15RepeatElements.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -220,9 +217,6 @@ generateRandomListCmd problemNumber =
 
         11 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
-
-        15 ->
-            Random.generate (RandomListReady problemNumber) (RandomUtils.randomList 5)
 
         _ ->
             Random.generate (RandomListReady problemNumber) (RandomUtils.randomList 10)
@@ -404,40 +398,6 @@ update msg model =
             , Cmd.none
             )
 
-        P15GenerateRandomRepeatTimes ->
-            ( model, Random.generate P15RandomRandomRepeatTimesReady (Random.int 0 3) )
-
-        P15RandomRandomRepeatTimesReady randomRepeatTimes ->
-            ( { model
-                | p15repeatTimes = randomRepeatTimes
-                , p15repeatTimesString = randomRepeatTimes |> String.fromInt
-              }
-            , Cmd.none
-            )
-
-        P15InputRepeatTimes input ->
-            let
-                decodeResult =
-                    Decode.decodeString Decode.int input
-
-                newRepeatTimes =
-                    case decodeResult of
-                        Result.Ok list ->
-                            list
-
-                        Err _ ->
-                            model.p15repeatTimes
-            in
-            ( { model
-                | p15repeatTimesString = input
-                , p15repeatTimes = newRepeatTimes
-              }
-            , Cmd.none
-            )
-
-        P15RepeatTimesBlur ->
-            ( { model | p15repeatTimesString = model.p15repeatTimes |> String.fromInt }, Cmd.none )
-
         P1Msg p1msg ->
             let
                 ( newP1model, p1cmd ) =
@@ -451,6 +411,13 @@ update msg model =
                     Problems.P3ElementAt.update p3msg model.p3model
             in
             ( { model | p3model = newP3model }, p3cmd |> Cmd.map P3Msg )
+
+        P15Msg p15msg ->
+            let
+                ( newP15model, p15cmd ) =
+                    Problems.P15RepeatElements.update p15msg model.p15model
+            in
+            ( { model | p15model = newP15model }, p15cmd |> Cmd.map P15Msg )
 
 
 
@@ -479,6 +446,9 @@ view model =
 
                                     3 ->
                                         Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
+
+                                    15 ->
+                                        Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
 
                                     _ ->
                                         viewProblem model problemName
@@ -779,29 +749,6 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Duplicated: " ]
                 , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
-                ]
-
-            15 ->
-                let
-                    repeatTimesInput =
-                        div
-                            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Repeat times: " ]
-                            , input
-                                [ css [ width (em 3), marginRight (px 8) ]
-                                , onInput P15InputRepeatTimes
-                                , onBlur P15RepeatTimesBlur
-                                , value model.p15repeatTimesString
-                                , maxlength 3
-                                ]
-                                []
-                            , niceButton SvgItems.dice "Random" P15GenerateRandomRepeatTimes
-                            ]
-                in
-                [ basicListInput
-                , repeatTimesInput
-                , label [] [ text "Repeated elements: " ]
-                , displayResult (Solutions.P15RepeatElements.repeatElements model.p15repeatTimes) (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->
