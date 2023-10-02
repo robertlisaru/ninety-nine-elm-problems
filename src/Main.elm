@@ -33,6 +33,8 @@ import Styles
         , headerStyles
         , leftContentStyles
         , linkStyles
+        , listInputAreaStyles
+        , listInputStyles
         , navStyles
         , pageContainerStyles
         , problemInteractiveAreaStyles
@@ -613,16 +615,6 @@ viewProblem model problem =
 problemInteractiveArea : Model -> Int -> Html Msg
 problemInteractiveArea model problemNumber =
     let
-        listInputAreaStyles =
-            [ displayFlex
-            , marginBottom (px 15)
-            , height (px 32)
-            , alignItems center
-            ]
-
-        listInputStyles =
-            [ flex (int 1), marginRight (px 8) ]
-
         basicListInput =
             div
                 [ css listInputAreaStyles ]
