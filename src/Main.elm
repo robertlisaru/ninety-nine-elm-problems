@@ -474,7 +474,7 @@ update msg model =
                             list
 
                         Err _ ->
-                            model.p3Index
+                            model.p15repeatTimes
             in
             ( { model
                 | p15repeatTimesString = input
