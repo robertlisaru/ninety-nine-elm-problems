@@ -27,13 +27,6 @@ requirement problemNumber =
                 , text " to find the next to last element of a list."
                 ]
 
-        3 ->
-            p []
-                [ text "Implement the function "
-                , code [ css codeStyles ] [ text "elementAt" ]
-                , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
-                ]
-
         4 ->
             p []
                 [ text "Elm provides the function "

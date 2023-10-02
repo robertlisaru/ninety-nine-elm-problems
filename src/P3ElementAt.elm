@@ -1,12 +1,11 @@
 module P3ElementAt exposing (Model, Msg, initModel, update, view)
 
 import Css exposing (..)
-import Html.Styled exposing (Html, code, div, h3, input, label, li, text)
+import Html.Styled exposing (Html, code, div, h3, input, label, li, p, text)
 import Html.Styled.Attributes exposing (css, id, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
-import ProblemText
 import Random
 import RandomUtils
 import Solutions.P3ElementAt
@@ -156,7 +155,11 @@ view model =
     li
         [ css problemStyles, id (model.problemNumber |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt model.problemNumber ++ ". " ++ model.problemTitle ]
-        , ProblemText.requirement model.problemNumber
+        , p []
+            [ text "Implement the function "
+            , code [ css codeStyles ] [ text "elementAt" ]
+            , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
+            ]
         , problemInteractiveArea model
         , viewCodeButton model.showCode
         , Utils.displayIf model.showCode <| (model.solutionCode |> HtmlUtils.viewCode)
