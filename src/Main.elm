@@ -192,36 +192,36 @@ type alias Model =
 
 
 type Msg
-    = RequestRandomList Int
+    = GenerateRandomList Int
     | RandomListReady Int (List Int)
     | InputUpdate Int String
     | InputBlur Int
     | ShowCodeToggle Int
-    | P3RequestRandomIndex
+    | P3GenerateRandomIndex
     | P3RandomIndexReady Int
     | P3IndexInput String
     | P3IndexBlur
     | P7InputUpdate String
     | P7InputBlur
-    | P7RequestRandomNestedList
+    | P7GenerateRandomNestedList
     | P7RandomNestedListReady (NestedList Int)
     | P10InputUpdate String
     | P10InputBlur
-    | P10RequestRandomListOfLists
+    | P10GenerateRandomListOfLists
     | P10RandomListOfListsReady (List (List Int))
     | P12InputUpdate String
     | P12InputBlur
-    | P12RequestRandomRleCodes
+    | P12GenerateRandomRleCodes
     | P12RleCodesReady (List (RleCode Int))
     | SearchProblem String
-    | P15RequestRandomRepeatTimes
+    | P15GenerateRandomRepeatTimes
     | P15RandomRandomRepeatTimesReady Int
     | P15InputRepeatTimes String
     | P15RepeatTimesBlur
 
 
-requestRandomListCmd : Int -> Cmd Msg
-requestRandomListCmd problemNumber =
+generateRandomListCmd : Int -> Cmd Msg
+generateRandomListCmd problemNumber =
     case problemNumber of
         6 ->
             Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
@@ -245,8 +245,8 @@ requestRandomListCmd problemNumber =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        RequestRandomList problemNumber ->
-            ( model, requestRandomListCmd problemNumber )
+        GenerateRandomList problemNumber ->
+            ( model, generateRandomListCmd problemNumber )
 
         RandomListReady problemNumber randomList ->
             ( { model
@@ -300,7 +300,7 @@ update msg model =
             in
             ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
 
-        P3RequestRandomIndex ->
+        P3GenerateRandomIndex ->
             ( model
             , Random.generate P3RandomIndexReady
                 (Random.int 1 (model.inputLists |> Array.get 3 |> Maybe.map List.length |> Maybe.withDefault 10))
@@ -359,7 +359,7 @@ update msg model =
             , Cmd.none
             )
 
-        P7RequestRandomNestedList ->
+        P7GenerateRandomNestedList ->
             ( model
             , Random.generate P7RandomNestedListReady (RandomUtils.nestedListGenerator 1.0)
             )
@@ -397,7 +397,7 @@ update msg model =
             , Cmd.none
             )
 
-        P10RequestRandomListOfLists ->
+        P10GenerateRandomListOfLists ->
             ( model
             , Random.generate P10RandomListOfListsReady (RandomUtils.duplicateSequences |> Random.map Solutions.P9Pack.pack)
             )
@@ -439,7 +439,7 @@ update msg model =
             , Cmd.none
             )
 
-        P12RequestRandomRleCodes ->
+        P12GenerateRandomRleCodes ->
             ( model
             , Random.generate P12RleCodesReady (RandomUtils.duplicateSequences |> Random.map Solutions.P11RleEncode.rleEncode)
             )
@@ -452,7 +452,7 @@ update msg model =
             , Cmd.none
             )
 
-        P15RequestRandomRepeatTimes ->
+        P15GenerateRandomRepeatTimes ->
             ( model, Random.generate P15RandomRandomRepeatTimesReady (Random.int 0 3) )
 
         P15RandomRandomRepeatTimesReady randomRepeatTimes ->
@@ -687,7 +687,7 @@ problemInteractiveArea model problemNumber =
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
-                , niceButton SvgItems.dice "Random" (RequestRandomList problemNumber)
+                , niceButton SvgItems.dice "Random" (GenerateRandomList problemNumber)
                 ]
 
         displayResult basicListFunc toString =
@@ -726,7 +726,7 @@ problemInteractiveArea model problemNumber =
                                 , maxlength 3
                                 ]
                                 []
-                            , niceButton SvgItems.dice "Random" P3RequestRandomIndex
+                            , niceButton SvgItems.dice "Random" P3GenerateRandomIndex
                             ]
                 in
                 [ basicListInput
@@ -766,7 +766,7 @@ problemInteractiveArea model problemNumber =
                                 , value model.p7inputString
                                 ]
                                 []
-                            , niceButton SvgItems.dice "Random" P7RequestRandomNestedList
+                            , niceButton SvgItems.dice "Random" P7GenerateRandomNestedList
                             ]
                 in
                 [ nestedListInput
@@ -804,7 +804,7 @@ problemInteractiveArea model problemNumber =
                                 , value model.p10inputString
                                 ]
                                 []
-                            , niceButton SvgItems.dice "Random" P10RequestRandomListOfLists
+                            , niceButton SvgItems.dice "Random" P10GenerateRandomListOfLists
                             ]
                 in
                 [ listOfListsInput
@@ -836,7 +836,7 @@ problemInteractiveArea model problemNumber =
                                 , value model.p12inputString
                                 ]
                                 []
-                            , niceButton SvgItems.dice "Random" P12RequestRandomRleCodes
+                            , niceButton SvgItems.dice "Random" P12GenerateRandomRleCodes
                             ]
                 in
                 [ rleCodesInput
@@ -869,7 +869,7 @@ problemInteractiveArea model problemNumber =
                                 , maxlength 3
                                 ]
                                 []
-                            , niceButton SvgItems.dice "Random" P15RequestRandomRepeatTimes
+                            , niceButton SvgItems.dice "Random" P15GenerateRandomRepeatTimes
                             ]
                 in
                 [ basicListInput
