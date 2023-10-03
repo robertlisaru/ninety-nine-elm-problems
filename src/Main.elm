@@ -13,6 +13,7 @@ import ProblemText
 import Problems.P15RepeatElements
 import Problems.P1LastElement
 import Problems.P3ElementAt
+import Problems.P7FlattenNestedList
 import Random
 import RandomUtils
 import Solutions.P10RunLengths
@@ -23,7 +24,6 @@ import Solutions.P2Penultimate
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
-import Solutions.P7FlattenNestedList exposing (NestedList(..))
 import Solutions.P8NoDupes
 import Solutions.P9Pack
 import Styles
@@ -77,14 +77,6 @@ init flags =
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
 
-        p7nestedList =
-            SubList
-                [ Elem 1
-                , SubList [ SubList [ Elem 2, SubList [ Elem 3, Elem 4 ] ], Elem 5 ]
-                , Elem 6
-                , SubList [ Elem 7, Elem 8, Elem 9 ]
-                ]
-
         p10listOfLists =
             [ [ 1, 1 ], [ 2, 2, 2 ] ]
 
@@ -110,14 +102,13 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p7nestedList = p7nestedList
-      , p7inputString = p7nestedList |> Utils.nestedListToString
       , p10listOfLists = p10listOfLists
       , p10inputString = p10listOfLists |> Utils.listOfListsToString
       , p12rleCodes = p12rleCodes
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       , p1model = Problems.P1LastElement.initModel 1 (problemTitle 1) (solutionCode 1)
       , p3model = Problems.P3ElementAt.initModel 3 (problemTitle 3) (solutionCode 3)
+      , p7model = Problems.P7FlattenNestedList.initModel 7 (problemTitle 7) (solutionCode 7)
       , p15model = Problems.P15RepeatElements.initModel 15 (problemTitle 15) (solutionCode 15)
       }
     , Cmd.none
@@ -167,14 +158,13 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p7nestedList : NestedList Int
-    , p7inputString : String
     , p10listOfLists : List (List Int)
     , p10inputString : String
     , p12rleCodes : List (RleCode Int)
     , p12inputString : String
     , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
+    , p7model : Problems.P7FlattenNestedList.Model
     , p15model : Problems.P15RepeatElements.Model
     }
 
@@ -189,10 +179,6 @@ type Msg
     | InputUpdate Int String
     | InputBlur Int
     | ShowCodeToggle Int
-    | P7InputUpdate String
-    | P7InputBlur
-    | P7GenerateRandomNestedList
-    | P7RandomNestedListReady (NestedList Int)
     | P10InputUpdate String
     | P10InputBlur
     | P10GenerateRandomListOfLists
@@ -205,6 +191,7 @@ type Msg
     | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
     | P15Msg Problems.P15RepeatElements.Msg
+    | P7Msg Problems.P7FlattenNestedList.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -283,44 +270,6 @@ update msg model =
                     model.showCode |> Array.get problemNumber |> Maybe.map not |> Maybe.withDefault False
             in
             ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
-
-        P7InputUpdate input ->
-            let
-                decodeResult =
-                    Decode.decodeString DecoderUtils.nestedListDecoder input
-
-                newNestedList =
-                    case decodeResult of
-                        Result.Ok nestedList ->
-                            nestedList
-
-                        Err _ ->
-                            model.p7nestedList
-            in
-            ( { model
-                | p7inputString = input
-                , p7nestedList = newNestedList
-              }
-            , Cmd.none
-            )
-
-        P7InputBlur ->
-            ( { model | p7inputString = model.p7nestedList |> Utils.nestedListToString }
-            , Cmd.none
-            )
-
-        P7GenerateRandomNestedList ->
-            ( model
-            , Random.generate P7RandomNestedListReady (RandomUtils.nestedListGenerator 1.0)
-            )
-
-        P7RandomNestedListReady nestedList ->
-            ( { model
-                | p7nestedList = nestedList
-                , p7inputString = nestedList |> Utils.nestedListToString
-              }
-            , Cmd.none
-            )
 
         P10InputUpdate input ->
             let
@@ -423,6 +372,13 @@ update msg model =
             in
             ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
 
+        P7Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    Problems.P7FlattenNestedList.update problemMsg model.p7model
+            in
+            ( { model | p7model = newProblemModel }, problemCmd |> Cmd.map P7Msg )
+
 
 
 -- VIEW
@@ -450,6 +406,9 @@ view model =
 
                                     3 ->
                                         Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
+
+                                    7 ->
+                                        Problems.P7FlattenNestedList.view model.p7model |> Html.map P7Msg
 
                                     15 ->
                                         Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
@@ -651,32 +610,6 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Is palindrome: " ]
                 , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
-                ]
-
-            7 ->
-                let
-                    nestedListInput =
-                        div
-                            [ css listInputAreaStyles ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
-                            , input
-                                [ css listInputStyles
-                                , onInput P7InputUpdate
-                                , onBlur P7InputBlur
-                                , value model.p7inputString
-                                ]
-                                []
-                            , niceButton SvgItems.dice "Random" P7GenerateRandomNestedList
-                            ]
-                in
-                [ nestedListInput
-                , label [] [ text "Flattened list: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P7FlattenNestedList.flatten model.p7nestedList
-                            |> Utils.listToString String.fromInt ", "
-                        )
-                    ]
                 ]
 
             8 ->
