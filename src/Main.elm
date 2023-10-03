@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), ProblemName, main)
+module Main exposing (Model, Msg(..), ProblemHeader, main)
 
 import Array exposing (Array)
 import Browser
@@ -91,6 +91,19 @@ init flags =
         p12rleCodes : List (RleCode Int)
         p12rleCodes =
             [ Run 2 1, Run 3 2 ]
+
+        solutionCode problemNumber =
+            flags
+                |> Array.get problemNumber
+                |> Maybe.withDefault
+                    ("-- No code found for problem " ++ String.fromInt problemNumber)
+
+        problemTitle problemNumber =
+            problemHeaders
+                |> List.filter (\problemHeader -> problemHeader.number == problemNumber)
+                |> List.map .title
+                |> List.head
+                |> Maybe.withDefault "Untitled"
     in
     ( { searchKeyWord = ""
       , inputLists = inputLists
@@ -103,18 +116,9 @@ init flags =
       , p10inputString = p10listOfLists |> Utils.listOfListsToString
       , p12rleCodes = p12rleCodes
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
-      , p1model =
-            Problems.P1LastElement.initModel 1
-                "Last element"
-                (flags |> Array.get 1 |> Maybe.withDefault "-- No code found.")
-      , p3model =
-            Problems.P3ElementAt.initModel 3
-                "Element at"
-                (flags |> Array.get 3 |> Maybe.withDefault "-- No code found.")
-      , p15model =
-            Problems.P15RepeatElements.initModel 15
-                "Repeat elements"
-                (flags |> Array.get 15 |> Maybe.withDefault "-- No code found.")
+      , p1model = Problems.P1LastElement.initModel 1 (problemTitle 1) (solutionCode 1)
+      , p3model = Problems.P3ElementAt.initModel 3 (problemTitle 3) (solutionCode 3)
+      , p15model = Problems.P15RepeatElements.initModel 15 (problemTitle 15) (solutionCode 15)
       }
     , Cmd.none
     )
@@ -124,14 +128,14 @@ init flags =
 -- MODEL
 
 
-type alias ProblemName =
+type alias ProblemHeader =
     { number : Int
     , title : String
     }
 
 
-problemNames : List ProblemName
-problemNames =
+problemHeaders : List ProblemHeader
+problemHeaders =
     [ { number = 1, title = "Last element" }
     , { number = 2, title = "Penultimate" }
     , { number = 3, title = "Element at" }
@@ -398,26 +402,26 @@ update msg model =
             , Cmd.none
             )
 
-        P1Msg p1msg ->
+        P1Msg problemMsg ->
             let
-                ( newP1model, p1cmd ) =
-                    Problems.P1LastElement.update p1msg model.p1model
+                ( newProblemModel, problemCmd ) =
+                    Problems.P1LastElement.update problemMsg model.p1model
             in
-            ( { model | p1model = newP1model }, p1cmd |> Cmd.map P1Msg )
+            ( { model | p1model = newProblemModel }, problemCmd |> Cmd.map P1Msg )
 
-        P3Msg p3msg ->
+        P3Msg problemMsg ->
             let
-                ( newP3model, p3cmd ) =
-                    Problems.P3ElementAt.update p3msg model.p3model
+                ( newProblemModel, problemCmd ) =
+                    Problems.P3ElementAt.update problemMsg model.p3model
             in
-            ( { model | p3model = newP3model }, p3cmd |> Cmd.map P3Msg )
+            ( { model | p3model = newProblemModel }, problemCmd |> Cmd.map P3Msg )
 
-        P15Msg p15msg ->
+        P15Msg problemMsg ->
             let
-                ( newP15model, p15cmd ) =
-                    Problems.P15RepeatElements.update p15msg model.p15model
+                ( newProblemModel, problemCmd ) =
+                    Problems.P15RepeatElements.update problemMsg model.p15model
             in
-            ( { model | p15model = newP15model }, p15cmd |> Cmd.map P15Msg )
+            ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
 
 
 
@@ -437,10 +441,10 @@ view model =
             [ div [ css leftContentStyles ]
                 [ appIntroView
                 , ul [ css problemListStyles ] <|
-                    (problemNames
+                    (problemHeaders
                         |> List.map
-                            (\problemName ->
-                                case problemName.number of
+                            (\problemHeader ->
+                                case problemHeader.number of
                                     1 ->
                                         Problems.P1LastElement.view model.p1model |> Html.map P1Msg
 
@@ -451,12 +455,12 @@ view model =
                                         Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
 
                                     _ ->
-                                        viewProblem model problemName
+                                        viewBasicProblem model problemHeader
                             )
                     )
                 ]
             , sideBarView
-                (problemNames
+                (problemHeaders
                     |> List.filter
                         (\problem ->
                             (String.fromInt problem.number ++ ". " ++ problem.title)
@@ -518,7 +522,7 @@ appIntroView =
         ]
 
 
-sideBarView : List ProblemName -> String -> Html Msg
+sideBarView : List ProblemHeader -> String -> Html Msg
 sideBarView filteredProblems searchKeyWord =
     let
         linkItem url label =
@@ -570,8 +574,8 @@ sideBarView filteredProblems searchKeyWord =
         ]
 
 
-viewProblem : Model -> ProblemName -> Html Msg
-viewProblem model problem =
+viewBasicProblem : Model -> ProblemHeader -> Html Msg
+viewBasicProblem model problem =
     let
         viewCodeButton showCode problemNumber =
             niceButton SvgItems.elmColoredLogo
