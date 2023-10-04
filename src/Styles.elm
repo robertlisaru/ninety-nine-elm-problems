@@ -4,9 +4,9 @@ module Styles exposing
     , genericStylesNode
     , headerStyles
     , inputLabelStyles
+    , inputRowStyles
     , leftContentStyles
     , linkStyles
-    , listInputAreaStyles
     , listInputStyles
     , navStyles
     , pageContainerStyles
@@ -125,11 +125,10 @@ problemInteractiveAreaStyles =
     ]
 
 
-listInputAreaStyles : List Style
-listInputAreaStyles =
+inputRowStyles : List Style
+inputRowStyles =
     [ displayFlex
     , marginBottom (px 15)
-    , height (px 32)
     , alignItems center
     ]
 

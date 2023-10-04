@@ -9,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -100,7 +100,7 @@ specialProblemInteractiveArea : Model -> Html Msg
 specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
         [ div
-            [ css listInputAreaStyles ]
+            [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Input nested list: " ]
             , input
                 [ css listInputStyles

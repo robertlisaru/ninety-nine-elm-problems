@@ -31,9 +31,9 @@ import Styles
         , genericStylesNode
         , headerStyles
         , inputLabelStyles
+        , inputRowStyles
         , leftContentStyles
         , linkStyles
-        , listInputAreaStyles
         , listInputStyles
         , navStyles
         , pageContainerStyles
@@ -480,7 +480,7 @@ basicProblemInteractiveArea model problemNumber =
     let
         basicListInput =
             div
-                [ css listInputAreaStyles ]
+                [ css inputRowStyles ]
                 [ label [ css inputLabelStyles ] [ text "Input list: " ]
                 , input
                     [ css listInputStyles

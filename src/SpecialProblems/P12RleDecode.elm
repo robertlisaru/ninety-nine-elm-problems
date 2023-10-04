@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
-import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -97,7 +97,7 @@ specialProblemInteractiveArea : Model -> Html Msg
 specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
         [ div
-            [ css listInputAreaStyles ]
+            [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Input codes: " ]
             , input
                 [ css listInputStyles

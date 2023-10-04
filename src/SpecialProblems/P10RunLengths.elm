@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P10RunLengths
 import Solutions.P9Pack
-import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -96,7 +96,7 @@ specialProblemInteractiveArea : Model -> Html Msg
 specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
         [ div
-            [ css listInputAreaStyles ]
+            [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Input duplicates: " ]
             , input
                 [ css listInputStyles

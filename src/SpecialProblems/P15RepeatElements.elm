@@ -9,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P15RepeatElements
-import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -136,13 +136,13 @@ specialProblemInteractiveArea : Model -> Html Msg
 specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ] <|
         [ div
-            [ css listInputAreaStyles ]
+            [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Input list: " ]
             , input [ css listInputStyles, onInput DecodeInput, onBlur UpdateInput, value model.inputString ] []
             , niceButton SvgItems.dice "Random" GenerateRandomInput
             ]
         , div
-            [ css [ displayFlex, margin4 (px 15) (px 0) (px 15) (px 0), alignItems center ] ]
+            [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Repeat times: " ]
             , input
                 [ css [ width (em 3), marginRight (px 8) ]
