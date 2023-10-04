@@ -30,6 +30,7 @@ import Styles
         ( codeStyles
         , genericStylesNode
         , headerStyles
+        , inputLabelStyles
         , leftContentStyles
         , linkStyles
         , listInputAreaStyles
@@ -480,7 +481,7 @@ basicProblemInteractiveArea model problemNumber =
         basicListInput =
             div
                 [ css listInputAreaStyles ]
-                [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
+                [ label [ css inputLabelStyles ] [ text "Input list: " ]
                 , input
                     [ css listInputStyles
                     , onInput (DecodeBasicInput problemNumber)

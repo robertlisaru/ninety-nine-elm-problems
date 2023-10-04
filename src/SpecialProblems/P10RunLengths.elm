@@ -1,6 +1,5 @@
 module SpecialProblems.P10RunLengths exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
-import Css exposing (..)
 import DecoderUtils
 import Html.Styled exposing (Html, code, div, input, label, text)
 import Html.Styled.Attributes exposing (css, value)
@@ -11,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P10RunLengths
 import Solutions.P9Pack
-import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -98,7 +97,7 @@ specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
         [ div
             [ css listInputAreaStyles ]
-            [ label [ css [ marginRight (px 5) ] ] [ text "Input duplicates: " ]
+            [ label [ css inputLabelStyles ] [ text "Input duplicates: " ]
             , input
                 [ css listInputStyles
                 , onInput DecodeInput

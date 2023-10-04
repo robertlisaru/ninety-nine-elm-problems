@@ -1,6 +1,5 @@
 module SpecialProblems.P7FlattenNestedList exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
-import Css exposing (..)
 import DecoderUtils
 import Html.Styled exposing (Html, code, div, input, label, text)
 import Html.Styled.Attributes exposing (css, value)
@@ -10,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -102,7 +101,7 @@ specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
         [ div
             [ css listInputAreaStyles ]
-            [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
+            [ label [ css inputLabelStyles ] [ text "Input nested list: " ]
             , input
                 [ css listInputStyles
                 , onInput DecodeInput

@@ -3,6 +3,7 @@ module Styles exposing
     , codeStyles
     , genericStylesNode
     , headerStyles
+    , inputLabelStyles
     , leftContentStyles
     , linkStyles
     , listInputAreaStyles
@@ -136,6 +137,11 @@ listInputAreaStyles =
 listInputStyles : List Style
 listInputStyles =
     [ flex (int 1), marginRight (px 8) ]
+
+
+inputLabelStyles : List Style
+inputLabelStyles =
+    [ marginRight (px 5) ]
 
 
 codeStyles : List Style
