@@ -470,7 +470,7 @@ viewBasicProblem model problem =
         [ css problemStyles, id (problem.number |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
-        , problemInteractiveArea model problem.number
+        , basicProblemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number
         , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
             (model.solutionsCode
@@ -481,8 +481,8 @@ viewBasicProblem model problem =
         ]
 
 
-problemInteractiveArea : Model -> Int -> Html Msg
-problemInteractiveArea model problemNumber =
+basicProblemInteractiveArea : Model -> Int -> Html Msg
+basicProblemInteractiveArea model problemNumber =
     let
         basicListInput =
             div
