@@ -426,18 +426,7 @@ sideBarView searchKeyWord =
 
 viewProblems : Model -> Html Msg
 viewProblems model =
-    ul [ css problemListStyles ] <|
-        (problemHeaders
-            |> List.map
-                (\problemHeader ->
-                    case problemHeader.number of
-                        3 ->
-                            P3ElementAt.view model.p3model |> Html.map P3Msg
-
-                        _ ->
-                            viewProblem model problemHeader
-                )
-        )
+    ul [ css problemListStyles ] <| (problemHeaders |> List.map (viewProblem model))
 
 
 viewProblem : Model -> ProblemHeader -> Html Msg
@@ -458,6 +447,9 @@ viewProblem model problem =
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
         , case problem.number of
+            3 ->
+                P3ElementAt.specialProblemInteractiveArea model.p3model |> Html.map P3Msg
+
             7 ->
                 P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
 

@@ -1,15 +1,15 @@
-module SpecialProblems.P3ElementAt exposing (Model, Msg, initModel, update, view)
+module SpecialProblems.P3ElementAt exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
 import Css exposing (..)
-import Html.Styled exposing (Html, code, div, h3, input, label, li, p, text)
-import Html.Styled.Attributes exposing (css, id, maxlength, value)
+import Html.Styled exposing (Html, code, div, input, label, text)
+import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P3ElementAt
-import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles, problemStyles, problemTitleStyles)
+import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -53,8 +53,7 @@ type alias Model =
 
 
 type Msg
-    = ShowCodeToggle
-    | DecodeInput String
+    = DecodeInput String
     | UpdateInput
     | GenerateRandomInput
     | RandomInputReady (List Int)
@@ -67,9 +66,6 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ShowCodeToggle ->
-            ( { model | showCode = model.showCode |> not }, Cmd.none )
-
         DecodeInput input ->
             let
                 decodeResult =
@@ -139,35 +135,8 @@ update msg model =
             )
 
 
-view : Model -> Html Msg
-view model =
-    let
-        viewCodeButton showCode =
-            niceButton SvgItems.elmColoredLogo
-                (if showCode then
-                    "Hide code"
-
-                 else
-                    "Show code (spoiler)"
-                )
-                ShowCodeToggle
-    in
-    li
-        [ css problemStyles, id (model.problemNumber |> String.fromInt) ]
-        [ h3 [ css problemTitleStyles ] [ text <| String.fromInt model.problemNumber ++ ". " ++ model.problemTitle ]
-        , p []
-            [ text "Implement the function "
-            , code [ css codeStyles ] [ text "elementAt" ]
-            , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
-            ]
-        , problemInteractiveArea model
-        , viewCodeButton model.showCode
-        , Utils.displayIf model.showCode <| (model.solutionCode |> HtmlUtils.viewCode)
-        ]
-
-
-problemInteractiveArea : Model -> Html Msg
-problemInteractiveArea model =
+specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ] <|
         [ div
             [ css listInputAreaStyles ]
