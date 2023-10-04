@@ -130,10 +130,10 @@ type alias Model =
 
 
 type Msg
-    = GenerateBasicRandomList Int
-    | BasicRandomListReady Int (List Int)
-    | DecodeBasicInput Int String
+    = DecodeBasicInput Int String
     | UpdateBasicInput Int
+    | GenerateBasicRandomList Int
+    | BasicRandomListReady Int (List Int)
     | ShowCodeToggle Int
     | SearchProblem String
     | P3Msg P3ElementAt.Msg
