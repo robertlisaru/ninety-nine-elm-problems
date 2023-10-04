@@ -1,16 +1,16 @@
-module SpecialProblems.P7FlattenNestedList exposing (Model, Msg, initModel, update, view)
+module SpecialProblems.P7FlattenNestedList exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
 import Css exposing (..)
 import DecoderUtils
-import Html.Styled exposing (Html, code, div, h3, input, label, li, p, text)
-import Html.Styled.Attributes exposing (css, id, value)
+import Html.Styled exposing (Html, code, div, input, label, text)
+import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onBlur, onInput)
-import HtmlUtils exposing (niceButton, viewCode)
+import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles, problemStyles, problemTitleStyles)
+import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles)
 import SvgItems
 import Utils
 
@@ -49,8 +49,7 @@ type alias Model =
 
 
 type Msg
-    = ShowCodeToggle
-    | DecodeInput String
+    = DecodeInput String
     | UpdateInput
     | GenerateRandomInput
     | RandomInputReady (NestedList Int)
@@ -59,9 +58,6 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ShowCodeToggle ->
-            ( { model | showCode = model.showCode |> not }, Cmd.none )
-
         DecodeInput input ->
             let
                 decodeResult =
@@ -101,43 +97,26 @@ update msg model =
             )
 
 
-view : Model -> Html Msg
-view model =
-    li
-        [ css problemStyles, id (model.problemNumber |> String.fromInt) ]
-        [ h3 [ css problemTitleStyles ] [ text <| String.fromInt model.problemNumber ++ ". " ++ model.problemTitle ]
-        , p []
-            [ text "Flatten a nested lists into a single list. Because Lists in Elm are homogeneous we need to define what a nested list is."
-            , viewCode "type NestedList a = Elem a | List [NestedList a]"
-            ]
-        , div [ css problemInteractiveAreaStyles ]
-            [ div
-                [ css listInputAreaStyles ]
-                [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
-                , input
-                    [ css listInputStyles
-                    , onInput DecodeInput
-                    , onBlur UpdateInput
-                    , value model.inputString
-                    ]
-                    []
-                , niceButton SvgItems.dice "Random" GenerateRandomInput
+specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea model =
+    div [ css problemInteractiveAreaStyles ]
+        [ div
+            [ css listInputAreaStyles ]
+            [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
+            , input
+                [ css listInputStyles
+                , onInput DecodeInput
+                , onBlur UpdateInput
+                , value model.inputString
                 ]
-            , label [] [ text "Flattened list: " ]
-            , code [ css codeStyles ]
-                [ text <|
-                    (Solutions.P7FlattenNestedList.flatten model.nestedList
-                        |> Utils.listToString String.fromInt ", "
-                    )
-                ]
+                []
+            , niceButton SvgItems.dice "Random" GenerateRandomInput
             ]
-        , niceButton SvgItems.elmColoredLogo
-            (if model.showCode then
-                "Hide code"
-
-             else
-                "Show code (spoiler)"
-            )
-            ShowCodeToggle
-        , Utils.displayIf model.showCode <| (model.solutionCode |> HtmlUtils.viewCode)
+        , label [] [ text "Flattened list: " ]
+        , code [ css codeStyles ]
+            [ text <|
+                (Solutions.P7FlattenNestedList.flatten model.nestedList
+                    |> Utils.listToString String.fromInt ", "
+                )
+            ]
         ]

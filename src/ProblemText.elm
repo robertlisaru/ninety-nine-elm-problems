@@ -45,6 +45,12 @@ requirement problemNumber =
             p []
                 [ text "Determine if a list is a palindrome, that is, the list is identical when read forward or backward." ]
 
+        7 ->
+            p []
+                [ text "Flatten a nested lists into a single list. Because Lists in Elm are homogeneous we need to define what a nested list is."
+                , viewCode "type NestedList a = Elem a | List [NestedList a]"
+                ]
+
         8 ->
             p []
                 [ text "Write a function to remove consecutive duplicates of list elements." ]

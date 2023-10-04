@@ -434,9 +434,6 @@ viewProblems model =
                         3 ->
                             P3ElementAt.view model.p3model |> Html.map P3Msg
 
-                        7 ->
-                            P7FlattenNestedList.view model.p7model |> Html.map P7Msg
-
                         _ ->
                             viewProblem model problemHeader
                 )
@@ -461,6 +458,9 @@ viewProblem model problem =
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
         , case problem.number of
+            7 ->
+                P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
+
             10 ->
                 P10RunLengths.specialProblemInteractiveArea model.p10model |> Html.map P10Msg
 
