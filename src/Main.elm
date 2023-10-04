@@ -12,13 +12,13 @@ import ProblemText
 import Problems.P10RunLengths
 import Problems.P12RleDecode
 import Problems.P15RepeatElements
-import Problems.P1LastElement
 import Problems.P3ElementAt
 import Problems.P7FlattenNestedList
 import Random
 import RandomUtils
 import Solutions.P11RleEncode
 import Solutions.P14Duplicate
+import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -100,7 +100,6 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p1model = Problems.P1LastElement.initModel (problemInfo 1)
       , p3model = Problems.P3ElementAt.initModel (problemInfo 3)
       , p7model = Problems.P7FlattenNestedList.initModel (problemInfo 7)
       , p10model = Problems.P10RunLengths.initModel (problemInfo 10)
@@ -154,7 +153,6 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
     , p7model : Problems.P7FlattenNestedList.Model
     , p10model : Problems.P10RunLengths.Model
@@ -174,7 +172,6 @@ type Msg
     | UpdateInput Int
     | ShowCodeToggle Int
     | SearchProblem String
-    | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
     | P7Msg Problems.P7FlattenNestedList.Msg
     | P10Msg Problems.P10RunLengths.Msg
@@ -262,13 +259,6 @@ update msg model =
         SearchProblem keyWord ->
             ( { model | searchKeyWord = keyWord }, Cmd.none )
 
-        P1Msg problemMsg ->
-            let
-                ( newProblemModel, problemCmd ) =
-                    Problems.P1LastElement.update problemMsg model.p1model
-            in
-            ( { model | p1model = newProblemModel }, problemCmd |> Cmd.map P1Msg )
-
         P3Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
@@ -319,46 +309,8 @@ view model =
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
         , header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
-            [ div [ css leftContentStyles ]
-                [ appIntroView
-                , ul [ css problemListStyles ] <|
-                    (problemHeaders
-                        |> List.map
-                            (\problemHeader ->
-                                case problemHeader.number of
-                                    1 ->
-                                        Problems.P1LastElement.view model.p1model |> Html.map P1Msg
-
-                                    3 ->
-                                        Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
-
-                                    7 ->
-                                        Problems.P7FlattenNestedList.view model.p7model |> Html.map P7Msg
-
-                                    10 ->
-                                        Problems.P10RunLengths.view model.p10model |> Html.map P10Msg
-
-                                    12 ->
-                                        Problems.P12RleDecode.view model.p12model |> Html.map P12Msg
-
-                                    15 ->
-                                        Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
-
-                                    _ ->
-                                        viewBasicProblem model problemHeader
-                            )
-                    )
-                ]
-            , sideBarView
-                (problemHeaders
-                    |> List.filter
-                        (\problem ->
-                            (String.fromInt problem.number ++ ". " ++ problem.title)
-                                |> String.toLower
-                                |> String.contains (model.searchKeyWord |> String.toLower)
-                        )
-                )
-                model.searchKeyWord
+            [ div [ css leftContentStyles ] [ appIntroView, viewProblems model ]
+            , sideBarView model.searchKeyWord
             ]
         ]
             |> List.map toUnstyled
@@ -412,9 +364,18 @@ appIntroView =
         ]
 
 
-sideBarView : List ProblemHeader -> String -> Html Msg
-sideBarView filteredProblems searchKeyWord =
+sideBarView : String -> Html Msg
+sideBarView searchKeyWord =
     let
+        filteredProblems =
+            problemHeaders
+                |> List.filter
+                    (\problem ->
+                        (String.fromInt problem.number ++ ". " ++ problem.title)
+                            |> String.toLower
+                            |> String.contains (searchKeyWord |> String.toLower)
+                    )
+
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
@@ -462,6 +423,34 @@ sideBarView filteredProblems searchKeyWord =
                 ]
             ]
         ]
+
+
+viewProblems : Model -> Html Msg
+viewProblems model =
+    ul [ css problemListStyles ] <|
+        (problemHeaders
+            |> List.map
+                (\problemHeader ->
+                    case problemHeader.number of
+                        3 ->
+                            Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
+
+                        7 ->
+                            Problems.P7FlattenNestedList.view model.p7model |> Html.map P7Msg
+
+                        10 ->
+                            Problems.P10RunLengths.view model.p10model |> Html.map P10Msg
+
+                        12 ->
+                            Problems.P12RleDecode.view model.p12model |> Html.map P12Msg
+
+                        15 ->
+                            Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
+
+                        _ ->
+                            viewBasicProblem model problemHeader
+                )
+        )
 
 
 viewBasicProblem : Model -> ProblemHeader -> Html Msg
@@ -519,6 +508,12 @@ problemInteractiveArea model problemNumber =
     in
     div [ css problemInteractiveAreaStyles ] <|
         case problemNumber of
+            1 ->
+                [ basicListInput
+                , label [] [ text "Last element is: " ]
+                , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
+                ]
+
             2 ->
                 [ basicListInput
                 , label [] [ text "Penultimate element is: " ]

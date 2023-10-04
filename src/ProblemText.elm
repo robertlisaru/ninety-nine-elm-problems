@@ -9,6 +9,17 @@ import Styles exposing (codeStyles)
 requirement : Int -> Html msg
 requirement problemNumber =
     case problemNumber of
+        1 ->
+            p []
+                [ text "Write a function "
+                , code [ css codeStyles ] [ text "last" ]
+                , text " that returns the last element of a list. An empty list doesn't have a last element, therefore "
+                , code [ css codeStyles ] [ text "last" ]
+                , text " must return a "
+                , code [ css codeStyles ] [ text "Maybe" ]
+                , text "."
+                ]
+
         2 ->
             p []
                 [ text "Implement the function "
