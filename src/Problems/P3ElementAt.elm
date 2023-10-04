@@ -14,8 +14,8 @@ import SvgItems
 import Utils
 
 
-initModel : Int -> String -> String -> Model
-initModel problemNumber problemTitle solutionCode =
+initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
+initModel { problemNumber, problemTitle, solutionCode } =
     let
         inputList =
             [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]

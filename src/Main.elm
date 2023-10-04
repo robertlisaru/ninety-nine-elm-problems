@@ -88,18 +88,24 @@ init flags =
                 |> List.map .title
                 |> List.head
                 |> Maybe.withDefault "Untitled"
+
+        problemInfo problemNumber =
+            { problemNumber = problemNumber
+            , problemTitle = problemTitle problemNumber
+            , solutionCode = solutionCode problemNumber
+            }
     in
     ( { searchKeyWord = ""
       , inputLists = inputLists
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p1model = Problems.P1LastElement.initModel 1 (problemTitle 1) (solutionCode 1)
-      , p3model = Problems.P3ElementAt.initModel 3 (problemTitle 3) (solutionCode 3)
-      , p7model = Problems.P7FlattenNestedList.initModel 7 (problemTitle 7) (solutionCode 7)
-      , p10model = Problems.P10RunLengths.initModel 10 (problemTitle 10) (solutionCode 10)
-      , p12model = Problems.P12RleDecode.initModel 12 (problemTitle 12) (solutionCode 12)
-      , p15model = Problems.P15RepeatElements.initModel 15 (problemTitle 15) (solutionCode 15)
+      , p1model = Problems.P1LastElement.initModel (problemInfo 1)
+      , p3model = Problems.P3ElementAt.initModel (problemInfo 3)
+      , p7model = Problems.P7FlattenNestedList.initModel (problemInfo 7)
+      , p10model = Problems.P10RunLengths.initModel (problemInfo 10)
+      , p12model = Problems.P12RleDecode.initModel (problemInfo 12)
+      , p15model = Problems.P15RepeatElements.initModel (problemInfo 15)
       }
     , Cmd.none
     )

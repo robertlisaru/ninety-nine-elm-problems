@@ -15,8 +15,8 @@ import SvgItems
 import Utils
 
 
-initModel : Int -> String -> String -> Model
-initModel problemNumber problemTitle solutionCode =
+initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
+initModel { problemNumber, problemTitle, solutionCode } =
     let
         nestedList =
             SubList

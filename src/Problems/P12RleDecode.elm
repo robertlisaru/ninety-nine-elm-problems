@@ -16,8 +16,8 @@ import SvgItems
 import Utils
 
 
-initModel : Int -> String -> String -> Model
-initModel problemNumber problemTitle solutionCode =
+initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
+initModel { problemNumber, problemTitle, solutionCode } =
     let
         rleCodes =
             [ Run 2 1, Run 3 2 ]
