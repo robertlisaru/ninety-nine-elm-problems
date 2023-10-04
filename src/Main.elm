@@ -501,63 +501,55 @@ basicProblemInteractiveArea model problemNumber =
                 ]
     in
     div [ css problemInteractiveAreaStyles ] <|
-        case problemNumber of
-            1 ->
-                [ basicListInput
-                , label [] [ text "Last element is: " ]
-                , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
-                ]
+        basicListInput
+            :: (case problemNumber of
+                    1 ->
+                        [ label [] [ text "Last element is: " ]
+                        , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
+                        ]
 
-            2 ->
-                [ basicListInput
-                , label [] [ text "Penultimate element is: " ]
-                , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
-                ]
+                    2 ->
+                        [ label [] [ text "Penultimate element is: " ]
+                        , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
+                        ]
 
-            4 ->
-                [ basicListInput
-                , label [] [ text "Count: " ]
-                , displayResult Solutions.P4CountElements.countElements String.fromInt
-                ]
+                    4 ->
+                        [ label [] [ text "Count: " ]
+                        , displayResult Solutions.P4CountElements.countElements String.fromInt
+                        ]
 
-            5 ->
-                [ basicListInput
-                , label [] [ text "Reversed list: " ]
-                , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
-                ]
+                    5 ->
+                        [ label [] [ text "Reversed list: " ]
+                        , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
+                        ]
 
-            6 ->
-                [ basicListInput
-                , label [] [ text "Is palindrome: " ]
-                , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
-                ]
+                    6 ->
+                        [ label [] [ text "Is palindrome: " ]
+                        , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
+                        ]
 
-            8 ->
-                [ basicListInput
-                , label [] [ text "Duplicates removed: " ]
-                , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
-                ]
+                    8 ->
+                        [ label [] [ text "Duplicates removed: " ]
+                        , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
+                        ]
 
-            9 ->
-                [ basicListInput
-                , label [] [ text "Duplicates packed: " ]
-                , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
-                ]
+                    9 ->
+                        [ label [] [ text "Duplicates packed: " ]
+                        , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
+                        ]
 
-            11 ->
-                [ basicListInput
-                , label [] [ text "Encoded: " ]
-                , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
-                ]
+                    11 ->
+                        [ label [] [ text "Encoded: " ]
+                        , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
+                        ]
 
-            14 ->
-                [ basicListInput
-                , label [] [ text "Duplicated: " ]
-                , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
-                ]
+                    14 ->
+                        [ label [] [ text "Duplicated: " ]
+                        , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
+                        ]
 
-            _ ->
-                [ basicListInput
-                , label [] [ text "Result is: " ]
-                , code [ css codeStyles ] [ text "Result goes here" ]
-                ]
+                    _ ->
+                        [ label [] [ text "Result is: " ]
+                        , code [ css codeStyles ] [ text "Result goes here" ]
+                        ]
+               )
