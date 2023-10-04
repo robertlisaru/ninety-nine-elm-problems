@@ -1,4 +1,4 @@
-module Problems.P12RleDecode exposing (Model, Msg, initModel, update, view)
+module SpecialProblems.P12RleDecode exposing (Model, Msg, initModel, update, view)
 
 import Css exposing (..)
 import DecoderUtils

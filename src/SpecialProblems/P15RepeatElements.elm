@@ -1,4 +1,4 @@
-module Problems.P15RepeatElements exposing (Model, Msg, initModel, update, view)
+module SpecialProblems.P15RepeatElements exposing (Model, Msg, initModel, update, view)
 
 import Css exposing (..)
 import Html.Styled exposing (Html, code, div, h3, input, label, li, p, text)

@@ -1,16 +1,15 @@
-module Problems.P10RunLengths exposing (Model, Msg, initModel, update, view)
+module SpecialProblems.P7FlattenNestedList exposing (Model, Msg, initModel, update, view)
 
 import Css exposing (..)
 import DecoderUtils
 import Html.Styled exposing (Html, code, div, h3, input, label, li, p, text)
 import Html.Styled.Attributes exposing (css, id, value)
 import Html.Styled.Events exposing (onBlur, onInput)
-import HtmlUtils exposing (niceButton)
+import HtmlUtils exposing (niceButton, viewCode)
 import Json.Decode as Decode
 import Random
 import RandomUtils
-import Solutions.P10RunLengths
-import Solutions.P9Pack
+import Solutions.P7FlattenNestedList exposing (NestedList(..))
 import Styles exposing (codeStyles, listInputAreaStyles, listInputStyles, problemInteractiveAreaStyles, problemStyles, problemTitleStyles)
 import SvgItems
 import Utils
@@ -19,15 +18,20 @@ import Utils
 initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
 initModel { problemNumber, problemTitle, solutionCode } =
     let
-        listOfLists =
-            [ [ 1, 1 ], [ 2, 2, 2 ] ]
+        nestedList =
+            SubList
+                [ Elem 1
+                , SubList [ SubList [ Elem 2, SubList [ Elem 3, Elem 4 ] ], Elem 5 ]
+                , Elem 6
+                , SubList [ Elem 7, Elem 8, Elem 9 ]
+                ]
 
         inputString =
-            listOfLists |> Utils.listOfListsToString
+            nestedList |> Utils.nestedListToString
     in
     { problemNumber = problemNumber
     , problemTitle = problemTitle
-    , listOfLists = listOfLists
+    , nestedList = nestedList
     , inputString = inputString
     , showCode = False
     , solutionCode = solutionCode
@@ -37,10 +41,10 @@ initModel { problemNumber, problemTitle, solutionCode } =
 type alias Model =
     { problemNumber : Int
     , problemTitle : String
-    , listOfLists : List (List Int)
     , inputString : String
     , showCode : Bool
     , solutionCode : String
+    , nestedList : NestedList Int
     }
 
 
@@ -49,7 +53,7 @@ type Msg
     | DecodeInput String
     | UpdateInput
     | GenerateRandomInput
-    | RandomInputReady (List (List Int))
+    | RandomInputReady (NestedList Int)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -61,37 +65,37 @@ update msg model =
         DecodeInput input ->
             let
                 decodeResult =
-                    Decode.decodeString DecoderUtils.decodeDuplicates input
+                    Decode.decodeString DecoderUtils.nestedListDecoder input
 
-                listOfLists =
+                newNestedList =
                     case decodeResult of
-                        Result.Ok newInput_ ->
-                            newInput_
+                        Result.Ok nestedList ->
+                            nestedList
 
                         Err _ ->
-                            model.listOfLists
+                            model.nestedList
             in
             ( { model
                 | inputString = input
-                , listOfLists = listOfLists
+                , nestedList = newNestedList
               }
             , Cmd.none
             )
 
         UpdateInput ->
-            ( { model | inputString = model.listOfLists |> Utils.listOfListsToString }
+            ( { model | inputString = model.nestedList |> Utils.nestedListToString }
             , Cmd.none
             )
 
         GenerateRandomInput ->
             ( model
-            , Random.generate RandomInputReady (RandomUtils.duplicateSequences |> Random.map Solutions.P9Pack.pack)
+            , Random.generate RandomInputReady (RandomUtils.nestedListGenerator 1.0)
             )
 
-        RandomInputReady randomListOfLists ->
+        RandomInputReady randomList ->
             ( { model
-                | listOfLists = randomListOfLists
-                , inputString = randomListOfLists |> Utils.listOfListsToString
+                | nestedList = randomList
+                , inputString = randomList |> Utils.nestedListToString
               }
             , Cmd.none
             )
@@ -103,11 +107,13 @@ view model =
         [ css problemStyles, id (model.problemNumber |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt model.problemNumber ++ ". " ++ model.problemTitle ]
         , p []
-            [ text "Run-length encode a list of list to a list of tuples. Unlike lists, tuples can mix types. Use tuples (n, e) to encode a list where n is the number of duplicates of the element e." ]
+            [ text "Flatten a nested lists into a single list. Because Lists in Elm are homogeneous we need to define what a nested list is."
+            , viewCode "type NestedList a = Elem a | List [NestedList a]"
+            ]
         , div [ css problemInteractiveAreaStyles ]
             [ div
                 [ css listInputAreaStyles ]
-                [ label [ css [ marginRight (px 5) ] ] [ text "Input duplicates: " ]
+                [ label [ css [ marginRight (px 5) ] ] [ text "Input nested list: " ]
                 , input
                     [ css listInputStyles
                     , onInput DecodeInput
@@ -117,11 +123,11 @@ view model =
                     []
                 , niceButton SvgItems.dice "Random" GenerateRandomInput
                 ]
-            , label [] [ text "Run lengths: " ]
+            , label [] [ text "Flattened list: " ]
             , code [ css codeStyles ]
                 [ text <|
-                    (Solutions.P10RunLengths.runLengths model.listOfLists
-                        |> Utils.listToString Utils.tupleToString ", "
+                    (Solutions.P7FlattenNestedList.flatten model.nestedList
+                        |> Utils.listToString String.fromInt ", "
                     )
                 ]
             ]

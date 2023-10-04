@@ -9,11 +9,6 @@ import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import ProblemText
-import Problems.P10RunLengths
-import Problems.P12RleDecode
-import Problems.P15RepeatElements
-import Problems.P3ElementAt
-import Problems.P7FlattenNestedList
 import Random
 import RandomUtils
 import Solutions.P11RleEncode
@@ -25,6 +20,11 @@ import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
 import Solutions.P8NoDupes
 import Solutions.P9Pack
+import SpecialProblems.P10RunLengths as P10RunLengths
+import SpecialProblems.P12RleDecode as P12RleDecode
+import SpecialProblems.P15RepeatElements as P15RepeatElements
+import SpecialProblems.P3ElementAt as P3ElementAt
+import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
         ( codeStyles
@@ -100,11 +100,11 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p3model = Problems.P3ElementAt.initModel (problemInfo 3)
-      , p7model = Problems.P7FlattenNestedList.initModel (problemInfo 7)
-      , p10model = Problems.P10RunLengths.initModel (problemInfo 10)
-      , p12model = Problems.P12RleDecode.initModel (problemInfo 12)
-      , p15model = Problems.P15RepeatElements.initModel (problemInfo 15)
+      , p3model = P3ElementAt.initModel (problemInfo 3)
+      , p7model = P7FlattenNestedList.initModel (problemInfo 7)
+      , p10model = P10RunLengths.initModel (problemInfo 10)
+      , p12model = P12RleDecode.initModel (problemInfo 12)
+      , p15model = P15RepeatElements.initModel (problemInfo 15)
       }
     , Cmd.none
     )
@@ -153,11 +153,11 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p3model : Problems.P3ElementAt.Model
-    , p7model : Problems.P7FlattenNestedList.Model
-    , p10model : Problems.P10RunLengths.Model
-    , p12model : Problems.P12RleDecode.Model
-    , p15model : Problems.P15RepeatElements.Model
+    , p3model : P3ElementAt.Model
+    , p7model : P7FlattenNestedList.Model
+    , p10model : P10RunLengths.Model
+    , p12model : P12RleDecode.Model
+    , p15model : P15RepeatElements.Model
     }
 
 
@@ -172,11 +172,11 @@ type Msg
     | UpdateInput Int
     | ShowCodeToggle Int
     | SearchProblem String
-    | P3Msg Problems.P3ElementAt.Msg
-    | P7Msg Problems.P7FlattenNestedList.Msg
-    | P10Msg Problems.P10RunLengths.Msg
-    | P12Msg Problems.P12RleDecode.Msg
-    | P15Msg Problems.P15RepeatElements.Msg
+    | P3Msg P3ElementAt.Msg
+    | P7Msg P7FlattenNestedList.Msg
+    | P10Msg P10RunLengths.Msg
+    | P12Msg P12RleDecode.Msg
+    | P15Msg P15RepeatElements.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -262,35 +262,35 @@ update msg model =
         P3Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
-                    Problems.P3ElementAt.update problemMsg model.p3model
+                    P3ElementAt.update problemMsg model.p3model
             in
             ( { model | p3model = newProblemModel }, problemCmd |> Cmd.map P3Msg )
 
         P7Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
-                    Problems.P7FlattenNestedList.update problemMsg model.p7model
+                    P7FlattenNestedList.update problemMsg model.p7model
             in
             ( { model | p7model = newProblemModel }, problemCmd |> Cmd.map P7Msg )
 
         P10Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
-                    Problems.P10RunLengths.update problemMsg model.p10model
+                    P10RunLengths.update problemMsg model.p10model
             in
             ( { model | p10model = newProblemModel }, problemCmd |> Cmd.map P10Msg )
 
         P12Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
-                    Problems.P12RleDecode.update problemMsg model.p12model
+                    P12RleDecode.update problemMsg model.p12model
             in
             ( { model | p12model = newProblemModel }, problemCmd |> Cmd.map P12Msg )
 
         P15Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
-                    Problems.P15RepeatElements.update problemMsg model.p15model
+                    P15RepeatElements.update problemMsg model.p15model
             in
             ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
 
@@ -433,19 +433,19 @@ viewProblems model =
                 (\problemHeader ->
                     case problemHeader.number of
                         3 ->
-                            Problems.P3ElementAt.view model.p3model |> Html.map P3Msg
+                            P3ElementAt.view model.p3model |> Html.map P3Msg
 
                         7 ->
-                            Problems.P7FlattenNestedList.view model.p7model |> Html.map P7Msg
+                            P7FlattenNestedList.view model.p7model |> Html.map P7Msg
 
                         10 ->
-                            Problems.P10RunLengths.view model.p10model |> Html.map P10Msg
+                            P10RunLengths.view model.p10model |> Html.map P10Msg
 
                         12 ->
-                            Problems.P12RleDecode.view model.p12model |> Html.map P12Msg
+                            P12RleDecode.view model.p12model |> Html.map P12Msg
 
                         15 ->
-                            Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
+                            P15RepeatElements.view model.p15model |> Html.map P15Msg
 
                         _ ->
                             viewBasicProblem model problemHeader
