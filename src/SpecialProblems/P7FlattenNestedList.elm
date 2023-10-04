@@ -32,7 +32,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , nestedList = nestedList
     , inputString = inputString
-    , showCode = False
     , solutionCode = solutionCode
     }
 
@@ -41,7 +40,6 @@ type alias Model =
     { problemNumber : Int
     , problemTitle : String
     , inputString : String
-    , showCode : Bool
     , solutionCode : String
     , nestedList : NestedList Int
     }

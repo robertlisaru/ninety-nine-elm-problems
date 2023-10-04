@@ -28,7 +28,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , rleCodes = rleCodes
     , inputString = inputString
-    , showCode = False
     , solutionCode = solutionCode
     }
 
@@ -38,7 +37,6 @@ type alias Model =
     , problemTitle : String
     , rleCodes : List (RleCode Int)
     , inputString : String
-    , showCode : Bool
     , solutionCode : String
     }
 

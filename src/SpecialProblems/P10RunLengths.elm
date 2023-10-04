@@ -28,7 +28,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , listOfLists = listOfLists
     , inputString = inputString
-    , showCode = False
     , solutionCode = solutionCode
     }
 
@@ -38,7 +37,6 @@ type alias Model =
     , problemTitle : String
     , listOfLists : List (List Int)
     , inputString : String
-    , showCode : Bool
     , solutionCode : String
     }
 

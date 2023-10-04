@@ -32,7 +32,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , inputList = inputList
     , inputString = inputString
-    , showCode = False
     , solutionCode = solutionCode
     , secondaryInput = secondaryInput
     , secondaryInputString = secondaryInputString
@@ -44,7 +43,6 @@ type alias Model =
     , problemTitle : String
     , inputList : List Int
     , inputString : String
-    , showCode : Bool
     , solutionCode : String
     , secondaryInput : Int
     , secondaryInputString : String
