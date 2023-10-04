@@ -166,10 +166,10 @@ type alias Model =
 
 
 type Msg
-    = GenerateRandomList Int
-    | RandomListReady Int (List Int)
-    | DecodeInput Int String
-    | UpdateInput Int
+    = GenerateBasicRandomList Int
+    | BasicRandomListReady Int (List Int)
+    | DecodeBasicInput Int String
+    | UpdateBasicInput Int
     | ShowCodeToggle Int
     | SearchProblem String
     | P3Msg P3ElementAt.Msg
@@ -179,32 +179,31 @@ type Msg
     | P15Msg P15RepeatElements.Msg
 
 
-generateRandomListCmd : Int -> Cmd Msg
-generateRandomListCmd problemNumber =
-    case problemNumber of
-        6 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.sometimesPalindrome
-
-        8 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
-
-        9 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
-
-        11 ->
-            Random.generate (RandomListReady problemNumber) RandomUtils.duplicateSequences
-
-        _ ->
-            Random.generate (RandomListReady problemNumber) (RandomUtils.randomList 10)
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GenerateRandomList problemNumber ->
-            ( model, generateRandomListCmd problemNumber )
+        GenerateBasicRandomList problemNumber ->
+            let
+                cmd =
+                    case problemNumber of
+                        6 ->
+                            Random.generate (BasicRandomListReady problemNumber) RandomUtils.sometimesPalindrome
 
-        RandomListReady problemNumber randomList ->
+                        8 ->
+                            Random.generate (BasicRandomListReady problemNumber) RandomUtils.duplicateSequences
+
+                        9 ->
+                            Random.generate (BasicRandomListReady problemNumber) RandomUtils.duplicateSequences
+
+                        11 ->
+                            Random.generate (BasicRandomListReady problemNumber) RandomUtils.duplicateSequences
+
+                        _ ->
+                            Random.generate (BasicRandomListReady problemNumber) (RandomUtils.randomList 10)
+            in
+            ( model, cmd )
+
+        BasicRandomListReady problemNumber randomList ->
             ( { model
                 | inputLists = model.inputLists |> Array.set problemNumber randomList
                 , inputStrings =
@@ -215,7 +214,7 @@ update msg model =
             , Cmd.none
             )
 
-        DecodeInput problemNumber input ->
+        DecodeBasicInput problemNumber input ->
             let
                 decodeResult =
                     Decode.decodeString (Decode.list Decode.int) input
@@ -235,7 +234,7 @@ update msg model =
             , Cmd.none
             )
 
-        UpdateInput problemNumber ->
+        UpdateBasicInput problemNumber ->
             ( { model
                 | inputStrings =
                     model.inputStrings
@@ -444,17 +443,14 @@ viewProblems model =
                         12 ->
                             P12RleDecode.view model.p12model |> Html.map P12Msg
 
-                        15 ->
-                            P15RepeatElements.view model.p15model |> Html.map P15Msg
-
                         _ ->
-                            viewBasicProblem model problemHeader
+                            viewProblem model problemHeader
                 )
         )
 
 
-viewBasicProblem : Model -> ProblemHeader -> Html Msg
-viewBasicProblem model problem =
+viewProblem : Model -> ProblemHeader -> Html Msg
+viewProblem model problem =
     let
         viewCodeButton showCode problemNumber =
             niceButton SvgItems.elmColoredLogo
@@ -470,7 +466,12 @@ viewBasicProblem model problem =
         [ css problemStyles, id (problem.number |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
-        , basicProblemInteractiveArea model problem.number
+        , case problem.number of
+            15 ->
+                P15RepeatElements.specialProblemInteractiveArea model.p15model |> Html.map P15Msg
+
+            _ ->
+                basicProblemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number
         , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
             (model.solutionsCode
@@ -490,12 +491,12 @@ basicProblemInteractiveArea model problemNumber =
                 [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                 , input
                     [ css listInputStyles
-                    , onInput (DecodeInput problemNumber)
-                    , onBlur (UpdateInput problemNumber)
+                    , onInput (DecodeBasicInput problemNumber)
+                    , onBlur (UpdateBasicInput problemNumber)
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
-                , niceButton SvgItems.dice "Random" (GenerateRandomList problemNumber)
+                , niceButton SvgItems.dice "Random" (GenerateBasicRandomList problemNumber)
                 ]
 
         displayResult basicListFunc toString =
