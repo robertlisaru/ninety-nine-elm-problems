@@ -120,7 +120,7 @@ problemInteractiveAreaStyles =
     , borderStyle solid
     , borderColor (hex "#f5f5f5")
     , borderRadius (px 6)
-    , padding (px 10)
+    , padding (px 15)
     , backgroundColor (hex "#fdfdfd")
     , marginBottom (px 15)
     ]
