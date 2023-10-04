@@ -96,8 +96,7 @@ update msg model =
 specialProblemInteractiveArea : Model -> Html Msg
 specialProblemInteractiveArea model =
     div [ css problemInteractiveAreaStyles ]
-        [ div
-            [ css inputRowStyles ]
+        [ div [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Input codes: " ]
             , input
                 [ css listInputStyles
