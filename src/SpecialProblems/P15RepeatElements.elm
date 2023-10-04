@@ -1,6 +1,5 @@
 module SpecialProblems.P15RepeatElements exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
-import Css exposing (..)
 import Html.Styled exposing (Html, code, div, input, label, text)
 import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -9,7 +8,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P15RepeatElements
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles, secondaryInputStyles)
 import SvgItems
 import Utils
 
@@ -145,7 +144,7 @@ specialProblemInteractiveArea model =
             [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Repeat times: " ]
             , input
-                [ css [ width (em 3), marginRight (px 8) ]
+                [ css secondaryInputStyles
                 , onInput DecodeSecondaryInput
                 , onBlur UpdateSecondaryInput
                 , value model.secondaryInputString

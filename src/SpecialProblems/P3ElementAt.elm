@@ -1,6 +1,5 @@
 module SpecialProblems.P3ElementAt exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
-import Css exposing (..)
 import Html.Styled exposing (Html, code, div, input, label, text)
 import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -9,7 +8,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P3ElementAt
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles, secondaryInputStyles)
 import SvgItems
 import Utils
 
@@ -154,7 +153,7 @@ specialProblemInteractiveArea model =
             [ css inputRowStyles ]
             [ label [ css inputLabelStyles ] [ text "Index: " ]
             , input
-                [ css [ width (em 3), marginRight (px 8) ]
+                [ css secondaryInputStyles
                 , onInput DecodeIndex
                 , onBlur UpdateIndex
                 , value model.indexString

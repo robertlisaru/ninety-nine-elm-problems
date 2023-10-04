@@ -15,6 +15,7 @@ module Styles exposing
     , problemStyles
     , problemTitleStyles
     , searchBarStyles
+    , secondaryInputStyles
     , sideBarItemListStyles
     , sideBarStyles
     , syntaxHighlightRequiredCssNode
@@ -136,6 +137,11 @@ inputRowStyles =
 listInputStyles : List Style
 listInputStyles =
     [ flex (int 1), marginRight (px 8) ]
+
+
+secondaryInputStyles : List Style
+secondaryInputStyles =
+    [ width (em 3), marginRight (px 8) ]
 
 
 inputLabelStyles : List Style
