@@ -440,9 +440,6 @@ viewProblems model =
                         10 ->
                             P10RunLengths.view model.p10model |> Html.map P10Msg
 
-                        12 ->
-                            P12RleDecode.view model.p12model |> Html.map P12Msg
-
                         _ ->
                             viewProblem model problemHeader
                 )
@@ -467,6 +464,9 @@ viewProblem model problem =
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
         , case problem.number of
+            12 ->
+                P12RleDecode.specialProblemInteractiveArea model.p12model |> Html.map P12Msg
+
             15 ->
                 P15RepeatElements.specialProblemInteractiveArea model.p15model |> Html.map P15Msg
 
