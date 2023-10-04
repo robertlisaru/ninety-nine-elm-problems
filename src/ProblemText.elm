@@ -48,10 +48,6 @@ requirement problemNumber =
                 , viewCode "type RleCode a = Run Int a | Single a"
                 ]
 
-        12 ->
-            p []
-                [ text "Decompress the run-length encoded list generated in Problem 11." ]
-
         14 ->
             p []
                 [ text "Duplicate each element of a list." ]

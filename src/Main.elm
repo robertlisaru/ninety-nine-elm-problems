@@ -3,7 +3,6 @@ module Main exposing (Model, Msg(..), ProblemHeader, main)
 import Array exposing (Array)
 import Browser
 import Css exposing (..)
-import DecoderUtils
 import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, span, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -11,14 +10,14 @@ import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import ProblemText
 import Problems.P10RunLengths
+import Problems.P12RleDecode
 import Problems.P15RepeatElements
 import Problems.P1LastElement
 import Problems.P3ElementAt
 import Problems.P7FlattenNestedList
 import Random
 import RandomUtils
-import Solutions.P11RleEncode exposing (RleCode(..))
-import Solutions.P12RleDecode
+import Solutions.P11RleEncode
 import Solutions.P14Duplicate
 import Solutions.P2Penultimate
 import Solutions.P4CountElements
@@ -77,10 +76,6 @@ init flags =
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
 
-        p12rleCodes : List (RleCode Int)
-        p12rleCodes =
-            [ Run 2 1, Run 3 2 ]
-
         solutionCode problemNumber =
             flags
                 |> Array.get problemNumber
@@ -99,12 +94,11 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p12rleCodes = p12rleCodes
-      , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       , p1model = Problems.P1LastElement.initModel 1 (problemTitle 1) (solutionCode 1)
       , p3model = Problems.P3ElementAt.initModel 3 (problemTitle 3) (solutionCode 3)
       , p7model = Problems.P7FlattenNestedList.initModel 7 (problemTitle 7) (solutionCode 7)
       , p10model = Problems.P10RunLengths.initModel 10 (problemTitle 10) (solutionCode 10)
+      , p12model = Problems.P12RleDecode.initModel 12 (problemTitle 12) (solutionCode 12)
       , p15model = Problems.P15RepeatElements.initModel 15 (problemTitle 15) (solutionCode 15)
       }
     , Cmd.none
@@ -154,12 +148,11 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p12rleCodes : List (RleCode Int)
-    , p12inputString : String
     , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
     , p7model : Problems.P7FlattenNestedList.Model
     , p10model : Problems.P10RunLengths.Model
+    , p12model : Problems.P12RleDecode.Model
     , p15model : Problems.P15RepeatElements.Model
     }
 
@@ -171,18 +164,15 @@ type alias Model =
 type Msg
     = GenerateRandomList Int
     | RandomListReady Int (List Int)
-    | InputUpdate Int String
-    | InputBlur Int
+    | DecodeInput Int String
+    | UpdateInput Int
     | ShowCodeToggle Int
-    | P12InputUpdate String
-    | P12InputBlur
-    | P12GenerateRandomRleCodes
-    | P12RleCodesReady (List (RleCode Int))
     | SearchProblem String
     | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
     | P7Msg Problems.P7FlattenNestedList.Msg
     | P10Msg Problems.P10RunLengths.Msg
+    | P12Msg Problems.P12RleDecode.Msg
     | P15Msg Problems.P15RepeatElements.Msg
 
 
@@ -222,7 +212,7 @@ update msg model =
             , Cmd.none
             )
 
-        InputUpdate problemNumber input ->
+        DecodeInput problemNumber input ->
             let
                 decodeResult =
                     Decode.decodeString (Decode.list Decode.int) input
@@ -242,7 +232,7 @@ update msg model =
             , Cmd.none
             )
 
-        InputBlur problemNumber ->
+        UpdateInput problemNumber ->
             ( { model
                 | inputStrings =
                     model.inputStrings
@@ -265,45 +255,6 @@ update msg model =
 
         SearchProblem keyWord ->
             ( { model | searchKeyWord = keyWord }, Cmd.none )
-
-        P12InputUpdate input ->
-            let
-                decodeResult =
-                    (input |> String.replace "[" "[\"" |> String.replace "]" "\"]" |> String.replace "," "\", \"")
-                        |> Decode.decodeString (Decode.list DecoderUtils.rleDecoder)
-
-                newRleCodes =
-                    case decodeResult of
-                        Result.Ok rleCodes ->
-                            rleCodes
-
-                        Err _ ->
-                            model.p12rleCodes
-            in
-            ( { model
-                | p12inputString = input
-                , p12rleCodes = newRleCodes
-              }
-            , Cmd.none
-            )
-
-        P12InputBlur ->
-            ( { model | p12inputString = model.p12rleCodes |> Utils.listToString Utils.rleCodeToString ", " }
-            , Cmd.none
-            )
-
-        P12GenerateRandomRleCodes ->
-            ( model
-            , Random.generate P12RleCodesReady (RandomUtils.duplicateSequences |> Random.map Solutions.P11RleEncode.rleEncode)
-            )
-
-        P12RleCodesReady rleCodes ->
-            ( { model
-                | p12rleCodes = rleCodes
-                , p12inputString = rleCodes |> Utils.listToString Utils.rleCodeToString ", "
-              }
-            , Cmd.none
-            )
 
         P1Msg problemMsg ->
             let
@@ -332,6 +283,13 @@ update msg model =
                     Problems.P10RunLengths.update problemMsg model.p10model
             in
             ( { model | p10model = newProblemModel }, problemCmd |> Cmd.map P10Msg )
+
+        P12Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    Problems.P12RleDecode.update problemMsg model.p12model
+            in
+            ( { model | p12model = newProblemModel }, problemCmd |> Cmd.map P12Msg )
 
         P15Msg problemMsg ->
             let
@@ -373,6 +331,9 @@ view model =
 
                                     10 ->
                                         Problems.P10RunLengths.view model.p10model |> Html.map P10Msg
+
+                                    12 ->
+                                        Problems.P12RleDecode.view model.p12model |> Html.map P12Msg
 
                                     15 ->
                                         Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
@@ -534,8 +495,8 @@ problemInteractiveArea model problemNumber =
                 [ label [ css [ marginRight (px 5) ] ] [ text "Input list: " ]
                 , input
                     [ css listInputStyles
-                    , onInput (InputUpdate problemNumber)
-                    , onBlur (InputBlur problemNumber)
+                    , onInput (DecodeInput problemNumber)
+                    , onBlur (UpdateInput problemNumber)
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
@@ -592,32 +553,6 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Encoded: " ]
                 , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
-                ]
-
-            12 ->
-                let
-                    rleCodesInput =
-                        div
-                            [ css listInputAreaStyles ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Input codes: " ]
-                            , input
-                                [ css listInputStyles
-                                , onInput P12InputUpdate
-                                , onBlur P12InputBlur
-                                , value model.p12inputString
-                                ]
-                                []
-                            , niceButton SvgItems.dice "Random" P12GenerateRandomRleCodes
-                            ]
-                in
-                [ rleCodesInput
-                , label [] [ text "Decoded: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P12RleDecode.rleDecode model.p12rleCodes
-                            |> Utils.listToString String.fromInt ", "
-                        )
-                    ]
                 ]
 
             14 ->
