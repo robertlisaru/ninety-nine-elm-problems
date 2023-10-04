@@ -9,7 +9,8 @@ runLengths list =
         firstSubList :: rest ->
             case firstSubList of
                 firstElement :: _ ->
-                    ( List.length firstSubList, firstElement ) :: runLengths rest
+                    ( List.length firstSubList, firstElement )
+                        :: runLengths rest
 
                 [] ->
                     runLengths rest

@@ -10,13 +10,13 @@ import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import ProblemText
+import Problems.P10RunLengths
 import Problems.P15RepeatElements
 import Problems.P1LastElement
 import Problems.P3ElementAt
 import Problems.P7FlattenNestedList
 import Random
 import RandomUtils
-import Solutions.P10RunLengths
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
 import Solutions.P14Duplicate
@@ -77,9 +77,6 @@ init flags =
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
 
-        p10listOfLists =
-            [ [ 1, 1 ], [ 2, 2, 2 ] ]
-
         p12rleCodes : List (RleCode Int)
         p12rleCodes =
             [ Run 2 1, Run 3 2 ]
@@ -102,13 +99,12 @@ init flags =
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p10listOfLists = p10listOfLists
-      , p10inputString = p10listOfLists |> Utils.listOfListsToString
       , p12rleCodes = p12rleCodes
       , p12inputString = p12rleCodes |> Utils.listToString Utils.rleCodeToString ", "
       , p1model = Problems.P1LastElement.initModel 1 (problemTitle 1) (solutionCode 1)
       , p3model = Problems.P3ElementAt.initModel 3 (problemTitle 3) (solutionCode 3)
       , p7model = Problems.P7FlattenNestedList.initModel 7 (problemTitle 7) (solutionCode 7)
+      , p10model = Problems.P10RunLengths.initModel 10 (problemTitle 10) (solutionCode 10)
       , p15model = Problems.P15RepeatElements.initModel 15 (problemTitle 15) (solutionCode 15)
       }
     , Cmd.none
@@ -158,13 +154,12 @@ type alias Model =
     , inputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p10listOfLists : List (List Int)
-    , p10inputString : String
     , p12rleCodes : List (RleCode Int)
     , p12inputString : String
     , p1model : Problems.P1LastElement.Model
     , p3model : Problems.P3ElementAt.Model
     , p7model : Problems.P7FlattenNestedList.Model
+    , p10model : Problems.P10RunLengths.Model
     , p15model : Problems.P15RepeatElements.Model
     }
 
@@ -179,10 +174,6 @@ type Msg
     | InputUpdate Int String
     | InputBlur Int
     | ShowCodeToggle Int
-    | P10InputUpdate String
-    | P10InputBlur
-    | P10GenerateRandomListOfLists
-    | P10RandomListOfListsReady (List (List Int))
     | P12InputUpdate String
     | P12InputBlur
     | P12GenerateRandomRleCodes
@@ -190,8 +181,9 @@ type Msg
     | SearchProblem String
     | P1Msg Problems.P1LastElement.Msg
     | P3Msg Problems.P3ElementAt.Msg
-    | P15Msg Problems.P15RepeatElements.Msg
     | P7Msg Problems.P7FlattenNestedList.Msg
+    | P10Msg Problems.P10RunLengths.Msg
+    | P15Msg Problems.P15RepeatElements.Msg
 
 
 generateRandomListCmd : Int -> Cmd Msg
@@ -271,44 +263,6 @@ update msg model =
             in
             ( { model | showCode = model.showCode |> Array.set problemNumber flipped }, Cmd.none )
 
-        P10InputUpdate input ->
-            let
-                decodeResult =
-                    Decode.decodeString DecoderUtils.decodeDuplicates input
-
-                newNestedList =
-                    case decodeResult of
-                        Result.Ok nestedList ->
-                            nestedList
-
-                        Err _ ->
-                            model.p10listOfLists
-            in
-            ( { model
-                | p10inputString = input
-                , p10listOfLists = newNestedList
-              }
-            , Cmd.none
-            )
-
-        P10InputBlur ->
-            ( { model | p10inputString = model.p10listOfLists |> Utils.listOfListsToString }
-            , Cmd.none
-            )
-
-        P10GenerateRandomListOfLists ->
-            ( model
-            , Random.generate P10RandomListOfListsReady (RandomUtils.duplicateSequences |> Random.map Solutions.P9Pack.pack)
-            )
-
-        P10RandomListOfListsReady listOfLists ->
-            ( { model
-                | p10listOfLists = listOfLists
-                , p10inputString = listOfLists |> Utils.listOfListsToString
-              }
-            , Cmd.none
-            )
-
         SearchProblem keyWord ->
             ( { model | searchKeyWord = keyWord }, Cmd.none )
 
@@ -365,19 +319,26 @@ update msg model =
             in
             ( { model | p3model = newProblemModel }, problemCmd |> Cmd.map P3Msg )
 
-        P15Msg problemMsg ->
-            let
-                ( newProblemModel, problemCmd ) =
-                    Problems.P15RepeatElements.update problemMsg model.p15model
-            in
-            ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
-
         P7Msg problemMsg ->
             let
                 ( newProblemModel, problemCmd ) =
                     Problems.P7FlattenNestedList.update problemMsg model.p7model
             in
             ( { model | p7model = newProblemModel }, problemCmd |> Cmd.map P7Msg )
+
+        P10Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    Problems.P10RunLengths.update problemMsg model.p10model
+            in
+            ( { model | p10model = newProblemModel }, problemCmd |> Cmd.map P10Msg )
+
+        P15Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    Problems.P15RepeatElements.update problemMsg model.p15model
+            in
+            ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
 
 
 
@@ -409,6 +370,9 @@ view model =
 
                                     7 ->
                                         Problems.P7FlattenNestedList.view model.p7model |> Html.map P7Msg
+
+                                    10 ->
+                                        Problems.P10RunLengths.view model.p10model |> Html.map P10Msg
 
                                     15 ->
                                         Problems.P15RepeatElements.view model.p15model |> Html.map P15Msg
@@ -622,32 +586,6 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , label [] [ text "Duplicates packed: " ]
                 , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
-                ]
-
-            10 ->
-                let
-                    listOfListsInput =
-                        div
-                            [ css listInputAreaStyles ]
-                            [ label [ css [ marginRight (px 5) ] ] [ text "Input duplicates: " ]
-                            , input
-                                [ css listInputStyles
-                                , onInput P10InputUpdate
-                                , onBlur P10InputBlur
-                                , value model.p10inputString
-                                ]
-                                []
-                            , niceButton SvgItems.dice "Random" P10GenerateRandomListOfLists
-                            ]
-                in
-                [ listOfListsInput
-                , label [] [ text "Run lengths: " ]
-                , code [ css codeStyles ]
-                    [ text <|
-                        (Solutions.P10RunLengths.runLengths model.p10listOfLists
-                            |> Utils.listToString Utils.tupleToString ", "
-                        )
-                    ]
                 ]
 
             11 ->

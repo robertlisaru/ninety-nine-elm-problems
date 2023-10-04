@@ -42,10 +42,6 @@ requirement problemNumber =
             p []
                 [ text "Convert a list to a list of lists where repeated elements of the source list are packed into sublists. Elements that are not repeated should be placed in a one element sublist." ]
 
-        10 ->
-            p []
-                [ text "Run-length encode a list of list to a list of tuples. Unlike lists, tuples can mix types. Use tuples (n, e) to encode a list where n is the number of duplicates of the element e." ]
-
         11 ->
             p []
                 [ text "Write a function to run length encode a list, but instead of using a tuple as in problem 10, use a union data type."
