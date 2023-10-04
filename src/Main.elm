@@ -1,13 +1,14 @@
-module Main exposing (Model, Msg(..), ProblemHeader, main)
+module Main exposing (Model, Msg(..), main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (..)
-import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h1, h2, h3, header, input, label, li, nav, span, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, href, id, placeholder, value)
+import Html.Styled as Html exposing (Html, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
+import Html.Styled.Attributes exposing (css, id, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
+import PageElements exposing (appIntroView, navView, sideBarView)
+import ProblemHeaders exposing (ProblemHeader, problemHeaders)
 import ProblemText
 import Random
 import RandomUtils
@@ -33,17 +34,12 @@ import Styles
         , inputLabelStyles
         , inputRowStyles
         , leftContentStyles
-        , linkStyles
         , listInputStyles
-        , navStyles
         , pageContainerStyles
         , problemInteractiveAreaStyles
         , problemListStyles
         , problemStyles
         , problemTitleStyles
-        , searchBarStyles
-        , sideBarItemListStyles
-        , sideBarStyles
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode
         )
@@ -113,39 +109,6 @@ init flags =
 
 
 -- MODEL
-
-
-type alias ProblemHeader =
-    { number : Int
-    , title : String
-    }
-
-
-problemHeaders : List ProblemHeader
-problemHeaders =
-    [ { number = 1, title = "Last element" }
-    , { number = 2, title = "Penultimate" }
-    , { number = 3, title = "Element at" }
-    , { number = 4, title = "Count elements" }
-    , { number = 5, title = "Reverse" }
-    , { number = 6, title = "Is palindrome" }
-    , { number = 7, title = "Flatten nested list" }
-    , { number = 8, title = "No dupes" }
-    , { number = 9, title = "Pack" }
-    , { number = 10, title = "Run lengths" }
-    , { number = 11, title = "Run lengths encode" }
-    , { number = 12, title = "Run lengths decode" }
-    , { number = 14, title = "Duplicate" }
-    , { number = 15, title = "Repeat elements" }
-    , { number = 16, title = "Drop nth" }
-    , { number = 17, title = "Split" }
-    , { number = 18, title = "Sublist" }
-    , { number = 19, title = "Rotate" }
-    , { number = 20, title = "Drop at" }
-    , { number = 21, title = "Insert at" }
-    , { number = 22, title = "Range" }
-    , { number = 23, title = "Random select" }
-    ]
 
 
 type alias Model =
@@ -310,119 +273,11 @@ view model =
         , header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ] [ appIntroView, viewProblems model ]
-            , sideBarView model.searchKeyWord
+            , sideBarView model.searchKeyWord SearchProblem
             ]
         ]
             |> List.map toUnstyled
     }
-
-
-navView : Html Msg
-navView =
-    let
-        navItem url label =
-            a
-                [ css [ textDecoration none, color (hex "#ffffff"), hover [ textDecoration underline ] ]
-                , href url
-                ]
-                [ text label ]
-    in
-    nav [ css navStyles ]
-        [ logoView
-        , h1 [ css [ fontSize (px 24), fontWeight normal, color (hex "#ffffff") ] ]
-            [ navItem "https://github.com/robertlisaru" "robertlisaru"
-            , span [ css [ margin2 (px 0) (px 10) ] ] [ text "/" ]
-            , navItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "ninety-nine-elm-problems"
-            ]
-        ]
-
-
-logoView : Html Msg
-logoView =
-    a
-        [ css
-            [ textDecoration none
-            , marginRight (px 32)
-            , displayFlex
-            , alignItems center
-            ]
-        ]
-        [ SvgItems.elmLogo
-        , div [ css [ paddingLeft (px 8), color (hex "#ffffff") ] ]
-            [ div [ css [ lineHeight (px 24), fontSize (px 30) ] ] [ text "elm" ]
-            , div [ css [ fontSize (px 12) ] ] [ text "99 problems" ]
-            ]
-        ]
-
-
-appIntroView : Html Msg
-appIntroView =
-    div []
-        [ h1 [ css [ fontSize (em 3), marginBottom (px 0), fontWeight normal ] ] [ text "99 Elm problems" ]
-        , h2 [ css [ fontSize (px 16), marginTop (px 0), marginBottom (px 50), lineHeight (em 1.5), fontWeight normal ] ]
-            [ text "Sharpen your functional programming skills." ]
-        ]
-
-
-sideBarView : String -> Html Msg
-sideBarView searchKeyWord =
-    let
-        filteredProblems =
-            problemHeaders
-                |> List.filter
-                    (\problem ->
-                        (String.fromInt problem.number ++ ". " ++ problem.title)
-                            |> String.toLower
-                            |> String.contains (searchKeyWord |> String.toLower)
-                    )
-
-        linkItem url label =
-            li [] [ a [ href url, css linkStyles ] [ text label ] ]
-    in
-    div [ css sideBarStyles ]
-        [ ul [ css sideBarItemListStyles ]
-            [ linkItem "" "README"
-            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
-            , linkItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "Source"
-            ]
-        , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Credits" ]
-        , ul [ css sideBarItemListStyles ]
-            [ linkItem "https://github.com/evancz" "Elm was created by Evan Czaplicki"
-            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The 99 problems are adapted to Elm in a gitbook by johncrane"
-            , linkItem "https://package.elm-lang.org/" "This page layout is inspired by the official Elm Packages website"
-            , linkItem "https://elm-lang.org/" "Visit the official Elm Website"
-            ]
-        , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
-        , input [ placeholder "Search", Html.Styled.Attributes.type_ "search", css searchBarStyles, value searchKeyWord, onInput SearchProblem ] []
-        , ul [ css sideBarItemListStyles ]
-            (filteredProblems
-                |> List.map
-                    (\problem ->
-                        li []
-                            [ a
-                                [ href ("#" ++ (problem.number |> String.fromInt))
-                                , css linkStyles
-                                ]
-                                [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
-                            ]
-                    )
-            )
-        , div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
-            [ a
-                [ css
-                    (linkStyles
-                        ++ [ displayFlex
-                           , alignItems center
-                           ]
-                    )
-                , href "#"
-                ]
-                [ SvgItems.top
-                , div [ css [ marginRight (em 0.6) ] ] []
-                , text "Back to top"
-                ]
-            ]
-        ]
 
 
 viewProblems : Model -> Html Msg
