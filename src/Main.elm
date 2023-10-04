@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), main)
 import Array exposing (Array)
 import Browser
 import Html.Styled as Html exposing (Html, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, id, value)
+import Html.Styled.Attributes exposing (css, id, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
@@ -16,6 +16,7 @@ import Solutions.P11RleEncode
 import Solutions.P14Duplicate
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
+import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
@@ -24,7 +25,6 @@ import Solutions.P9Pack
 import SpecialProblems.P10RunLengths as P10RunLengths
 import SpecialProblems.P12RleDecode as P12RleDecode
 import SpecialProblems.P15RepeatElements as P15RepeatElements
-import SpecialProblems.P3ElementAt as P3ElementAt
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -40,6 +40,7 @@ import Styles
         , problemListStyles
         , problemStyles
         , problemTitleStyles
+        , secondaryInputStyles
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode
         )
@@ -73,6 +74,9 @@ init flags =
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
 
+        secondaryInputs =
+            Array.repeat 100 5
+
         solutionCode problemNumber =
             flags
                 |> Array.get problemNumber
@@ -94,10 +98,11 @@ init flags =
     in
     ( { searchKeyWord = ""
       , inputLists = inputLists
+      , secondaryInputs = secondaryInputs
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
+      , secondaryInputStrings = Array.map String.fromInt secondaryInputs
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
-      , p3model = P3ElementAt.initModel (problemInfo 3)
       , p7model = P7FlattenNestedList.initModel (problemInfo 7)
       , p10model = P10RunLengths.initModel (problemInfo 10)
       , p12model = P12RleDecode.initModel (problemInfo 12)
@@ -114,10 +119,11 @@ init flags =
 type alias Model =
     { searchKeyWord : String
     , inputLists : Array (List Int)
+    , secondaryInputs : Array Int
     , inputStrings : Array String
+    , secondaryInputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
-    , p3model : P3ElementAt.Model
     , p7model : P7FlattenNestedList.Model
     , p10model : P10RunLengths.Model
     , p12model : P12RleDecode.Model
@@ -134,9 +140,12 @@ type Msg
     | UpdateBasicInput Int
     | GenerateBasicRandomList Int
     | BasicRandomListReady Int (List Int)
+    | DecodeBasicSecondaryInput Int String
+    | UpdateBasicSecondaryInput Int
+    | GenerateRandomSecondaryInput Int
+    | RandomSecondaryInputReady Int Int
     | ShowCodeToggle Int
     | SearchProblem String
-    | P3Msg P3ElementAt.Msg
     | P7Msg P7FlattenNestedList.Msg
     | P10Msg P10RunLengths.Msg
     | P12Msg P12RleDecode.Msg
@@ -212,6 +221,68 @@ update msg model =
             , Cmd.none
             )
 
+        GenerateRandomSecondaryInput problemNumber ->
+            let
+                cmd =
+                    case problemNumber of
+                        3 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber)
+                                (Random.int 1
+                                    (model.inputLists
+                                        |> Array.get problemNumber
+                                        |> Maybe.withDefault []
+                                        |> List.length
+                                    )
+                                )
+
+                        _ ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
+            in
+            ( model, cmd )
+
+        RandomSecondaryInputReady problemNumber randomInt ->
+            ( { model
+                | secondaryInputs = model.secondaryInputs |> Array.set problemNumber randomInt
+                , secondaryInputStrings =
+                    model.secondaryInputStrings |> Array.set problemNumber (randomInt |> String.fromInt)
+              }
+            , Cmd.none
+            )
+
+        DecodeBasicSecondaryInput problemNumber input ->
+            let
+                decodeResult =
+                    Decode.decodeString Decode.int input
+
+                newInt =
+                    case decodeResult of
+                        Result.Ok decodedInt ->
+                            decodedInt
+
+                        Err _ ->
+                            model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0
+            in
+            ( { model
+                | secondaryInputStrings = model.secondaryInputStrings |> Array.set problemNumber input
+                , secondaryInputs = model.secondaryInputs |> Array.set problemNumber newInt
+              }
+            , Cmd.none
+            )
+
+        UpdateBasicSecondaryInput problemNumber ->
+            ( { model
+                | secondaryInputStrings =
+                    model.secondaryInputStrings
+                        |> Array.set problemNumber
+                            (model.secondaryInputs
+                                |> Array.get problemNumber
+                                |> Maybe.map String.fromInt
+                                |> Maybe.withDefault "0"
+                            )
+              }
+            , Cmd.none
+            )
+
         ShowCodeToggle problemNumber ->
             let
                 flipped =
@@ -221,13 +292,6 @@ update msg model =
 
         SearchProblem keyWord ->
             ( { model | searchKeyWord = keyWord }, Cmd.none )
-
-        P3Msg problemMsg ->
-            let
-                ( newProblemModel, problemCmd ) =
-                    P3ElementAt.update problemMsg model.p3model
-            in
-            ( { model | p3model = newProblemModel }, problemCmd |> Cmd.map P3Msg )
 
         P7Msg problemMsg ->
             let
@@ -303,9 +367,6 @@ viewProblem model problem =
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
         , case problem.number of
-            3 ->
-                P3ElementAt.specialProblemInteractiveArea model.p3model |> Html.map P3Msg
-
             7 ->
                 P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
 
@@ -347,10 +408,33 @@ basicProblemInteractiveArea model problemNumber =
                 , niceButton SvgItems.dice "Random" (GenerateBasicRandomList problemNumber)
                 ]
 
+        secondaryInput labelText =
+            div [ css inputRowStyles ]
+                [ label [ css inputLabelStyles ] [ text labelText ]
+                , input
+                    [ css secondaryInputStyles
+                    , onInput (DecodeBasicSecondaryInput problemNumber)
+                    , onBlur (UpdateBasicSecondaryInput problemNumber)
+                    , value (model.secondaryInputStrings |> Array.get problemNumber |> Maybe.withDefault "0")
+                    , maxlength 3
+                    ]
+                    []
+                , niceButton SvgItems.dice "Random" (GenerateRandomSecondaryInput problemNumber)
+                ]
+
         displayResult basicListFunc toString =
             code [ css codeStyles ]
                 [ text <|
                     (basicListFunc (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
+                        |> toString
+                    )
+                ]
+
+        displayResultWithSecondaryInput basicListFunc toString =
+            code [ css codeStyles ]
+                [ text <|
+                    (basicListFunc (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                        (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
                         |> toString
                     )
                 ]
@@ -366,6 +450,14 @@ basicProblemInteractiveArea model problemNumber =
                     2 ->
                         [ label [] [ text "Penultimate element is: " ]
                         , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
+                        ]
+
+                    3 ->
+                        [ secondaryInput "Index: "
+                        , label [] [ text "Element: " ]
+                        , displayResultWithSecondaryInput
+                            Solutions.P3ElementAt.elementAt
+                            (Utils.maybeToString String.fromInt)
                         ]
 
                     4 ->
