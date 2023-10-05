@@ -14,6 +14,7 @@ import Random
 import RandomUtils
 import Solutions.P11RleEncode
 import Solutions.P14Duplicate
+import Solutions.P15RepeatElements
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -24,7 +25,6 @@ import Solutions.P8NoDupes
 import Solutions.P9Pack
 import SpecialProblems.P10RunLengths as P10RunLengths
 import SpecialProblems.P12RleDecode as P12RleDecode
-import SpecialProblems.P15RepeatElements as P15RepeatElements
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -73,9 +73,11 @@ init flags =
                 |> Array.set 9 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
+                |> Array.set 15 [ 1, 2, 3 ]
 
         secondaryInputs =
             Array.repeat 100 5
+                |> Array.set 15 3
 
         solutionCode problemNumber =
             flags
@@ -106,7 +108,6 @@ init flags =
       , p7model = P7FlattenNestedList.initModel (problemInfo 7)
       , p10model = P10RunLengths.initModel (problemInfo 10)
       , p12model = P12RleDecode.initModel (problemInfo 12)
-      , p15model = P15RepeatElements.initModel (problemInfo 15)
       }
     , Cmd.none
     )
@@ -127,7 +128,6 @@ type alias Model =
     , p7model : P7FlattenNestedList.Model
     , p10model : P10RunLengths.Model
     , p12model : P12RleDecode.Model
-    , p15model : P15RepeatElements.Model
     }
 
 
@@ -149,7 +149,6 @@ type Msg
     | P7Msg P7FlattenNestedList.Msg
     | P10Msg P10RunLengths.Msg
     | P12Msg P12RleDecode.Msg
-    | P15Msg P15RepeatElements.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -235,6 +234,9 @@ update msg model =
                                     )
                                 )
 
+                        15 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 3)
+
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
             in
@@ -313,13 +315,6 @@ update msg model =
                     P12RleDecode.update problemMsg model.p12model
             in
             ( { model | p12model = newProblemModel }, problemCmd |> Cmd.map P12Msg )
-
-        P15Msg problemMsg ->
-            let
-                ( newProblemModel, problemCmd ) =
-                    P15RepeatElements.update problemMsg model.p15model
-            in
-            ( { model | p15model = newProblemModel }, problemCmd |> Cmd.map P15Msg )
 
 
 
@@ -499,7 +494,12 @@ problemInteractiveArea model problemNumber =
                 ]
 
             15 ->
-                P15RepeatElements.specialProblemInteractiveArea model.p15model |> List.map (Html.map P15Msg)
+                [ basicListInput
+                , secondaryInput "Repeat times: "
+                , label [] [ text "Repeated elements: " ]
+                , displayResultWithSecondaryInput Solutions.P15RepeatElements.repeatElements
+                    (Utils.listToString String.fromInt ", ")
+                ]
 
             _ ->
                 [ basicListInput
