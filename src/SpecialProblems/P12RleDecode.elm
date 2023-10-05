@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -91,25 +91,24 @@ update msg model =
             )
 
 
-specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea : Model -> List (Html Msg)
 specialProblemInteractiveArea model =
-    div [ css problemInteractiveAreaStyles ]
-        [ div [ css inputRowStyles ]
-            [ label [ css inputLabelStyles ] [ text "Input codes: " ]
-            , input
-                [ css listInputStyles
-                , onInput DecodeInput
-                , onBlur UpdateInput
-                , value model.inputString
-                ]
-                []
-            , niceButton SvgItems.dice "Random" GenerateRandomInput
+    [ div [ css inputRowStyles ]
+        [ label [ css inputLabelStyles ] [ text "Input codes: " ]
+        , input
+            [ css listInputStyles
+            , onInput DecodeInput
+            , onBlur UpdateInput
+            , value model.inputString
             ]
-        , label [] [ text "Decoded: " ]
-        , code [ css codeStyles ]
-            [ text <|
-                (Solutions.P12RleDecode.rleDecode model.rleCodes
-                    |> Utils.listToString String.fromInt ", "
-                )
-            ]
+            []
+        , niceButton SvgItems.dice "Random" GenerateRandomInput
         ]
+    , label [] [ text "Decoded: " ]
+    , code [ css codeStyles ]
+        [ text <|
+            (Solutions.P12RleDecode.rleDecode model.rleCodes
+                |> Utils.listToString String.fromInt ", "
+            )
+        ]
+    ]

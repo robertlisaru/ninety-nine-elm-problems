@@ -425,92 +425,83 @@ problemInteractiveArea model problemNumber =
                     )
                 ]
     in
-    case problemNumber of
-        1 ->
-            div [ css problemInteractiveAreaStyles ]
+    div [ css problemInteractiveAreaStyles ] <|
+        case problemNumber of
+            1 ->
                 [ basicListInput
                 , label [] [ text "Last element is: " ]
                 , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
                 ]
 
-        2 ->
-            div [ css problemInteractiveAreaStyles ]
+            2 ->
                 [ basicListInput
                 , label [] [ text "Penultimate element is: " ]
                 , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
                 ]
 
-        3 ->
-            div [ css problemInteractiveAreaStyles ]
+            3 ->
                 [ basicListInput
                 , secondaryInput "Index: "
                 , label [] [ text "Element: " ]
                 , displayResultWithSecondaryInput Solutions.P3ElementAt.elementAt (Utils.maybeToString String.fromInt)
                 ]
 
-        4 ->
-            div [ css problemInteractiveAreaStyles ]
+            4 ->
                 [ basicListInput
                 , label [] [ text "Count: " ]
                 , displayResult Solutions.P4CountElements.countElements String.fromInt
                 ]
 
-        5 ->
-            div [ css problemInteractiveAreaStyles ]
+            5 ->
                 [ basicListInput
                 , label [] [ text "Reversed list: " ]
                 , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
                 ]
 
-        6 ->
-            div [ css problemInteractiveAreaStyles ]
+            6 ->
                 [ basicListInput
                 , label [] [ text "Is palindrome: " ]
                 , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
                 ]
 
-        7 ->
-            P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
+            7 ->
+                P7FlattenNestedList.specialProblemInteractiveArea model.p7model
+                    |> List.map (Html.map P7Msg)
 
-        8 ->
-            div [ css problemInteractiveAreaStyles ]
+            8 ->
                 [ basicListInput
                 , label [] [ text "Duplicates removed: " ]
                 , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
                 ]
 
-        9 ->
-            div [ css problemInteractiveAreaStyles ]
+            9 ->
                 [ basicListInput
                 , label [] [ text "Duplicates packed: " ]
                 , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
                 ]
 
-        10 ->
-            P10RunLengths.specialProblemInteractiveArea model.p10model |> Html.map P10Msg
+            10 ->
+                P10RunLengths.specialProblemInteractiveArea model.p10model |> List.map (Html.map P10Msg)
 
-        11 ->
-            div [ css problemInteractiveAreaStyles ]
+            11 ->
                 [ basicListInput
                 , label [] [ text "Encoded: " ]
                 , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
                 ]
 
-        12 ->
-            P12RleDecode.specialProblemInteractiveArea model.p12model |> Html.map P12Msg
+            12 ->
+                P12RleDecode.specialProblemInteractiveArea model.p12model |> List.map (Html.map P12Msg)
 
-        14 ->
-            div [ css problemInteractiveAreaStyles ]
+            14 ->
                 [ basicListInput
                 , label [] [ text "Duplicated: " ]
                 , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
                 ]
 
-        15 ->
-            P15RepeatElements.specialProblemInteractiveArea model.p15model |> Html.map P15Msg
+            15 ->
+                P15RepeatElements.specialProblemInteractiveArea model.p15model |> List.map (Html.map P15Msg)
 
-        _ ->
-            div [ css problemInteractiveAreaStyles ]
+            _ ->
                 [ basicListInput
                 , label [] [ text "Result is: " ]
                 , code [ css codeStyles ] [ text "Result goes here" ]

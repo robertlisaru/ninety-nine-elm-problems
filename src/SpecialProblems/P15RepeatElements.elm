@@ -8,7 +8,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P15RepeatElements
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles, secondaryInputStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, secondaryInputStyles)
 import SvgItems
 import Utils
 
@@ -129,31 +129,30 @@ update msg model =
             )
 
 
-specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea : Model -> List (Html Msg)
 specialProblemInteractiveArea model =
-    div [ css problemInteractiveAreaStyles ] <|
-        [ div [ css inputRowStyles ]
-            [ label [ css inputLabelStyles ] [ text "Input list: " ]
-            , input [ css listInputStyles, onInput DecodeInput, onBlur UpdateInput, value model.inputString ] []
-            , niceButton SvgItems.dice "Random" GenerateRandomInput
-            ]
-        , div [ css inputRowStyles ]
-            [ label [ css inputLabelStyles ] [ text "Repeat times: " ]
-            , input
-                [ css secondaryInputStyles
-                , onInput DecodeSecondaryInput
-                , onBlur UpdateSecondaryInput
-                , value model.secondaryInputString
-                , maxlength 3
-                ]
-                []
-            , niceButton SvgItems.dice "Random" GenerateRandomSecondaryInput
-            ]
-        , label [] [ text "Repeated elements: " ]
-        , code [ css codeStyles ]
-            [ text <|
-                (Solutions.P15RepeatElements.repeatElements model.secondaryInput model.inputList
-                    |> Utils.listToString String.fromInt ", "
-                )
-            ]
+    [ div [ css inputRowStyles ]
+        [ label [ css inputLabelStyles ] [ text "Input list: " ]
+        , input [ css listInputStyles, onInput DecodeInput, onBlur UpdateInput, value model.inputString ] []
+        , niceButton SvgItems.dice "Random" GenerateRandomInput
         ]
+    , div [ css inputRowStyles ]
+        [ label [ css inputLabelStyles ] [ text "Repeat times: " ]
+        , input
+            [ css secondaryInputStyles
+            , onInput DecodeSecondaryInput
+            , onBlur UpdateSecondaryInput
+            , value model.secondaryInputString
+            , maxlength 3
+            ]
+            []
+        , niceButton SvgItems.dice "Random" GenerateRandomSecondaryInput
+        ]
+    , label [] [ text "Repeated elements: " ]
+    , code [ css codeStyles ]
+        [ text <|
+            (Solutions.P15RepeatElements.repeatElements model.secondaryInput model.inputList
+                |> Utils.listToString String.fromInt ", "
+            )
+        ]
+    ]

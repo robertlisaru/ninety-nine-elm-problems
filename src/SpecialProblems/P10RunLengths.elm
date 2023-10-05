@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P10RunLengths
 import Solutions.P9Pack
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -90,25 +90,24 @@ update msg model =
             )
 
 
-specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea : Model -> List (Html Msg)
 specialProblemInteractiveArea model =
-    div [ css problemInteractiveAreaStyles ]
-        [ div [ css inputRowStyles ]
-            [ label [ css inputLabelStyles ] [ text "Input duplicates: " ]
-            , input
-                [ css listInputStyles
-                , onInput DecodeInput
-                , onBlur UpdateInput
-                , value model.inputString
-                ]
-                []
-            , niceButton SvgItems.dice "Random" GenerateRandomInput
+    [ div [ css inputRowStyles ]
+        [ label [ css inputLabelStyles ] [ text "Input duplicates: " ]
+        , input
+            [ css listInputStyles
+            , onInput DecodeInput
+            , onBlur UpdateInput
+            , value model.inputString
             ]
-        , label [] [ text "Run lengths: " ]
-        , code [ css codeStyles ]
-            [ text <|
-                (Solutions.P10RunLengths.runLengths model.listOfLists
-                    |> Utils.listToString Utils.tupleToString ", "
-                )
-            ]
+            []
+        , niceButton SvgItems.dice "Random" GenerateRandomInput
         ]
+    , label [] [ text "Run lengths: " ]
+    , code [ css codeStyles ]
+        [ text <|
+            (Solutions.P10RunLengths.runLengths model.listOfLists
+                |> Utils.listToString Utils.tupleToString ", "
+            )
+        ]
+    ]

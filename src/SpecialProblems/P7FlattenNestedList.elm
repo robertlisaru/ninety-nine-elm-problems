@@ -9,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, problemInteractiveAreaStyles)
+import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -94,25 +94,24 @@ update msg model =
             )
 
 
-specialProblemInteractiveArea : Model -> Html Msg
+specialProblemInteractiveArea : Model -> List (Html Msg)
 specialProblemInteractiveArea model =
-    div [ css problemInteractiveAreaStyles ]
-        [ div [ css inputRowStyles ]
-            [ label [ css inputLabelStyles ] [ text "Input nested list: " ]
-            , input
-                [ css listInputStyles
-                , onInput DecodeInput
-                , onBlur UpdateInput
-                , value model.inputString
-                ]
-                []
-            , niceButton SvgItems.dice "Random" GenerateRandomInput
+    [ div [ css inputRowStyles ]
+        [ label [ css inputLabelStyles ] [ text "Input nested list: " ]
+        , input
+            [ css listInputStyles
+            , onInput DecodeInput
+            , onBlur UpdateInput
+            , value model.inputString
             ]
-        , label [] [ text "Flattened list: " ]
-        , code [ css codeStyles ]
-            [ text <|
-                (Solutions.P7FlattenNestedList.flatten model.nestedList
-                    |> Utils.listToString String.fromInt ", "
-                )
-            ]
+            []
+        , niceButton SvgItems.dice "Random" GenerateRandomInput
         ]
+    , label [] [ text "Flattened list: " ]
+    , code [ css codeStyles ]
+        [ text <|
+            (Solutions.P7FlattenNestedList.flatten model.nestedList
+                |> Utils.listToString String.fromInt ", "
+            )
+        ]
+    ]
