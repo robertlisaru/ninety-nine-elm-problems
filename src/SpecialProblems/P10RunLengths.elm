@@ -15,8 +15,8 @@ import SvgItems
 import Utils
 
 
-initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
-initModel { problemNumber, problemTitle, solutionCode } =
+initModel : { problemNumber : Int, problemTitle : String } -> Model
+initModel { problemNumber, problemTitle } =
     let
         listOfLists =
             [ [ 1, 1 ], [ 2, 2, 2 ] ]
@@ -28,7 +28,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , listOfLists = listOfLists
     , inputString = inputString
-    , solutionCode = solutionCode
     }
 
 
@@ -37,7 +36,6 @@ type alias Model =
     , problemTitle : String
     , listOfLists : List (List Int)
     , inputString : String
-    , solutionCode : String
     }
 
 

@@ -14,8 +14,8 @@ import SvgItems
 import Utils
 
 
-initModel : { problemNumber : Int, problemTitle : String, solutionCode : String } -> Model
-initModel { problemNumber, problemTitle, solutionCode } =
+initModel : { problemNumber : Int, problemTitle : String } -> Model
+initModel { problemNumber, problemTitle } =
     let
         nestedList =
             SubList
@@ -32,7 +32,6 @@ initModel { problemNumber, problemTitle, solutionCode } =
     , problemTitle = problemTitle
     , nestedList = nestedList
     , inputString = inputString
-    , solutionCode = solutionCode
     }
 
 
@@ -40,7 +39,6 @@ type alias Model =
     { problemNumber : Int
     , problemTitle : String
     , inputString : String
-    , solutionCode : String
     , nestedList : NestedList Int
     }
 

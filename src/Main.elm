@@ -79,12 +79,6 @@ init flags =
             Array.repeat 100 5
                 |> Array.set 15 3
 
-        solutionCode problemNumber =
-            flags
-                |> Array.get problemNumber
-                |> Maybe.withDefault
-                    ("-- No code found for problem " ++ String.fromInt problemNumber)
-
         problemTitle problemNumber =
             problemHeaders
                 |> List.filter (\problemHeader -> problemHeader.number == problemNumber)
@@ -95,7 +89,6 @@ init flags =
         problemInfo problemNumber =
             { problemNumber = problemNumber
             , problemTitle = problemTitle problemNumber
-            , solutionCode = solutionCode problemNumber
             }
     in
     ( { searchKeyWord = ""
