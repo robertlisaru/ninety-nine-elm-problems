@@ -366,21 +366,7 @@ viewProblem model problem =
         [ css problemStyles, id (problem.number |> String.fromInt) ]
         [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         , ProblemText.requirement problem.number
-        , case problem.number of
-            7 ->
-                P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
-
-            10 ->
-                P10RunLengths.specialProblemInteractiveArea model.p10model |> Html.map P10Msg
-
-            12 ->
-                P12RleDecode.specialProblemInteractiveArea model.p12model |> Html.map P12Msg
-
-            15 ->
-                P15RepeatElements.specialProblemInteractiveArea model.p15model |> Html.map P15Msg
-
-            _ ->
-                basicProblemInteractiveArea model problem.number
+        , problemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number
         , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
             (model.solutionsCode
@@ -391,8 +377,8 @@ viewProblem model problem =
         ]
 
 
-basicProblemInteractiveArea : Model -> Int -> Html Msg
-basicProblemInteractiveArea model problemNumber =
+problemInteractiveArea : Model -> Int -> Html Msg
+problemInteractiveArea model problemNumber =
     let
         basicListInput =
             div
@@ -439,64 +425,93 @@ basicProblemInteractiveArea model problemNumber =
                     )
                 ]
     in
-    div [ css problemInteractiveAreaStyles ] <|
-        basicListInput
-            :: (case problemNumber of
-                    1 ->
-                        [ label [] [ text "Last element is: " ]
-                        , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
-                        ]
+    case problemNumber of
+        1 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Last element is: " ]
+                , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
+                ]
 
-                    2 ->
-                        [ label [] [ text "Penultimate element is: " ]
-                        , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
-                        ]
+        2 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Penultimate element is: " ]
+                , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
+                ]
 
-                    3 ->
-                        [ secondaryInput "Index: "
-                        , label [] [ text "Element: " ]
-                        , displayResultWithSecondaryInput
-                            Solutions.P3ElementAt.elementAt
-                            (Utils.maybeToString String.fromInt)
-                        ]
+        3 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , secondaryInput "Index: "
+                , label [] [ text "Element: " ]
+                , displayResultWithSecondaryInput Solutions.P3ElementAt.elementAt (Utils.maybeToString String.fromInt)
+                ]
 
-                    4 ->
-                        [ label [] [ text "Count: " ]
-                        , displayResult Solutions.P4CountElements.countElements String.fromInt
-                        ]
+        4 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Count: " ]
+                , displayResult Solutions.P4CountElements.countElements String.fromInt
+                ]
 
-                    5 ->
-                        [ label [] [ text "Reversed list: " ]
-                        , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
-                        ]
+        5 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Reversed list: " ]
+                , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
+                ]
 
-                    6 ->
-                        [ label [] [ text "Is palindrome: " ]
-                        , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
-                        ]
+        6 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Is palindrome: " ]
+                , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
+                ]
 
-                    8 ->
-                        [ label [] [ text "Duplicates removed: " ]
-                        , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
-                        ]
+        7 ->
+            P7FlattenNestedList.specialProblemInteractiveArea model.p7model |> Html.map P7Msg
 
-                    9 ->
-                        [ label [] [ text "Duplicates packed: " ]
-                        , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
-                        ]
+        8 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Duplicates removed: " ]
+                , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
+                ]
 
-                    11 ->
-                        [ label [] [ text "Encoded: " ]
-                        , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
-                        ]
+        9 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Duplicates packed: " ]
+                , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
+                ]
 
-                    14 ->
-                        [ label [] [ text "Duplicated: " ]
-                        , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
-                        ]
+        10 ->
+            P10RunLengths.specialProblemInteractiveArea model.p10model |> Html.map P10Msg
 
-                    _ ->
-                        [ label [] [ text "Result is: " ]
-                        , code [ css codeStyles ] [ text "Result goes here" ]
-                        ]
-               )
+        11 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Encoded: " ]
+                , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
+                ]
+
+        12 ->
+            P12RleDecode.specialProblemInteractiveArea model.p12model |> Html.map P12Msg
+
+        14 ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Duplicated: " ]
+                , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
+                ]
+
+        15 ->
+            P15RepeatElements.specialProblemInteractiveArea model.p15model |> Html.map P15Msg
+
+        _ ->
+            div [ css problemInteractiveAreaStyles ]
+                [ basicListInput
+                , label [] [ text "Result is: " ]
+                , code [ css codeStyles ] [ text "Result goes here" ]
+                ]
