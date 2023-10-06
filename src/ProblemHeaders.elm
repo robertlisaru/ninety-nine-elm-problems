@@ -31,4 +31,36 @@ problemHeaders =
     , { number = 21, title = "Insert at" }
     , { number = 22, title = "Range" }
     , { number = 23, title = "Random select" }
+    , { number = 24, title = "Lotto" }
+    , { number = 26, title = "Combinations" }
+    , { number = 28, title = "Sort by" }
+    , { number = 31, title = "Is prime" }
+    , { number = 32, title = "Greatest common divisor" }
+    , { number = 33, title = "Coprime" }
+    , { number = 34, title = "Euler's totient function phi(m)" }
+    , { number = 35, title = "Prime factors" }
+    , { number = 36, title = "Prime factors multiplicity" }
+    , { number = 37, title = "Euler's totient function phi(m) (improved)" }
+    , { number = 38, title = "Benchmark totient" }
+    , { number = 39, title = "Primes in range" }
+    , { number = 40, title = "Goldbach's conjecture" }
+    , { number = 41, title = "Goldbach greater than" }
+    , { number = 46, title = "Logical binary functions" }
+    , { number = 47, title = "Infix operators" }
+    , { number = 49, title = "Gray code" }
+    , { number = 50, title = "Huffman encoding" }
+    , { number = 54, title = "Binary tree" }
+    , { number = 55, title = "Balanced tree" }
+    , { number = 56, title = "Symmetric tree" }
+    , { number = 57, title = "Binary search tree" }
+    , { number = 61, title = "Count leaves" }
+    , { number = 62, title = "Count internal nodes" }
+    , { number = 63, title = "Complete tree" }
+    , { number = 64, title = "Draw a tree" }
+    , { number = 65, title = "Draw a tree (other layout)" }
+    , { number = 67, title = "Tree to/from string" }
+    , { number = 68, title = "Tree traversal" }
+    , { number = 69, title = "Tree dot string representation" }
+    , { number = 70, title = "Multiway tree" }
+    , { number = 71, title = "Internal path length" }
     ]
