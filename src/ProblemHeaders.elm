@@ -63,4 +63,6 @@ problemHeaders =
     , { number = 69, title = "Tree dot string representation" }
     , { number = 70, title = "Multiway tree" }
     , { number = 71, title = "Internal path length" }
+    , { number = 72, title = "Depth first order" }
+    , { number = 73, title = "Multiway tree to string" }
     ]
