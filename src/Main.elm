@@ -32,6 +32,7 @@ import Solutions.P8NoDupes
 import Solutions.P9Pack
 import SpecialProblems.P10RunLengths as P10RunLengths
 import SpecialProblems.P12RleDecode as P12RleDecode
+import SpecialProblems.P23RandomSelect as P23RandomSelect
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -106,6 +107,9 @@ init flags =
             { problemNumber = problemNumber
             , problemTitle = problemTitle problemNumber
             }
+
+        ( p23model, p23cmd ) =
+            P23RandomSelect.initModel (problemInfo 23)
     in
     ( { searchKeyWord = ""
       , inputLists = inputLists
@@ -119,8 +123,9 @@ init flags =
       , p7model = P7FlattenNestedList.initModel (problemInfo 7)
       , p10model = P10RunLengths.initModel (problemInfo 10)
       , p12model = P12RleDecode.initModel (problemInfo 12)
+      , p23model = p23model
       }
-    , Cmd.none
+    , p23cmd |> Cmd.map P23Msg
     )
 
 
@@ -141,6 +146,7 @@ type alias Model =
     , p7model : P7FlattenNestedList.Model
     , p10model : P10RunLengths.Model
     , p12model : P12RleDecode.Model
+    , p23model : P23RandomSelect.Model
     }
 
 
@@ -166,6 +172,7 @@ type Msg
     | P7Msg P7FlattenNestedList.Msg
     | P10Msg P10RunLengths.Msg
     | P12Msg P12RleDecode.Msg
+    | P23Msg P23RandomSelect.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -387,6 +394,13 @@ update msg model =
                     P12RleDecode.update problemMsg model.p12model
             in
             ( { model | p12model = newProblemModel }, problemCmd |> Cmd.map P12Msg )
+
+        P23Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    P23RandomSelect.update problemMsg model.p23model
+            in
+            ( { model | p23model = newProblemModel }, problemCmd |> Cmd.map P23Msg )
 
 
 
@@ -662,6 +676,9 @@ problemInteractiveArea model problemNumber =
                         )
                     ]
                 ]
+
+            23 ->
+                P23RandomSelect.specialProblemInteractiveArea model.p23model |> List.map (Html.map P23Msg)
 
             _ ->
                 [ basicListInput

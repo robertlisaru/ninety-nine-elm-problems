@@ -121,5 +121,9 @@ requirement problemNumber =
             p []
                 [ text "Create a list containing all integers within a given range, inclusively, allow for reverse order." ]
 
+        23 ->
+            p []
+                [ text "Extract a given number of randomly selected elements from a list." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

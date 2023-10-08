@@ -173,7 +173,7 @@ buttonStyles =
     , fontSize inherit
     , cursor pointer
     , outline inherit
-    , displayFlex
+    , display inlineFlex
     , alignItems center
     , hover
         [ color (hex "#8CD636")
