@@ -17,6 +17,7 @@ import Solutions.P14Duplicate
 import Solutions.P15RepeatElements
 import Solutions.P16DropNth
 import Solutions.P17Split
+import Solutions.P18Sublist
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -81,6 +82,11 @@ init flags =
             Array.repeat 100 5
                 |> Array.set 15 3
                 |> Array.set 16 2
+                |> Array.set 18 3
+
+        thirdInputs =
+            Array.repeat 100 5
+                |> Array.set 18 7
 
         problemTitle problemNumber =
             problemHeaders
@@ -97,8 +103,10 @@ init flags =
     ( { searchKeyWord = ""
       , inputLists = inputLists
       , secondaryInputs = secondaryInputs
+      , thirdInputs = thirdInputs
       , inputStrings = Array.map (Utils.listToString String.fromInt ", ") inputLists
       , secondaryInputStrings = Array.map String.fromInt secondaryInputs
+      , thirdInputStrings = Array.map String.fromInt thirdInputs
       , showCode = Array.repeat 100 False
       , solutionsCode = flags
       , p7model = P7FlattenNestedList.initModel (problemInfo 7)
@@ -117,8 +125,10 @@ type alias Model =
     { searchKeyWord : String
     , inputLists : Array (List Int)
     , secondaryInputs : Array Int
+    , thirdInputs : Array Int
     , inputStrings : Array String
     , secondaryInputStrings : Array String
+    , thirdInputStrings : Array String
     , showCode : Array Bool
     , solutionsCode : Array String
     , p7model : P7FlattenNestedList.Model
@@ -140,6 +150,10 @@ type Msg
     | UpdateBasicSecondaryInput Int
     | GenerateRandomSecondaryInput Int
     | RandomSecondaryInputReady Int Int
+    | DecodeBasicThirdInput Int String
+    | UpdateBasicThirdInput Int
+    | GenerateRandomThirdInput Int
+    | RandomThirdInputReady Int Int
     | ShowCodeToggle Int
     | SearchProblem String
     | P7Msg P7FlattenNestedList.Msg
@@ -281,6 +295,58 @@ update msg model =
             , Cmd.none
             )
 
+        GenerateRandomThirdInput problemNumber ->
+            let
+                cmd =
+                    case problemNumber of
+                        _ ->
+                            Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 10)
+            in
+            ( model, cmd )
+
+        RandomThirdInputReady problemNumber randomInt ->
+            ( { model
+                | thirdInputs = model.thirdInputs |> Array.set problemNumber randomInt
+                , thirdInputStrings =
+                    model.thirdInputStrings |> Array.set problemNumber (randomInt |> String.fromInt)
+              }
+            , Cmd.none
+            )
+
+        DecodeBasicThirdInput problemNumber input ->
+            let
+                decodeResult =
+                    Decode.decodeString Decode.int input
+
+                newInt =
+                    case decodeResult of
+                        Result.Ok decodedInt ->
+                            decodedInt
+
+                        Err _ ->
+                            model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0
+            in
+            ( { model
+                | thirdInputStrings = model.thirdInputStrings |> Array.set problemNumber input
+                , thirdInputs = model.thirdInputs |> Array.set problemNumber newInt
+              }
+            , Cmd.none
+            )
+
+        UpdateBasicThirdInput problemNumber ->
+            ( { model
+                | thirdInputStrings =
+                    model.thirdInputStrings
+                        |> Array.set problemNumber
+                            (model.thirdInputs
+                                |> Array.get problemNumber
+                                |> Maybe.map String.fromInt
+                                |> Maybe.withDefault "0"
+                            )
+              }
+            , Cmd.none
+            )
+
         ShowCodeToggle problemNumber ->
             let
                 flipped =
@@ -399,6 +465,20 @@ problemInteractiveArea model problemNumber =
                 , niceButton SvgItems.dice "Random" (GenerateRandomSecondaryInput problemNumber)
                 ]
 
+        thirdInput labelText =
+            div [ css inputRowStyles ]
+                [ label [ css inputLabelStyles ] [ text labelText ]
+                , input
+                    [ css secondaryInputStyles
+                    , onInput (DecodeBasicThirdInput problemNumber)
+                    , onBlur (UpdateBasicThirdInput problemNumber)
+                    , value (model.thirdInputStrings |> Array.get problemNumber |> Maybe.withDefault "0")
+                    , maxlength 3
+                    ]
+                    []
+                , niceButton SvgItems.dice "Random" (GenerateRandomThirdInput problemNumber)
+                ]
+
         displayResult basicListFunc toString =
             code [ css codeStyles ]
                 [ text <|
@@ -411,6 +491,16 @@ problemInteractiveArea model problemNumber =
             code [ css codeStyles ]
                 [ text <|
                     (basicListFunc (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                        (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
+                        |> toString
+                    )
+                ]
+
+        displayResultWithThirdInput basicListFunc toString =
+            code [ css codeStyles ]
+                [ text <|
+                    (basicListFunc (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                        (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                         (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
                         |> toString
                     )
@@ -514,6 +604,15 @@ problemInteractiveArea model problemNumber =
                         (Utils.listToString String.fromInt ", ")
                         (Utils.listToString String.fromInt ", ")
                     )
+                ]
+
+            18 ->
+                [ basicListInput
+                , secondaryInput "Start: "
+                , thirdInput "End: "
+                , label [] [ text "Sublist: " ]
+                , displayResultWithThirdInput Solutions.P18Sublist.sublist
+                    (Utils.listToString String.fromInt ", ")
                 ]
 
             _ ->

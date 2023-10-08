@@ -1,6 +1,6 @@
 module ProblemText exposing (requirement)
 
-import Html.Styled exposing (Html, code, p, text)
+import Html.Styled exposing (Html, code, div, p, text)
 import Html.Styled.Attributes exposing (css)
 import HtmlUtils exposing (viewCode)
 import Styles exposing (codeStyles)
@@ -95,6 +95,12 @@ requirement problemNumber =
         17 ->
             p []
                 [ text "Split a list into two lists. The length of the first part is specified by the caller." ]
+
+        18 ->
+            div []
+                [ p [] [ text "Extract a slice from a list." ]
+                , p [] [ text "Given a list, return the elements between (inclusively) two indices. Start counting the elements with 1. Indices outside of the list bounds (i.e. negative number, or beyond the length of the list) should be clipped to the bounds of the list." ]
+                ]
 
         _ ->
             p [] [ text "Problem requirement here" ]
