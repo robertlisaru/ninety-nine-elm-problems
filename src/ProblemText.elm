@@ -109,5 +109,9 @@ requirement problemNumber =
                 , text " places to the left (negative values will rotate to the right). Allow rotations greater than the list length."
                 ]
 
+        20 ->
+            p []
+                [ text "Drop the nth element from a list." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

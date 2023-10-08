@@ -20,6 +20,7 @@ import Solutions.P17Split
 import Solutions.P18Sublist
 import Solutions.P19Rotate
 import Solutions.P1LastElement
+import Solutions.P20DropAt
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
@@ -621,6 +622,14 @@ problemInteractiveArea model problemNumber =
                 , secondaryInput "n: "
                 , label [] [ text "Rotated list: " ]
                 , displayResultWithSecondaryInput Solutions.P19Rotate.rotate
+                    (Utils.listToString String.fromInt ", ")
+                ]
+
+            20 ->
+                [ basicListInput
+                , secondaryInput "n: "
+                , label [] [ text "n-th element removed: " ]
+                , displayResultWithSecondaryInput Solutions.P20DropAt.dropAt
                     (Utils.listToString String.fromInt ", ")
                 ]
 
