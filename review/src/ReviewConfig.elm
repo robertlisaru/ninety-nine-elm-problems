@@ -17,7 +17,6 @@ import NoExposingEverything
 import NoImportingEverything
 import NoMissingTypeAnnotation
 import NoMissingTypeExpose
-import NoPrematureLetComputation
 import NoUnused.CustomTypeConstructorArgs
 import NoUnused.CustomTypeConstructors
 import NoUnused.Dependencies
@@ -36,7 +35,6 @@ config =
     , NoImportingEverything.rule ["Css"]
     , NoMissingTypeAnnotation.rule
     , NoMissingTypeExpose.rule
-    , NoPrematureLetComputation.rule
     , NoUnused.CustomTypeConstructors.rule []
     , NoUnused.CustomTypeConstructorArgs.rule
     , NoUnused.Dependencies.rule
