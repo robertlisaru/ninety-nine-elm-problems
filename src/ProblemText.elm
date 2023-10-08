@@ -88,5 +88,9 @@ requirement problemNumber =
             p []
                 [ text "Repeat each element of a list a given number of times." ]
 
+        16 ->
+            p []
+                [ text "Drop every nth element from a list." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

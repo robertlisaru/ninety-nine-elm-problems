@@ -18,8 +18,8 @@ removeNothings listMaybes =
             []
 
 
-dropNth : List a -> Int -> List a
-dropNth list n =
+dropNth : Int -> List a -> List a
+dropNth n list =
     if n < 1 then
         list
 

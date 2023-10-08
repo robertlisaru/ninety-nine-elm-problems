@@ -15,6 +15,7 @@ import RandomUtils
 import Solutions.P11RleEncode
 import Solutions.P14Duplicate
 import Solutions.P15RepeatElements
+import Solutions.P16DropNth
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -78,6 +79,7 @@ init flags =
         secondaryInputs =
             Array.repeat 100 5
                 |> Array.set 15 3
+                |> Array.set 16 2
 
         problemTitle problemNumber =
             problemHeaders
@@ -491,6 +493,14 @@ problemInteractiveArea model problemNumber =
                 , secondaryInput "Repeat times: "
                 , label [] [ text "Repeated elements: " ]
                 , displayResultWithSecondaryInput Solutions.P15RepeatElements.repeatElements
+                    (Utils.listToString String.fromInt ", ")
+                ]
+
+            16 ->
+                [ basicListInput
+                , secondaryInput "n: "
+                , label [] [ text "n-th elements removed: " ]
+                , displayResultWithSecondaryInput Solutions.P16DropNth.dropNth
                     (Utils.listToString String.fromInt ", ")
                 ]
 
