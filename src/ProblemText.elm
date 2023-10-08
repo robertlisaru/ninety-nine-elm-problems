@@ -102,5 +102,12 @@ requirement problemNumber =
                 , p [] [ text "Given a list, return the elements between (inclusively) two indices. Start counting the elements with 1. Indices outside of the list bounds (i.e. negative number, or beyond the length of the list) should be clipped to the bounds of the list." ]
                 ]
 
+        19 ->
+            p []
+                [ text "Rotate a list "
+                , code [ css codeStyles ] [ text "n" ]
+                , text " places to the left (negative values will rotate to the right). Allow rotations greater than the list length."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

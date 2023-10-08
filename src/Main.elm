@@ -18,6 +18,7 @@ import Solutions.P15RepeatElements
 import Solutions.P16DropNth
 import Solutions.P17Split
 import Solutions.P18Sublist
+import Solutions.P19Rotate
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -612,6 +613,14 @@ problemInteractiveArea model problemNumber =
                 , thirdInput "End: "
                 , label [] [ text "Sublist: " ]
                 , displayResultWithThirdInput Solutions.P18Sublist.sublist
+                    (Utils.listToString String.fromInt ", ")
+                ]
+
+            19 ->
+                [ basicListInput
+                , secondaryInput "n: "
+                , label [] [ text "Rotated list: " ]
+                , displayResultWithSecondaryInput Solutions.P19Rotate.rotate
                     (Utils.listToString String.fromInt ", ")
                 ]
 
