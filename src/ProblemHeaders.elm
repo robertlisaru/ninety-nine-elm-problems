@@ -65,4 +65,16 @@ problemHeaders =
     , { number = 71, title = "Internal path length" }
     , { number = 72, title = "Depth first order" }
     , { number = 73, title = "Multiway tree to string" }
+    , { number = 80, title = "Adjacency-list" }
+    , { number = 81, title = "Find paths" }
+    , { number = 84, title = "Minimal spanning tree" }
+    , { number = 86, title = "Graph coloring" }
+    , { number = 87, title = "Graph traversal" }
+    , { number = 88, title = "Connected components" }
+    , { number = 90, title = "Queens" }
+    , { number = 91, title = "The Knight's Tour" }
+    , { number = 92, title = "Graceful labeling" }
+    , { number = 93, title = "Equation" }
+    , { number = 94, title = "Regular graphs" }
+    , { number = 95, title = "Number spelling" }
     ]
