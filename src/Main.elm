@@ -472,7 +472,7 @@ problemInteractiveArea model problemNumber =
                     , value (model.inputStrings |> Array.get problemNumber |> Maybe.withDefault "[]")
                     ]
                     []
-                , niceButton SvgItems.dice "Random" (GenerateBasicRandomList problemNumber)
+                , niceButton SvgItems.dice "" (GenerateBasicRandomList problemNumber)
                 ]
 
         secondaryInput labelText =
@@ -486,7 +486,7 @@ problemInteractiveArea model problemNumber =
                     , maxlength 3
                     ]
                     []
-                , niceButton SvgItems.dice "Random" (GenerateRandomSecondaryInput problemNumber)
+                , niceButton SvgItems.dice "" (GenerateRandomSecondaryInput problemNumber)
                 ]
 
         thirdInput labelText =
@@ -500,7 +500,7 @@ problemInteractiveArea model problemNumber =
                     , maxlength 3
                     ]
                     []
-                , niceButton SvgItems.dice "Random" (GenerateRandomThirdInput problemNumber)
+                , niceButton SvgItems.dice "" (GenerateRandomThirdInput problemNumber)
                 ]
 
         displayResult basicListFunc toString =

@@ -99,7 +99,7 @@ specialProblemInteractiveArea model =
             , value model.inputString
             ]
             []
-        , niceButton SvgItems.dice "Random" GenerateRandomInput
+        , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , label [] [ text "Run lengths: " ]
     , code [ css codeStyles ]

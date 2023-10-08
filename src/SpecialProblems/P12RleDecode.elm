@@ -100,7 +100,7 @@ specialProblemInteractiveArea model =
             , value model.inputString
             ]
             []
-        , niceButton SvgItems.dice "Random" GenerateRandomInput
+        , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , label [] [ text "Decoded: " ]
     , code [ css codeStyles ]

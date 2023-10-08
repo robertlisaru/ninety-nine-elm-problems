@@ -168,7 +168,7 @@ specialProblemInteractiveArea model =
             , value model.inputString
             ]
             []
-        , niceButton SvgItems.dice "Random" GenerateRandomInput
+        , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , div [ css inputRowStyles ]
         [ label [ css inputLabelStyles ] [ text "n: " ]
@@ -180,12 +180,12 @@ specialProblemInteractiveArea model =
             , maxlength 3
             ]
             []
-        , niceButton SvgItems.dice "Random" GenerateRandomSecondaryInput
+        , niceButton SvgItems.dice "" GenerateRandomSecondaryInput
         ]
     , div [ css (inputRowStyles ++ [ marginBottom (px 0) ]) ]
         [ label [] [ text "Random elements: " ]
         , code [ css (codeStyles ++ [ marginRight (px 8) ]) ]
             [ text (model.randomElements |> Utils.listToString String.fromInt ", ") ]
-        , niceButton SvgItems.dice "Random" RandomSelect
+        , niceButton SvgItems.dice "" RandomSelect
         ]
     ]
