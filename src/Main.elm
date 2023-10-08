@@ -16,6 +16,7 @@ import Solutions.P11RleEncode
 import Solutions.P14Duplicate
 import Solutions.P15RepeatElements
 import Solutions.P16DropNth
+import Solutions.P17Split
 import Solutions.P1LastElement
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
@@ -502,6 +503,17 @@ problemInteractiveArea model problemNumber =
                 , label [] [ text "n-th elements removed: " ]
                 , displayResultWithSecondaryInput Solutions.P16DropNth.dropNth
                     (Utils.listToString String.fromInt ", ")
+                ]
+
+            17 ->
+                [ basicListInput
+                , secondaryInput "Length of first part: "
+                , label [] [ text "Split: " ]
+                , displayResultWithSecondaryInput Solutions.P17Split.split
+                    (Utils.tupleToString
+                        (Utils.listToString String.fromInt ", ")
+                        (Utils.listToString String.fromInt ", ")
+                    )
                 ]
 
             _ ->

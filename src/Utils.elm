@@ -43,9 +43,9 @@ nestedListToString nl =
             list |> listToString nestedListToString ", "
 
 
-tupleToString : ( Int, Int ) -> String
-tupleToString ( a, b ) =
-    "(" ++ String.fromInt a ++ ", " ++ String.fromInt b ++ ")"
+tupleToString : (a -> String) -> (b -> String) -> ( a, b ) -> String
+tupleToString aToString bToString ( a, b ) =
+    "(" ++ aToString a ++ ", " ++ bToString b ++ ")"
 
 
 listOfListsToString : List (List Int) -> String

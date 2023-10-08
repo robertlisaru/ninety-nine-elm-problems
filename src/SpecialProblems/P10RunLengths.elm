@@ -105,7 +105,7 @@ specialProblemInteractiveArea model =
     , code [ css codeStyles ]
         [ text <|
             (Solutions.P10RunLengths.runLengths model.listOfLists
-                |> Utils.listToString Utils.tupleToString ", "
+                |> Utils.listToString (Utils.tupleToString String.fromInt String.fromInt) ", "
             )
         ]
     ]

@@ -92,5 +92,9 @@ requirement problemNumber =
             p []
                 [ text "Drop every nth element from a list." ]
 
+        17 ->
+            p []
+                [ text "Split a list into two lists. The length of the first part is specified by the caller." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
