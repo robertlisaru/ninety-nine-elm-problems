@@ -21,6 +21,7 @@ import Solutions.P18Sublist
 import Solutions.P19Rotate
 import Solutions.P1LastElement
 import Solutions.P20DropAt
+import Solutions.P21InsertAt
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
@@ -89,6 +90,7 @@ init flags =
         thirdInputs =
             Array.repeat 100 5
                 |> Array.set 18 7
+                |> Array.set 21 99
 
         problemTitle problemNumber =
             problemHeaders
@@ -301,6 +303,9 @@ update msg model =
             let
                 cmd =
                     case problemNumber of
+                        21 ->
+                            Random.generate (RandomThirdInputReady problemNumber) (Random.int 100 999)
+
                         _ ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 10)
             in
@@ -630,6 +635,15 @@ problemInteractiveArea model problemNumber =
                 , secondaryInput "n: "
                 , label [] [ text "n-th element removed: " ]
                 , displayResultWithSecondaryInput Solutions.P20DropAt.dropAt
+                    (Utils.listToString String.fromInt ", ")
+                ]
+
+            21 ->
+                [ basicListInput
+                , thirdInput "New element: "
+                , secondaryInput "Position: "
+                , label [] [ text "Added new element: " ]
+                , displayResultWithThirdInput Solutions.P21InsertAt.insertAt
                     (Utils.listToString String.fromInt ", ")
                 ]
 

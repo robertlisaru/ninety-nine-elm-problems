@@ -113,5 +113,9 @@ requirement problemNumber =
             p []
                 [ text "Drop the nth element from a list." ]
 
+        21 ->
+            p []
+                [ text "Insert an element at a given position into a list. Treat the first position as index 1." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
