@@ -22,6 +22,7 @@ import Solutions.P19Rotate
 import Solutions.P1LastElement
 import Solutions.P20DropAt
 import Solutions.P21InsertAt
+import Solutions.P22Range
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
@@ -86,11 +87,13 @@ init flags =
                 |> Array.set 15 3
                 |> Array.set 16 2
                 |> Array.set 18 3
+                |> Array.set 22 1
 
         thirdInputs =
             Array.repeat 100 5
                 |> Array.set 18 7
                 |> Array.set 21 99
+                |> Array.set 22 10
 
         problemTitle problemNumber =
             problemHeaders
@@ -645,6 +648,19 @@ problemInteractiveArea model problemNumber =
                 , label [] [ text "Added new element: " ]
                 , displayResultWithThirdInput Solutions.P21InsertAt.insertAt
                     (Utils.listToString String.fromInt ", ")
+                ]
+
+            22 ->
+                [ secondaryInput "Start: "
+                , thirdInput "End: "
+                , label [] [ text "Integers in range: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P22Range.range (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> Utils.listToString String.fromInt ", "
+                        )
+                    ]
                 ]
 
             _ ->

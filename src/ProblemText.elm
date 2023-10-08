@@ -117,5 +117,9 @@ requirement problemNumber =
             p []
                 [ text "Insert an element at a given position into a list. Treat the first position as index 1." ]
 
+        22 ->
+            p []
+                [ text "Create a list containing all integers within a given range, inclusively, allow for reverse order." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
