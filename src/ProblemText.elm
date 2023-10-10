@@ -125,5 +125,9 @@ requirement problemNumber =
             p []
                 [ text "Extract a given number of randomly selected elements from a list." ]
 
+        24 ->
+            p []
+                [ text "Draw n different random numbers from a range of numbers." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

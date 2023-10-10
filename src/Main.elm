@@ -33,6 +33,7 @@ import Solutions.P9Pack
 import SpecialProblems.P10RunLengths as P10RunLengths
 import SpecialProblems.P12RleDecode as P12RleDecode
 import SpecialProblems.P23RandomSelect as P23RandomSelect
+import SpecialProblems.P24Lotto as P24Lotto
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -110,6 +111,9 @@ init flags =
 
         ( p23model, p23cmd ) =
             P23RandomSelect.initModel (problemInfo 23)
+
+        ( p24model, p24cmd ) =
+            P24Lotto.initModel (problemInfo 24)
     in
     ( { searchKeyWord = ""
       , inputLists = inputLists
@@ -124,8 +128,12 @@ init flags =
       , p10model = P10RunLengths.initModel (problemInfo 10)
       , p12model = P12RleDecode.initModel (problemInfo 12)
       , p23model = p23model
+      , p24model = p24model
       }
-    , p23cmd |> Cmd.map P23Msg
+    , Cmd.batch
+        [ p23cmd |> Cmd.map P23Msg
+        , p24cmd |> Cmd.map P24Msg
+        ]
     )
 
 
@@ -147,6 +155,7 @@ type alias Model =
     , p10model : P10RunLengths.Model
     , p12model : P12RleDecode.Model
     , p23model : P23RandomSelect.Model
+    , p24model : P24Lotto.Model
     }
 
 
@@ -173,6 +182,7 @@ type Msg
     | P10Msg P10RunLengths.Msg
     | P12Msg P12RleDecode.Msg
     | P23Msg P23RandomSelect.Msg
+    | P24Msg P24Lotto.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -401,6 +411,13 @@ update msg model =
                     P23RandomSelect.update problemMsg model.p23model
             in
             ( { model | p23model = newProblemModel }, problemCmd |> Cmd.map P23Msg )
+
+        P24Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    P24Lotto.update problemMsg model.p24model
+            in
+            ( { model | p24model = newProblemModel }, problemCmd |> Cmd.map P24Msg )
 
 
 
@@ -679,6 +696,9 @@ problemInteractiveArea model problemNumber =
 
             23 ->
                 P23RandomSelect.specialProblemInteractiveArea model.p23model |> List.map (Html.map P23Msg)
+
+            24 ->
+                P24Lotto.specialProblemInteractiveArea model.p24model |> List.map (Html.map P24Msg)
 
             _ ->
                 [ basicListInput
