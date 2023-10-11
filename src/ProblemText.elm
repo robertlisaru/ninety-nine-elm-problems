@@ -1,7 +1,7 @@
 module ProblemText exposing (requirement)
 
-import Html.Styled exposing (Html, code, div, p, text)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled exposing (Html, a, code, div, p, text)
+import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
 import Styles exposing (codeStyles)
 
@@ -128,6 +128,17 @@ requirement problemNumber =
         24 ->
             p []
                 [ text "Draw n different random numbers from a range of numbers." ]
+
+        26 ->
+            div []
+                [ p []
+                    [ text "In how many ways you choose a committee of 3 from a group of 12 people? The "
+                    , a [ href "https://www.mathwords.com/c/combination_formula.htm" ]
+                        [ text "combination formula" ]
+                    , text " tells us C(12,3) = 220 possibilities."
+                    ]
+                , p [] [ text "Write a function to generate all combinations of a list." ]
+                ]
 
         _ ->
             p [] [ text "Problem requirement here" ]
