@@ -23,6 +23,7 @@ import Solutions.P1LastElement
 import Solutions.P20DropAt
 import Solutions.P21InsertAt
 import Solutions.P22Range
+import Solutions.P26Combinations
 import Solutions.P2Penultimate
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
@@ -83,6 +84,7 @@ init flags =
                 |> Array.set 11 [ 1, 1, 2, 2, 2 ]
                 |> Array.set 14 [ 1, 2, 3, 4, 5 ]
                 |> Array.set 15 [ 1, 2, 3 ]
+                |> Array.set 26 [ 1, 2, 3, 4, 5 ]
 
         secondaryInputs =
             Array.repeat 100 5
@@ -90,6 +92,7 @@ init flags =
                 |> Array.set 16 2
                 |> Array.set 18 3
                 |> Array.set 22 1
+                |> Array.set 26 3
 
         thirdInputs =
             Array.repeat 100 5
@@ -204,8 +207,11 @@ update msg model =
                         11 ->
                             Random.generate (BasicRandomListReady problemNumber) RandomUtils.duplicateSequences
 
+                        26 ->
+                            Random.generate (BasicRandomListReady problemNumber) <| RandomUtils.uniques 3 6 1 10
+
                         _ ->
-                            Random.generate (BasicRandomListReady problemNumber) (RandomUtils.randomList 10)
+                            Random.generate (BasicRandomListReady problemNumber) <| RandomUtils.randomList 10
             in
             ( model, cmd )
 
@@ -269,6 +275,9 @@ update msg model =
                                 )
 
                         15 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 3)
+
+                        26 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 3)
 
                         _ ->
@@ -699,6 +708,14 @@ problemInteractiveArea model problemNumber =
 
             24 ->
                 P24Lotto.specialProblemInteractiveArea model.p24model |> List.map (Html.map P24Msg)
+
+            26 ->
+                [ basicListInput
+                , secondaryInput "n: "
+                , label [] [ text "Combinations: " ]
+                , displayResultWithSecondaryInput Solutions.P26Combinations.combinations
+                    Utils.listOfListsToString
+                ]
 
             _ ->
                 [ basicListInput

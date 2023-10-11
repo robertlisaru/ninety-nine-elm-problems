@@ -1,6 +1,7 @@
-module RandomUtils exposing (duplicateSequences, nestedListGenerator, randomList, sometimesPalindrome)
+module RandomUtils exposing (duplicateSequences, nestedListGenerator, randomList, sometimesPalindrome, uniques)
 
 import Random
+import Solutions.P24Lotto
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 
 
@@ -104,3 +105,9 @@ randomList : Int -> Random.Generator (List Int)
 randomList maxLength =
     Random.int 0 maxLength
         |> Random.andThen (\n -> Random.list n (Random.int 1 10))
+
+
+uniques : Int -> Int -> Int -> Int -> Random.Generator (List Int)
+uniques minLength maxLength start end =
+    Random.int minLength maxLength
+        |> Random.andThen (\n -> Solutions.P24Lotto.lotto n start end)
