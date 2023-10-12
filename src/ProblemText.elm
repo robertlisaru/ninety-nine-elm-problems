@@ -1,9 +1,10 @@
 module ProblemText exposing (requirement)
 
-import Html.Styled exposing (Html, a, code, div, p, text)
+import Css exposing (margin, px)
+import Html.Styled exposing (Html, a, code, div, h4, p, text)
 import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
-import Styles exposing (codeStyles)
+import Styles exposing (codeStyles, problemTitleStyles)
 
 
 requirement : Int -> Html msg
@@ -138,6 +139,27 @@ requirement problemNumber =
                     , text " tells us C(12,3) = 220 possibilities."
                     ]
                 , p [] [ text "Write a function to generate all combinations of a list." ]
+                ]
+
+        28 ->
+            div []
+                [ h4 [ css (problemTitleStyles ++ [ margin (px 0) ]) ] [ text "a)" ]
+                , p []
+                    [ code [ css codeStyles ] [ text "List.sort" ]
+                    , text " will sort a list from lowest to highest."
+                    ]
+                , viewCode "List.sort [3, 5, 1, 10 -2] == [-2, 1, 3, 5, 10]"
+                , p []
+                    [ text "When you need other sort logic pass a function to "
+                    , code [ css codeStyles ] [ text "List.sortBy" ]
+                    ]
+                , p []
+                    [ text "Sort a list of lists by the length of the lists. The order of sublists of the same size is undefined."
+                    ]
+                , h4 [ css (problemTitleStyles ++ [ margin (px 0) ]) ] [ text "b)" ]
+                , p []
+                    [ text "Sort a list according to the frequency of the sublist length. Place lists with rare lengths first, those with more frequent lengths come later. If the frequency of two or more sublists are equal then any order is acceptable. "
+                    ]
                 ]
 
         _ ->
