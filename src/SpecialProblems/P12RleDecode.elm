@@ -102,7 +102,7 @@ specialProblemInteractiveArea model =
             []
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
-    , label [] [ text "Decoded: " ]
+    , label [ css inputLabelStyles ] [ text "Decoded: " ]
     , code [ css codeStyles ]
         [ text <|
             (Solutions.P12RleDecode.rleDecode model.rleCodes

@@ -183,7 +183,7 @@ specialProblemInteractiveArea model =
         , niceButton SvgItems.dice "" GenerateRandomSecondaryInput
         ]
     , div [ css (inputRowStyles ++ [ marginBottom (px 0) ]) ]
-        [ label [] [ text "Random elements: " ]
+        [ label [ css inputLabelStyles ] [ text "Random elements: " ]
         , code [ css (codeStyles ++ [ marginRight (px 8) ]) ]
             [ text (model.randomElements |> Utils.listToString String.fromInt ", ") ]
         , niceButton SvgItems.dice "" RandomSelect

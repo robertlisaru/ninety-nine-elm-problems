@@ -560,38 +560,38 @@ problemInteractiveArea model problemNumber =
         case problemNumber of
             1 ->
                 [ basicListInput
-                , label [] [ text "Last element is: " ]
+                , label [ css inputLabelStyles ] [ text "Last element is: " ]
                 , displayResult Solutions.P1LastElement.last (Utils.maybeToString String.fromInt)
                 ]
 
             2 ->
                 [ basicListInput
-                , label [] [ text "Penultimate element is: " ]
+                , label [ css inputLabelStyles ] [ text "Penultimate element is: " ]
                 , displayResult Solutions.P2Penultimate.penultimate (Utils.maybeToString String.fromInt)
                 ]
 
             3 ->
                 [ basicListInput
                 , secondaryInput "Index: "
-                , label [] [ text "Element: " ]
+                , label [ css inputLabelStyles ] [ text "Element: " ]
                 , displayResultWithSecondaryInput Solutions.P3ElementAt.elementAt (Utils.maybeToString String.fromInt)
                 ]
 
             4 ->
                 [ basicListInput
-                , label [] [ text "Count: " ]
+                , label [ css inputLabelStyles ] [ text "Count: " ]
                 , displayResult Solutions.P4CountElements.countElements String.fromInt
                 ]
 
             5 ->
                 [ basicListInput
-                , label [] [ text "Reversed list: " ]
+                , label [ css inputLabelStyles ] [ text "Reversed list: " ]
                 , displayResult Solutions.P5Reverse.myReverse (Utils.listToString String.fromInt ", ")
                 ]
 
             6 ->
                 [ basicListInput
-                , label [] [ text "Is palindrome: " ]
+                , label [ css inputLabelStyles ] [ text "Is palindrome: " ]
                 , displayResult Solutions.P6IsPalindrome.isPalindrome Utils.boolToString
                 ]
 
@@ -601,13 +601,13 @@ problemInteractiveArea model problemNumber =
 
             8 ->
                 [ basicListInput
-                , label [] [ text "Duplicates removed: " ]
+                , label [ css inputLabelStyles ] [ text "Duplicates removed: " ]
                 , displayResult Solutions.P8NoDupes.noDupes (Utils.listToString String.fromInt ", ")
                 ]
 
             9 ->
                 [ basicListInput
-                , label [] [ text "Duplicates packed: " ]
+                , label [ css inputLabelStyles ] [ text "Duplicates packed: " ]
                 , displayResult Solutions.P9Pack.pack Utils.listOfListsToString
                 ]
 
@@ -616,7 +616,7 @@ problemInteractiveArea model problemNumber =
 
             11 ->
                 [ basicListInput
-                , label [] [ text "Encoded: " ]
+                , label [ css inputLabelStyles ] [ text "Encoded: " ]
                 , displayResult Solutions.P11RleEncode.rleEncode (Utils.listToString Utils.rleCodeToString ", ")
                 ]
 
@@ -625,14 +625,14 @@ problemInteractiveArea model problemNumber =
 
             14 ->
                 [ basicListInput
-                , label [] [ text "Duplicated: " ]
+                , label [ css inputLabelStyles ] [ text "Duplicated: " ]
                 , displayResult Solutions.P14Duplicate.duplicate (Utils.listToString String.fromInt ", ")
                 ]
 
             15 ->
                 [ basicListInput
                 , secondaryInput "Repeat times: "
-                , label [] [ text "Repeated elements: " ]
+                , label [ css inputLabelStyles ] [ text "Repeated elements: " ]
                 , displayResultWithSecondaryInput Solutions.P15RepeatElements.repeatElements
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -640,7 +640,7 @@ problemInteractiveArea model problemNumber =
             16 ->
                 [ basicListInput
                 , secondaryInput "n: "
-                , label [] [ text "n-th elements removed: " ]
+                , label [ css inputLabelStyles ] [ text "n-th elements removed: " ]
                 , displayResultWithSecondaryInput Solutions.P16DropNth.dropNth
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -648,7 +648,7 @@ problemInteractiveArea model problemNumber =
             17 ->
                 [ basicListInput
                 , secondaryInput "Length of first part: "
-                , label [] [ text "Split: " ]
+                , label [ css inputLabelStyles ] [ text "Split: " ]
                 , displayResultWithSecondaryInput Solutions.P17Split.split
                     (Utils.tupleToString
                         (Utils.listToString String.fromInt ", ")
@@ -660,7 +660,7 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , secondaryInput "Start: "
                 , thirdInput "End: "
-                , label [] [ text "Sublist: " ]
+                , label [ css inputLabelStyles ] [ text "Sublist: " ]
                 , displayResultWithThirdInput Solutions.P18Sublist.sublist
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -668,7 +668,7 @@ problemInteractiveArea model problemNumber =
             19 ->
                 [ basicListInput
                 , secondaryInput "n: "
-                , label [] [ text "Rotated list: " ]
+                , label [ css inputLabelStyles ] [ text "Rotated list: " ]
                 , displayResultWithSecondaryInput Solutions.P19Rotate.rotate
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -676,7 +676,7 @@ problemInteractiveArea model problemNumber =
             20 ->
                 [ basicListInput
                 , secondaryInput "n: "
-                , label [] [ text "n-th element removed: " ]
+                , label [ css inputLabelStyles ] [ text "n-th element removed: " ]
                 , displayResultWithSecondaryInput Solutions.P20DropAt.dropAt
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -685,7 +685,7 @@ problemInteractiveArea model problemNumber =
                 [ basicListInput
                 , thirdInput "New element: "
                 , secondaryInput "Position: "
-                , label [] [ text "Added new element: " ]
+                , label [ css inputLabelStyles ] [ text "Added new element: " ]
                 , displayResultWithThirdInput Solutions.P21InsertAt.insertAt
                     (Utils.listToString String.fromInt ", ")
                 ]
@@ -693,7 +693,7 @@ problemInteractiveArea model problemNumber =
             22 ->
                 [ secondaryInput "Start: "
                 , thirdInput "End: "
-                , label [] [ text "Integers in range: " ]
+                , label [ css inputLabelStyles ] [ text "Integers in range: " ]
                 , code [ css codeStyles ]
                     [ text <|
                         (Solutions.P22Range.range (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -712,13 +712,13 @@ problemInteractiveArea model problemNumber =
             26 ->
                 [ basicListInput
                 , secondaryInput "n: "
-                , label [] [ text "Combinations: " ]
+                , label [ css inputLabelStyles ] [ text "Combinations: " ]
                 , displayResultWithSecondaryInput Solutions.P26Combinations.combinations
                     Utils.listOfListsToString
                 ]
 
             _ ->
                 [ basicListInput
-                , label [] [ text "Result is: " ]
+                , label [ css inputLabelStyles ] [ text "Result is: " ]
                 , code [ css codeStyles ] [ text "Result goes here" ]
                 ]

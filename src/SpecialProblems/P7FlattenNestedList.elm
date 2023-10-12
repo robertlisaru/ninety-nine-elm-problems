@@ -105,7 +105,7 @@ specialProblemInteractiveArea model =
             []
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
-    , label [] [ text "Flattened list: " ]
+    , label [ css inputLabelStyles ] [ text "Flattened list: " ]
     , code [ css codeStyles ]
         [ text <|
             (Solutions.P7FlattenNestedList.flatten model.nestedList

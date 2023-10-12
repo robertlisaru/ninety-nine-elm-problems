@@ -101,7 +101,7 @@ specialProblemInteractiveArea model =
             []
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
-    , label [] [ text "Run lengths: " ]
+    , label [ css inputLabelStyles ] [ text "Run lengths: " ]
     , code [ css codeStyles ]
         [ text <|
             (Solutions.P10RunLengths.runLengths model.listOfLists
