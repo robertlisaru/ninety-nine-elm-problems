@@ -35,6 +35,7 @@ import SpecialProblems.P10RunLengths as P10RunLengths
 import SpecialProblems.P12RleDecode as P12RleDecode
 import SpecialProblems.P23RandomSelect as P23RandomSelect
 import SpecialProblems.P24Lotto as P24Lotto
+import SpecialProblems.P28SortBy as P28SortBy
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -132,6 +133,7 @@ init flags =
       , p12model = P12RleDecode.initModel (problemInfo 12)
       , p23model = p23model
       , p24model = p24model
+      , p28model = P28SortBy.initModel (problemInfo 28)
       }
     , Cmd.batch
         [ p23cmd |> Cmd.map P23Msg
@@ -159,6 +161,7 @@ type alias Model =
     , p12model : P12RleDecode.Model
     , p23model : P23RandomSelect.Model
     , p24model : P24Lotto.Model
+    , p28model : P28SortBy.Model
     }
 
 
@@ -186,6 +189,7 @@ type Msg
     | P12Msg P12RleDecode.Msg
     | P23Msg P23RandomSelect.Msg
     | P24Msg P24Lotto.Msg
+    | P28Msg P28SortBy.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -427,6 +431,13 @@ update msg model =
                     P24Lotto.update problemMsg model.p24model
             in
             ( { model | p24model = newProblemModel }, problemCmd |> Cmd.map P24Msg )
+
+        P28Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    P28SortBy.update problemMsg model.p28model
+            in
+            ( { model | p28model = newProblemModel }, problemCmd |> Cmd.map P28Msg )
 
 
 
@@ -716,6 +727,9 @@ problemInteractiveArea model problemNumber =
                 , displayResultWithSecondaryInput Solutions.P26Combinations.combinations
                     Utils.listOfListsToString
                 ]
+
+            28 ->
+                P28SortBy.specialProblemInteractiveArea model.p28model |> List.map (Html.map P28Msg)
 
             _ ->
                 [ basicListInput
