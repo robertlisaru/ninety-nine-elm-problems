@@ -28,6 +28,7 @@ import Solutions.P2Penultimate
 import Solutions.P31IsPrime
 import Solutions.P32GCD
 import Solutions.P33Coprimes
+import Solutions.P34Totient
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -298,6 +299,9 @@ update msg model =
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
 
                         33 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
+
+                        34 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
 
                         _ ->
@@ -790,6 +794,17 @@ problemInteractiveArea model problemNumber =
                         (Solutions.P33Coprimes.coprimes (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> Utils.boolToString
+                        )
+                    ]
+                ]
+
+            34 ->
+                [ secondaryInput "m: "
+                , label [ css inputLabelStyles ] [ text "Totient: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P34Totient.totient (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> String.fromInt
                         )
                     ]
                 ]

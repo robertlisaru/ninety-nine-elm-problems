@@ -184,5 +184,24 @@ requirement problemNumber =
         33 ->
             p [] [ text "Determine whether two positive integer numbers are coprime. Two numbers are coprime if their greatest common divisor equals 1." ]
 
+        34 ->
+            div []
+                [ p []
+                    [ text "Calculate Euler's totient function "
+                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , text "."
+                    ]
+                , p []
+                    [ text "Euler's totient function "
+                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , text " is defined as the number of positive integers "
+                    , code [ css codeStyles ] [ text "r (1 <= r < m)" ]
+                    , text " that are coprime with "
+                    , code [ css codeStyles ] [ text "m" ]
+                    , text "."
+                    ]
+                , p [] [ text "Note the special case: ", code [ css codeStyles ] [ text "totient 1 == 1" ] ]
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

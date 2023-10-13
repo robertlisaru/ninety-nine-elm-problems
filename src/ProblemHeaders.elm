@@ -37,7 +37,7 @@ problemHeaders =
     , { number = 31, title = "Is prime" }
     , { number = 32, title = "Greatest common divisor" }
     , { number = 33, title = "Coprimes" }
-    , { number = 34, title = "Euler's totient function phi(m)" }
+    , { number = 34, title = "Totient" }
     , { number = 35, title = "Prime factors" }
     , { number = 36, title = "Prime factors multiplicity" }
     , { number = 37, title = "Euler's totient function phi(m) (improved)" }
