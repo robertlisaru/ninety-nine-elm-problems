@@ -26,6 +26,7 @@ import Solutions.P22Range
 import Solutions.P26Combinations
 import Solutions.P2Penultimate
 import Solutions.P31IsPrime
+import Solutions.P32GCD
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -95,12 +96,14 @@ init flags =
                 |> Array.set 18 3
                 |> Array.set 22 1
                 |> Array.set 26 3
+                |> Array.set 32 9
 
         thirdInputs =
             Array.repeat 100 5
                 |> Array.set 18 7
                 |> Array.set 21 99
                 |> Array.set 22 10
+                |> Array.set 32 12
 
         problemTitle problemNumber =
             problemHeaders
@@ -288,6 +291,9 @@ update msg model =
                         31 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (RandomUtils.sometimesPrime 999)
 
+                        32 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
+
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
             in
@@ -342,6 +348,9 @@ update msg model =
                     case problemNumber of
                         21 ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 100 999)
+
+                        32 ->
+                            Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 999)
 
                         _ ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 10)
@@ -746,6 +755,19 @@ problemInteractiveArea model problemNumber =
                                 |> Maybe.withDefault 0
                             )
                             |> Utils.boolToString
+                        )
+                    ]
+                ]
+
+            32 ->
+                [ secondaryInput "a: "
+                , thirdInput "b: "
+                , label [ css inputLabelStyles ] [ text "GCD: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P32GCD.gcd (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> String.fromInt
                         )
                     ]
                 ]
