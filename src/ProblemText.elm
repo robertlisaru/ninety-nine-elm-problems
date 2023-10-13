@@ -1,7 +1,7 @@
 module ProblemText exposing (requirement)
 
 import Css exposing (margin, px)
-import Html.Styled exposing (Html, a, code, div, h4, p, text)
+import Html.Styled exposing (Html, a, code, div, h4, li, ol, p, text)
 import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
 import Styles exposing (codeStyles, problemTitleStyles)
@@ -164,6 +164,22 @@ requirement problemNumber =
 
         31 ->
             p [] [ text "Determine whether a given integer number is prime." ]
+
+        32 ->
+            div []
+                [ p []
+                    [ text "Determine the greatest common divisor of two positive integer numbers. Use "
+                    , a [ href "https://en.wikipedia.org/wiki/Euclidean_algorithm" ] [ text "Euclid's algorithm" ]
+                    , text " which recurses over the following steps:"
+                    ]
+                , p []
+                    [ ol []
+                        [ li [] [ text "Given two numbers, a and b, divide a by b" ]
+                        , li [] [ text "If the remainder of the division is 0, the numerator is the GCD" ]
+                        , li [] [ text "Else divide the demoninator by the remainder and return to step 2" ]
+                        ]
+                    ]
+                ]
 
         _ ->
             p [] [ text "Problem requirement here" ]
