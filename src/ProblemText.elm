@@ -181,5 +181,8 @@ requirement problemNumber =
                     ]
                 ]
 
+        33 ->
+            p [] [ text "Determine whether two positive integer numbers are coprime. Two numbers are coprime if their greatest common divisor equals 1." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

@@ -36,7 +36,7 @@ problemHeaders =
     , { number = 28, title = "Sort by" }
     , { number = 31, title = "Is prime" }
     , { number = 32, title = "Greatest common divisor" }
-    , { number = 33, title = "Coprime" }
+    , { number = 33, title = "Coprimes" }
     , { number = 34, title = "Euler's totient function phi(m)" }
     , { number = 35, title = "Prime factors" }
     , { number = 36, title = "Prime factors multiplicity" }
