@@ -162,5 +162,8 @@ requirement problemNumber =
                     ]
                 ]
 
+        31 ->
+            p [] [ text "Determine whether a given integer number is prime." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

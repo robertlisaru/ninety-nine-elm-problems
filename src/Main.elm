@@ -25,6 +25,7 @@ import Solutions.P21InsertAt
 import Solutions.P22Range
 import Solutions.P26Combinations
 import Solutions.P2Penultimate
+import Solutions.P31IsPrime
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -283,6 +284,9 @@ update msg model =
 
                         26 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 3)
+
+                        31 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (RandomUtils.sometimesPrime 999)
 
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
@@ -730,6 +734,21 @@ problemInteractiveArea model problemNumber =
 
             28 ->
                 P28SortBy.specialProblemInteractiveArea model.p28model |> List.map (Html.map P28Msg)
+
+            31 ->
+                [ secondaryInput "n: "
+                , label [ css inputLabelStyles ] [ text "Is prime: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P31IsPrime.isPrime
+                            (model.secondaryInputs
+                                |> Array.get problemNumber
+                                |> Maybe.withDefault 0
+                            )
+                            |> Utils.boolToString
+                        )
+                    ]
+                ]
 
             _ ->
                 [ basicListInput
