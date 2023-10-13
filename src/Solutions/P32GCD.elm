@@ -7,4 +7,4 @@ gcd a b =
         abs a
 
     else
-        gcd b (a |> modBy b)
+        gcd b (a |> remainderBy b)
