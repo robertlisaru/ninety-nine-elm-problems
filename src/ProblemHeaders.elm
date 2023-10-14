@@ -40,7 +40,7 @@ problemHeaders =
     , { number = 34, title = "Totient" }
     , { number = 35, title = "Prime factors" }
     , { number = 36, title = "Prime factors multiplicity" }
-    , { number = 37, title = "Euler's totient function phi(m) (improved)" }
+    , { number = 37, title = "Totient improved" }
     , { number = 38, title = "Benchmark totient" }
     , { number = 39, title = "Primes in range" }
     , { number = 40, title = "Goldbach's conjecture" }

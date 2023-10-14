@@ -1,7 +1,7 @@
 module ProblemText exposing (requirement)
 
-import Css exposing (margin, px)
-import Html.Styled exposing (Html, a, code, div, h4, li, ol, p, text)
+import Css exposing (margin, padding, px)
+import Html.Styled exposing (Html, a, code, div, h4, li, ol, p, pre, text)
 import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
 import Styles exposing (codeStyles, problemTitleStyles)
@@ -208,6 +208,30 @@ requirement problemNumber =
 
         36 ->
             p [] [ text "Construct a list containing the prime factors and their multiplicity for a given integer." ]
+
+        37 ->
+            div []
+                [ p [] [ text "Calculate Euler's totient function phi(m) (improved)." ]
+                , p []
+                    [ text "See "
+                    , a [ href "#34" ] [ text "problem 34" ]
+                    , text " for the definition of Euler's totient function. If the list of the prime factors of a number "
+                    , code [ css codeStyles ] [ text "m" ]
+                    , text " is known in the form of "
+                    , a [ href "#36" ] [ text "problem 36" ]
+                    , text " then the function "
+                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , text " can be efficiently calculated as follows:"
+                    ]
+                , pre [ css (codeStyles ++ [ padding (px 10) ]) ]
+                    [ code [] [ text """Let ((p1 m1) (p2 m2) (p3 m3) ...) be the list of prime
+factors and their multiplicities) of a given number m. 
+Then phi(m) can be calculated with the following formula:
+
+phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) * 
+         ((p2 - 1) * p2 ^ (m2 - 1)) * 
+         ((p3 - 1) * p3 ^ (m3 - 1)) * ...""" ] ]
+                ]
 
         _ ->
             p [] [ text "Problem requirement here" ]
