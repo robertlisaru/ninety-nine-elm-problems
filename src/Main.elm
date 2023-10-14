@@ -29,6 +29,7 @@ import Solutions.P31IsPrime
 import Solutions.P32GCD
 import Solutions.P33Coprimes
 import Solutions.P34Totient
+import Solutions.P35PrimeFactors
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -100,6 +101,7 @@ init flags =
                 |> Array.set 26 3
                 |> Array.set 32 9
                 |> Array.set 33 15
+                |> Array.set 35 900
 
         thirdInputs =
             Array.repeat 100 5
@@ -302,6 +304,9 @@ update msg model =
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
 
                         34 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
+
+                        35 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
 
                         _ ->
@@ -805,6 +810,17 @@ problemInteractiveArea model problemNumber =
                     [ text <|
                         (Solutions.P34Totient.totient (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> String.fromInt
+                        )
+                    ]
+                ]
+
+            35 ->
+                [ secondaryInput "m: "
+                , label [ css inputLabelStyles ] [ text "Prime factors: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P35PrimeFactors.primeFactors (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> Utils.listToString String.fromInt ", "
                         )
                     ]
                 ]

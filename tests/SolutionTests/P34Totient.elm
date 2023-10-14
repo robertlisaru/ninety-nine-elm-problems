@@ -7,7 +7,7 @@ import Test exposing (Test, describe, test)
 
 suite : Test
 suite =
-    describe "Problem 33 - Coprimes"
+    describe "Problem 34 - Totient"
         [ test "Test 1" <|
             \_ ->
                 Expect.equal 0

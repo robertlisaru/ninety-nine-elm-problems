@@ -203,5 +203,8 @@ requirement problemNumber =
                 , p [] [ text "Note the special case: ", code [ css codeStyles ] [ text "totient 1 == 1" ] ]
                 ]
 
+        35 ->
+            p [] [ text "Determine the prime factors of a given positive integer. Construct a flat list containing the prime factors in ascending order." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
