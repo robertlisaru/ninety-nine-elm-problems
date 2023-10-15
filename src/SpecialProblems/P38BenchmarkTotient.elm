@@ -5,6 +5,7 @@ import Html.Styled exposing (Html, button, code, div, input, label, text)
 import Html.Styled.Attributes exposing (css, maxlength, value)
 import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode
+import Process
 import Solutions.P34Totient
 import Solutions.P37TotientImproved
 import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles)
@@ -18,19 +19,15 @@ test f n =
 
 
 type alias TestTime =
-    { start : Maybe Time.Posix
-    , end : Maybe Time.Posix
+    { start : Time.Posix
+    , end : Time.Posix
     }
 
 
-updateEndTime : TestTime -> Maybe Time.Posix -> TestTime
-updateEndTime testTime end =
-    { start = testTime.start, end = end }
-
-
-updateStartTime : TestTime -> Maybe Time.Posix -> TestTime
-updateStartTime testTime start =
-    { start = start, end = testTime.end }
+type TestStatus
+    = NotStarted
+    | Started
+    | Completed Int TestTime
 
 
 initModel : { problemNumber : Int, problemTitle : String } -> Model
@@ -46,9 +43,8 @@ initModel { problemNumber, problemTitle } =
     , problemTitle = problemTitle
     , mRange = mRange
     , inputString = inputString
-    , testRepsCompleted = 0
-    , testTimeTotient = TestTime Nothing Nothing
-    , testTimeTotientImproved = TestTime Nothing Nothing
+    , testTotient1 = NotStarted
+    , testTotient2 = NotStarted
     }
 
 
@@ -57,20 +53,17 @@ type alias Model =
     , problemTitle : String
     , mRange : Int
     , inputString : String
-    , testRepsCompleted : Int
-
-    -- don't hard code this or Elm will memoize the test functions
-    , testTimeTotient : TestTime
-    , testTimeTotientImproved : TestTime
+    , testTotient1 : TestStatus
+    , testTotient2 : TestStatus
     }
 
 
 type Msg
     = DecodeInput String
     | UpdateInput
-    | StartTest
+    | StartTest Int
     | RunTest Int Time.Posix
-    | EndTest Int Time.Posix
+    | EndTest Int Int Time.Posix Time.Posix
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -101,15 +94,15 @@ update msg model =
             , Cmd.none
             )
 
-        EndTest n endTime ->
+        EndTest n totientsComputed startTime endTime ->
             case n of
                 1 ->
-                    ( { model | testTimeTotient = updateEndTime model.testTimeTotient (Just endTime) }
-                    , Task.perform (RunTest 2) Time.now
+                    ( { model | testTotient1 = Completed totientsComputed (TestTime startTime endTime) }
+                    , Task.perform (always (StartTest 2)) Time.now
                     )
 
                 2 ->
-                    ( { model | testTimeTotientImproved = updateEndTime model.testTimeTotient (Just endTime) }
+                    ( { model | testTotient2 = Completed totientsComputed (TestTime startTime endTime) }
                     , Cmd.none
                     )
 
@@ -117,26 +110,34 @@ update msg model =
                     ( model, Cmd.none )
 
         RunTest n startTime ->
+            let
+                totientsComputed =
+                    case n of
+                        1 ->
+                            test Solutions.P34Totient.totient model.mRange
+
+                        2 ->
+                            test Solutions.P37TotientImproved.totient model.mRange
+
+                        _ ->
+                            0
+            in
+            ( model
+            , Task.perform (EndTest n totientsComputed startTime) Time.now
+            )
+
+        StartTest n ->
             ( case n of
                 1 ->
-                    { model
-                        | testTimeTotient = updateStartTime model.testTimeTotient (Just startTime)
-                        , testRepsCompleted = test Solutions.P34Totient.totient model.mRange
-                    }
+                    { model | testTotient1 = Started }
 
                 2 ->
-                    { model
-                        | testTimeTotientImproved = updateEndTime model.testTimeTotient (Just startTime)
-                        , testRepsCompleted = test Solutions.P37TotientImproved.totient model.mRange
-                    }
+                    { model | testTotient2 = Started }
 
                 _ ->
                     model
-            , Task.perform (EndTest n) Time.now
+            , Process.sleep 20 |> Task.andThen (always Time.now) |> Task.perform (RunTest n)
             )
-
-        StartTest ->
-            ( model, Task.perform (RunTest 1) Time.now )
 
 
 specialProblemInteractiveArea : Model -> List (Html Msg)
@@ -156,36 +157,43 @@ specialProblemInteractiveArea model =
             ]
             []
         ]
-    , div [ css inputRowStyles ]
-        [ label [ css inputLabelStyles ] [ text "Totients computed: " ]
-        , code [ css codeStyles ] [ text (model.testRepsCompleted |> String.fromInt) ]
-        ]
-    , button [ onClick StartTest ] [ text "Start" ]
-    , viewTestTime "Problem 34 algorithm finished in: " model.testTimeTotient
-    , viewTestTime "Problem 37 algorithm finished in: " model.testTimeTotientImproved
+    , button [ onClick (StartTest 1) ] [ text "Start" ]
+    , viewTestStatus "Problem 34: " model.testTotient1
+    , viewTestStatus "Problem 37: " model.testTotient2
     ]
 
 
-viewTestTime : String -> TestTime -> Html msg
-viewTestTime label testTime =
-    case ( testTime.start, testTime.end ) of
-        ( Just start, Just end ) ->
-            div [ css [ marginTop (px 15) ] ]
-                [ code []
-                    [ text label ]
-                , code []
-                    [ text <|
-                        String.fromInt
-                            ((end |> Time.posixToMillis)
-                                - (start |> Time.posixToMillis)
-                            )
-                    ]
-                , code []
-                    [ text " milliseconds." ]
-                ]
+viewTestStatus : String -> TestStatus -> Html Msg
+viewTestStatus label testStatus =
+    div [ css [ marginTop (px 15) ] ] <|
+        code []
+            [ text label ]
+            :: (case testStatus of
+                    Completed totientsComputed testTime ->
+                        [ code []
+                            [ text "computed " ]
+                        , code [ css codeStyles ]
+                            [ text <| String.fromInt totientsComputed ]
+                        , code []
+                            [ text " totients in " ]
+                        , code [ css codeStyles ]
+                            [ text <|
+                                String.fromInt
+                                    ((testTime.end |> Time.posixToMillis)
+                                        - (testTime.start |> Time.posixToMillis)
+                                    )
+                            ]
+                        , code []
+                            [ text " milliseconds." ]
+                        ]
 
-        ( Just _, Nothing ) ->
-            div [] [ text "loading" ]
+                    Started ->
+                        [ code []
+                            [ text "computing totients..." ]
+                        ]
 
-        _ ->
-            text ""
+                    NotStarted ->
+                        [ code []
+                            [ text "not started" ]
+                        ]
+               )
