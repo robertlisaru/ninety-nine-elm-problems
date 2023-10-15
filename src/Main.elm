@@ -32,6 +32,7 @@ import Solutions.P34Totient
 import Solutions.P35PrimeFactors
 import Solutions.P36PrimeFactorsM
 import Solutions.P37TotientImproved
+import Solutions.P39PrimesInRange
 import Solutions.P3ElementAt
 import Solutions.P4CountElements
 import Solutions.P5Reverse
@@ -106,6 +107,7 @@ init flags =
                 |> Array.set 33 15
                 |> Array.set 35 900
                 |> Array.set 36 900
+                |> Array.set 39 50
 
         thirdInputs =
             Array.repeat 100 5
@@ -114,6 +116,7 @@ init flags =
                 |> Array.set 22 10
                 |> Array.set 32 12
                 |> Array.set 33 14
+                |> Array.set 39 100
 
         problemTitle problemNumber =
             problemHeaders
@@ -322,6 +325,9 @@ update msg model =
                         37 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 999)
 
+                        39 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 2 500)
+
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
             in
@@ -382,6 +388,9 @@ update msg model =
 
                         33 ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 999)
+
+                        39 ->
+                            Random.generate (RandomThirdInputReady problemNumber) (Random.int 501 999)
 
                         _ ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 10)
@@ -869,6 +878,19 @@ problemInteractiveArea model problemNumber =
 
             38 ->
                 P38BenchmarkTotient.specialProblemInteractiveArea model.p38model |> List.map (Html.map P38Msg)
+
+            39 ->
+                [ secondaryInput "Start: "
+                , thirdInput "End: "
+                , label [ css inputLabelStyles ] [ text "Primes in range: " ]
+                , code [ css codeStyles ]
+                    [ text <|
+                        (Solutions.P39PrimesInRange.primesInRange (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> Utils.listToString String.fromInt ", "
+                        )
+                    ]
+                ]
 
             _ ->
                 [ basicListInput

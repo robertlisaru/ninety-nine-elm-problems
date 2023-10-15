@@ -242,5 +242,9 @@ phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) *
                 , text "."
                 ]
 
+        39 ->
+            p []
+                [ text "Construct a list of all prime numbers within a range of integers." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
