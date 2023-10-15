@@ -16,35 +16,62 @@ totient m =
 
 primeFactorsM : Int -> List ( Int, Int )
 primeFactorsM m =
-    let
-        uniqueFactors =
-            primesInRange 2 m
-                |> List.filter (\d -> (m |> remainderBy d) == 0)
-    in
-    uniqueFactors
-        |> List.map
-            (\factor -> ( factor, multiplicity m factor ))
+    toTuples <| primeFactors m
 
 
-multiplicity : Int -> Int -> Int
-multiplicity m factor =
-    if (m |> remainderBy factor) == 0 then
-        1 + multiplicity (m // factor) factor
+primeFactors : Int -> List Int
+primeFactors m =
+    if m < 2 then
+        []
 
     else
-        0
+        let
+            divides m_ x =
+                (m_ |> modBy x) == 0
+
+            prime =
+                List.range 2 m
+                    |> dropWhile (not << divides m)
+                    |> List.head
+                    |> Maybe.withDefault 0
+        in
+        prime :: (primeFactors <| m // prime)
 
 
-isPrime : Int -> Bool
-isPrime n =
-    (n > 1)
-        && (List.range 2 (n |> toFloat |> sqrt |> floor)
-                |> List.filter (\d -> (n |> modBy d) == 0)
-                |> List.length
-           )
-        == 0
+toTuples : List a -> List ( a, Int )
+toTuples factors =
+    case factors of
+        [] ->
+            []
+
+        x :: _ ->
+            ( x, List.length (takeWhile ((==) x) factors) )
+                :: toTuples (dropWhile ((==) x) factors)
 
 
-primesInRange : Int -> Int -> List Int
-primesInRange start end =
-    List.range start end |> List.filter isPrime
+dropWhile : (a -> Bool) -> List a -> List a
+dropWhile shouldDrop list =
+    case list of
+        [] ->
+            []
+
+        first :: rest ->
+            if shouldDrop first then
+                dropWhile shouldDrop rest
+
+            else
+                list
+
+
+takeWhile : (a -> Bool) -> List a -> List a
+takeWhile shouldTake list =
+    case list of
+        [] ->
+            []
+
+        first :: rest ->
+            if shouldTake first then
+                first :: takeWhile shouldTake rest
+
+            else
+                []
