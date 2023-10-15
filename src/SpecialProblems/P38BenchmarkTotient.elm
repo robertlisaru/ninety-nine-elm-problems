@@ -34,7 +34,7 @@ initModel : { problemNumber : Int, problemTitle : String } -> Model
 initModel { problemNumber, problemTitle } =
     let
         mRange =
-            1000
+            10000
 
         inputString =
             mRange |> String.fromInt
