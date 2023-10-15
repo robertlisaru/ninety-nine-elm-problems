@@ -7,7 +7,7 @@ function getFiles(dir) {
 }
 
 const fileNames = getFiles('./src/Solutions');
-var fileContent = new Array(100).fill("-- No solution at this index. Something went wrong.");
+var fileContent = new Array(100).fill("-- No code to show for this problem.");
 
 const ignoreFirstLines = 2;
 
