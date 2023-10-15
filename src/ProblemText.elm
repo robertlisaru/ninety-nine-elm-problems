@@ -233,5 +233,14 @@ phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) *
          ((p3 - 1) * p3 ^ (m3 - 1)) * ...""" ] ]
                 ]
 
+        38 ->
+            p []
+                [ text "The application below measures the time to calculate totients using the algorithms from "
+                , a [ href "#34" ] [ text "problem 34" ]
+                , text " and "
+                , a [ href "#37" ] [ text "problem 37" ]
+                , text "."
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

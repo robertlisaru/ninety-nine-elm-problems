@@ -43,6 +43,7 @@ import SpecialProblems.P12RleDecode as P12RleDecode
 import SpecialProblems.P23RandomSelect as P23RandomSelect
 import SpecialProblems.P24Lotto as P24Lotto
 import SpecialProblems.P28SortBy as P28SortBy
+import SpecialProblems.P38BenchmarkTotient as P38BenchmarkTotient
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -147,6 +148,7 @@ init flags =
       , p23model = p23model
       , p24model = p24model
       , p28model = P28SortBy.initModel (problemInfo 28)
+      , p38model = P38BenchmarkTotient.initModel (problemInfo 38)
       }
     , Cmd.batch
         [ p23cmd |> Cmd.map P23Msg
@@ -175,6 +177,7 @@ type alias Model =
     , p23model : P23RandomSelect.Model
     , p24model : P24Lotto.Model
     , p28model : P28SortBy.Model
+    , p38model : P38BenchmarkTotient.Model
     }
 
 
@@ -203,6 +206,7 @@ type Msg
     | P23Msg P23RandomSelect.Msg
     | P24Msg P24Lotto.Msg
     | P28Msg P28SortBy.Msg
+    | P38Msg P38BenchmarkTotient.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -478,6 +482,13 @@ update msg model =
                     P28SortBy.update problemMsg model.p28model
             in
             ( { model | p28model = newProblemModel }, problemCmd |> Cmd.map P28Msg )
+
+        P38Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    P38BenchmarkTotient.update problemMsg model.p38model
+            in
+            ( { model | p38model = newProblemModel }, problemCmd |> Cmd.map P38Msg )
 
 
 
@@ -855,6 +866,9 @@ problemInteractiveArea model problemNumber =
                         )
                     ]
                 ]
+
+            38 ->
+                P38BenchmarkTotient.specialProblemInteractiveArea model.p38model |> List.map (Html.map P38Msg)
 
             _ ->
                 [ basicListInput
