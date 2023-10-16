@@ -151,7 +151,9 @@ inputLabelStyles =
 
 codeStyles : List Style
 codeStyles =
-    [ Css.backgroundColor (Css.hex "#f6f8fa"), Css.padding2 (Css.em 0.2) (Css.em 0.4) ]
+    [ Css.backgroundColor (Css.hex "#f6f8fa")
+    , Css.padding2 (Css.em 0.2) (Css.em 0.4)
+    ]
 
 
 linkStyles : List Style
@@ -160,6 +162,7 @@ linkStyles =
     , color (hex "#1293D8")
     , hover
         [ textDecoration underline ]
+    , fontFamilies [ "Source Code Pro", "Consolas", "Liberation Mono", "Menlo", "Courier", "monospace" ]
     ]
 
 
@@ -309,6 +312,12 @@ genericStylesNode =
 genericRawCss : String
 genericRawCss =
     """
+body {
+    margin: 0;
+    font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+    color: #000E16;
+}
+
 input {
     padding: 4px;
     border: 1px solid #eeeeee;
