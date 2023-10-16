@@ -6,19 +6,14 @@ import List
 totient : Int -> Int
 totient m =
     let
-        formula ( p_, m_ ) =
-            (p_ - 1) * p_ ^ (m_ - 1)
+        formula ( prime, multiplicity ) =
+            (prime - 1) * prime ^ (multiplicity - 1)
     in
     if m < 1 then
         0
 
     else
-        m |> primeFactorsM |> List.map formula |> List.product
-
-
-primeFactorsM : Int -> List ( Int, Int )
-primeFactorsM m =
-    toTuples <| primeFactors m
+        m |> primeFactors |> toTuples |> List.map formula |> List.product
 
 
 primeFactors : Int -> List Int
@@ -28,14 +23,14 @@ primeFactors m =
 
     else
         let
-            divides m_ x =
-                (m_ |> modBy x) == 0
+            isDivisibleBy x =
+                (m |> modBy x) == 0
 
             prime =
                 List.range 2 m
-                    |> dropWhile (not << divides m)
+                    |> dropWhile (not << isDivisibleBy)
                     |> List.head
-                    |> Maybe.withDefault 0
+                    |> Maybe.withDefault 1
         in
         prime :: (primeFactors <| m // prime)
 
