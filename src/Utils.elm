@@ -1,4 +1,4 @@
-module Utils exposing (boolToString, displayIf, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
@@ -61,3 +61,16 @@ rleCodeToString rleCode =
 
         Single element ->
             "Single " ++ String.fromInt element
+
+
+intToTwoDigitString : Int -> String
+intToTwoDigitString number =
+    let
+        shortened =
+            number |> remainderBy 100 |> abs
+    in
+    if shortened < 10 then
+        "0" ++ String.fromInt shortened
+
+    else
+        String.fromInt shortened

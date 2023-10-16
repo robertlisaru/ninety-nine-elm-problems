@@ -2,8 +2,9 @@ module Main exposing (Model, Msg(..), main)
 
 import Array exposing (Array)
 import Browser
-import Html.Styled as Html exposing (Html, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
-import Html.Styled.Attributes exposing (css, id, maxlength, value)
+import Css exposing (marginLeft, marginTop, px)
+import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
+import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
@@ -48,7 +49,8 @@ import SpecialProblems.P38BenchmarkTotient as P38BenchmarkTotient
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
-        ( codeStyles
+        ( buttonStyles
+        , codeStyles
         , genericStylesNode
         , headerStyles
         , inputLabelStyles
@@ -546,7 +548,24 @@ viewProblem model problem =
     in
     li
         [ css problemStyles, id (problem.number |> String.fromInt) ]
-        [ h3 [ css problemTitleStyles ] [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+        [ h3 [ css problemTitleStyles ]
+            [ text <| String.fromInt problem.number ++ ". " ++ problem.title
+            , a
+                [ href
+                    ("https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p"
+                        ++ Utils.intToTwoDigitString problem.number
+                        ++ ".html"
+                    )
+                , target "_blank"
+                , css
+                    (buttonStyles
+                        ++ [ marginLeft (px 8)
+                           , marginTop (px 3)
+                           ]
+                    )
+                ]
+                [ SvgItems.book ]
+            ]
         , ProblemText.requirement problem.number
         , problemInteractiveArea model problem.number
         , viewCodeButton model.showCode problem.number

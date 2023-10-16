@@ -95,6 +95,8 @@ problemTitleStyles =
     , textDecoration none
     , fontSize (em 1.5)
     , fontWeight normal
+    , displayFlex
+    , alignItems center
     ]
 
 
