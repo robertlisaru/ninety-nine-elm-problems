@@ -4,7 +4,7 @@ import Css exposing (..)
 import Html.Styled exposing (Html, a, div, h1, h2, input, li, nav, span, text, ul)
 import Html.Styled.Attributes exposing (css, href, placeholder, value)
 import Html.Styled.Events exposing (onInput)
-import ProblemHeaders exposing (problemHeaders)
+import ProblemHeaders exposing (Category, ProblemHeader, categories)
 import Styles
     exposing
         ( linkStyles
@@ -66,15 +66,6 @@ appIntroView =
 sideBarView : String -> (String -> msg) -> Html msg
 sideBarView searchKeyWord searchMsg =
     let
-        filteredProblems =
-            problemHeaders
-                |> List.filter
-                    (\problem ->
-                        (String.fromInt problem.number ++ ". " ++ problem.title)
-                            |> String.toLower
-                            |> String.contains (searchKeyWord |> String.toLower)
-                    )
-
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
@@ -94,18 +85,7 @@ sideBarView searchKeyWord searchMsg =
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
         , input [ placeholder "Search", Html.Styled.Attributes.type_ "search", css searchBarStyles, value searchKeyWord, onInput searchMsg ] []
         , ul [ css sideBarItemListStyles ]
-            (filteredProblems
-                |> List.map
-                    (\problem ->
-                        li []
-                            [ a
-                                [ href ("#" ++ (problem.number |> String.fromInt))
-                                , css linkStyles
-                                ]
-                                [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
-                            ]
-                    )
-            )
+            (categories |> List.map (viewCategory searchKeyWord))
         , div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
             [ a
                 [ css
@@ -122,3 +102,38 @@ sideBarView searchKeyWord searchMsg =
                 ]
             ]
         ]
+
+
+viewProblemHeader : ProblemHeader -> Html msg
+viewProblemHeader problem =
+    li []
+        [ a
+            [ href ("#" ++ (problem.number |> String.fromInt))
+            , css linkStyles
+            ]
+            [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
+        ]
+
+
+viewCategory : String -> Category -> Html msg
+viewCategory keyword category =
+    let
+        filteredProblems =
+            category.problems
+                |> List.filter
+                    (\problem ->
+                        (String.fromInt problem.number ++ ". " ++ problem.title)
+                            |> String.toLower
+                            |> String.contains (keyword |> String.toLower)
+                    )
+    in
+    case filteredProblems of
+        [] ->
+            text ""
+
+        _ ->
+            div []
+                [ span [ css (linkStyles ++ [ color (hex "#EEA400") ]) ] [ text category.title ]
+                , ul [ css (sideBarItemListStyles ++ [ paddingLeft (px 20) ]) ]
+                    (filteredProblems |> List.map viewProblemHeader)
+                ]
