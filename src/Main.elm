@@ -105,8 +105,10 @@ init flags =
                 |> Array.set 26 3
                 |> Array.set 32 9
                 |> Array.set 33 15
+                |> Array.set 34 100
                 |> Array.set 35 900
                 |> Array.set 36 900
+                |> Array.set 37 100
                 |> Array.set 39 50
 
         thirdInputs =
@@ -116,6 +118,8 @@ init flags =
                 |> Array.set 22 10
                 |> Array.set 32 12
                 |> Array.set 33 14
+                |> Array.set 34 100
+                |> Array.set 37 100
                 |> Array.set 39 100
 
         problemTitle problemNumber =
