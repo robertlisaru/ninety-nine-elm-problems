@@ -1,5 +1,7 @@
 module Solutions.P36PrimeFactorsM exposing (primeFactorsM)
 
+import List
+
 
 primeFactorsM : Int -> List ( Int, Int )
 primeFactorsM m =

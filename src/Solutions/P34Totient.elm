@@ -1,5 +1,7 @@
 module Solutions.P34Totient exposing (totient)
 
+import List
+
 
 totient : Int -> Int
 totient m =

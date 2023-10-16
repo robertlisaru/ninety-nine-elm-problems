@@ -1,5 +1,7 @@
 module Solutions.P39PrimesInRange exposing (primesInRange)
 
+import List
+
 
 primesInRange : Int -> Int -> List Int
 primesInRange start end =
