@@ -2,7 +2,7 @@ module Main exposing (Model, Msg(..), main)
 
 import Array exposing (Array)
 import Browser
-import Css exposing (marginLeft, marginTop, px)
+import Css exposing (auto, marginLeft, marginTop, px)
 import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -559,7 +559,7 @@ viewProblem model problem =
                 , target "_blank"
                 , css
                     (buttonStyles
-                        ++ [ marginLeft (px 8)
+                        ++ [ marginLeft auto
                            , marginTop (px 3)
                            ]
                     )
