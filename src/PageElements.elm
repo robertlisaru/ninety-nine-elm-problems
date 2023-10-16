@@ -76,7 +76,14 @@ sideBarView searchKeyWord searchMsg =
             , linkItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "Source"
             ]
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Credits" ]
-        , ul [ css sideBarItemListStyles ]
+        , ul
+            [ css
+                (sideBarItemListStyles
+                    ++ [ property "list-style-type" "\"\\1F680\""
+                       , paddingLeft (px 20)
+                       ]
+                )
+            ]
             [ linkItem "https://github.com/evancz" "Elm was created by Evan Czaplicki"
             , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The 99 problems are adapted to Elm in a gitbook by johncrane"
             , linkItem "https://package.elm-lang.org/" "This page layout is inspired by the official Elm Packages website"
