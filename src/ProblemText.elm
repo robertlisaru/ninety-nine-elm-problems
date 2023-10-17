@@ -1,10 +1,9 @@
 module ProblemText exposing (requirement)
 
-import Css exposing (margin, px)
 import Html.Styled exposing (Html, a, code, div, h4, li, ol, p, pre, text)
 import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
-import Styles exposing (codeBlockStyles, codeLineStyles, problemTitleStyles)
+import Styles exposing (codeBlockStyles, codeLineStyles, problemSubTitleStyles)
 
 
 requirement : Int -> Html msg
@@ -143,7 +142,7 @@ requirement problemNumber =
 
         28 ->
             div []
-                [ h4 [ css (problemTitleStyles ++ [ margin (px 0) ]) ] [ text "a)" ]
+                [ h4 [ css problemSubTitleStyles ] [ text "a)" ]
                 , p []
                     [ code [ css codeLineStyles ] [ text "List.sort" ]
                     , text " will sort a list from lowest to highest."
@@ -156,7 +155,7 @@ requirement problemNumber =
                 , p []
                     [ text "Sort a list of lists by the length of the lists. The order of sublists of the same size is undefined."
                     ]
-                , h4 [ css (problemTitleStyles ++ [ margin (px 0) ]) ] [ text "b)" ]
+                , h4 [ css problemSubTitleStyles ] [ text "b)" ]
                 , p []
                     [ text "Sort a list according to the frequency of the sublist length. Place lists with rare lengths first, those with more frequent lengths come later. If the frequency of two or more sublists are equal then any order is acceptable. "
                     ]

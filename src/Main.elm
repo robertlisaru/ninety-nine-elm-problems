@@ -535,7 +535,7 @@ view model =
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
         , header [ css <| headerStyles <| model.deviceType ] [ navView model.deviceType ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
-            [ div [ css leftContentStyles ] [ appIntroView, viewProblems model ]
+            [ div [ css leftContentStyles ] [ appIntroView model.deviceType, viewProblems model ]
             , (Utils.displayIf <| not <| Utils.isMobile <| model.deviceType)
                 (sideBarView model.searchKeyWord SearchProblem)
             ]
@@ -563,8 +563,8 @@ viewProblem model problem =
                 (ShowCodeToggle problemNumber)
     in
     li
-        [ css problemStyles, id (problem.number |> String.fromInt) ]
-        [ h3 [ css problemTitleStyles ]
+        [ css <| problemStyles <| model.deviceType, id (problem.number |> String.fromInt) ]
+        [ h3 [ css <| problemTitleStyles <| model.deviceType ]
             [ text <| String.fromInt problem.number ++ ". " ++ problem.title
             , a
                 [ href
@@ -666,7 +666,7 @@ problemInteractiveArea model problemNumber =
                     )
                 ]
     in
-    div [ css problemInteractiveAreaStyles ] <|
+    div [ css <| problemInteractiveAreaStyles <| model.deviceType ] <|
         case problemNumber of
             1 ->
                 [ basicListInput

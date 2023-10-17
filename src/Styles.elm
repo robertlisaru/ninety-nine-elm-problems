@@ -10,16 +10,19 @@ module Styles exposing
     , leftContentStyles
     , linkStyles
     , listInputStyles
+    , mainHeadingStyles
     , navStyles
     , pageContainerStyles
     , problemInteractiveAreaStyles
     , problemListStyles
     , problemStyles
+    , problemSubTitleStyles
     , problemTitleStyles
     , searchBarStyles
     , secondaryInputStyles
     , sideBarItemListStyles
     , sideBarStyles
+    , subHeadingStyles
     , syntaxHighlightRequiredCssNode
     , syntaxHighlightThemeCssNode
     )
@@ -41,7 +44,6 @@ headerStyles deviceType =
             , overflowX hidden
             , position fixed
             , top (px 0)
-            , width (calc (pct 100) minus (px 16))
             ]
 
         Desktop ->
@@ -69,14 +71,51 @@ pageContainerStyles deviceType =
     case deviceType of
         Mobile ->
             [ justifyContent center
-            , width (pct 100)
-            , marginTop (px 64)
+            , marginTop (px 84)
+            , paddingLeft (px 8)
+            , paddingRight (px 8)
             ]
 
         Desktop ->
             [ displayFlex
             , justifyContent center
             , width (pct 100)
+            ]
+
+
+mainHeadingStyles : DeviceType -> List Style
+mainHeadingStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ fontSize (em 2)
+            , marginBottom (px 0)
+            , fontWeight normal
+            ]
+
+        Desktop ->
+            [ fontSize (em 3)
+            , marginBottom (px 0)
+            , fontWeight normal
+            ]
+
+
+subHeadingStyles : DeviceType -> List Style
+subHeadingStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ fontSize (px 16)
+            , marginTop (px 0)
+            , marginBottom (px 50)
+            , lineHeight (em 1.5)
+            , fontWeight normal
+            ]
+
+        Desktop ->
+            [ fontSize (px 16)
+            , marginTop (px 0)
+            , marginBottom (px 50)
+            , lineHeight (em 1.5)
+            , fontWeight normal
             ]
 
 
@@ -113,43 +152,91 @@ problemListStyles =
     ]
 
 
-problemTitleStyles : List Style
-problemTitleStyles =
+problemTitleStyles : DeviceType -> List Style
+problemTitleStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ color (hex "#1293D8")
+            , textDecoration none
+            , fontSize (em 1.5)
+            , fontWeight normal
+            , displayFlex
+            , alignItems center
+            , marginTop (px 8)
+            ]
+
+        Desktop ->
+            [ color (hex "#1293D8")
+            , textDecoration none
+            , fontSize (em 1.5)
+            , fontWeight normal
+            , displayFlex
+            , alignItems center
+            ]
+
+
+problemSubTitleStyles : List Style
+problemSubTitleStyles =
     [ color (hex "#1293D8")
     , textDecoration none
     , fontSize (em 1.5)
     , fontWeight normal
     , displayFlex
     , alignItems center
+    , margin (px 0)
     ]
 
 
-problemStyles : List Style
-problemStyles =
-    [ borderWidth (px 1)
-    , borderStyle solid
-    , borderColor (hex "#f5f5f5")
-    , borderRadius (px 6)
-    , hover
-        [ boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.1)
-        , borderColor (hex "#e0e0e0")
-        ]
-    , marginBottom (px 50)
-    , padding (px 25)
-    , paddingTop (px 0)
-    ]
+problemStyles : DeviceType -> List Style
+problemStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ borderWidth (px 1)
+            , borderStyle solid
+            , borderColor (hex "#f5f5f5")
+            , borderRadius (px 6)
+            , marginBottom (px 50)
+            , padding (px 8)
+            , paddingTop (px 0)
+            ]
+
+        Desktop ->
+            [ borderWidth (px 1)
+            , borderStyle solid
+            , borderColor (hex "#f5f5f5")
+            , borderRadius (px 6)
+            , hover
+                [ boxShadow4 (px 3) (px 3) (px 3) (rgba 0 0 0 0.1)
+                , borderColor (hex "#e0e0e0")
+                ]
+            , marginBottom (px 50)
+            , padding (px 25)
+            , paddingTop (px 0)
+            ]
 
 
-problemInteractiveAreaStyles : List Style
-problemInteractiveAreaStyles =
-    [ borderWidth (px 1)
-    , borderStyle solid
-    , borderColor (hex "#f5f5f5")
-    , borderRadius (px 6)
-    , padding (px 15)
-    , backgroundColor (hex "#fdfdfd")
-    , marginBottom (px 15)
-    ]
+problemInteractiveAreaStyles : DeviceType -> List Style
+problemInteractiveAreaStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ borderWidth (px 1)
+            , borderStyle solid
+            , borderColor (hex "#f5f5f5")
+            , borderRadius (px 6)
+            , padding (px 8)
+            , backgroundColor (hex "#fdfdfd")
+            , marginBottom (px 15)
+            ]
+
+        Desktop ->
+            [ borderWidth (px 1)
+            , borderStyle solid
+            , borderColor (hex "#f5f5f5")
+            , borderRadius (px 6)
+            , padding (px 15)
+            , backgroundColor (hex "#fdfdfd")
+            , marginBottom (px 15)
+            ]
 
 
 inputRowStyles : List Style

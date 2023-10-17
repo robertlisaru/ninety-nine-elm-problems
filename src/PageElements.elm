@@ -13,6 +13,7 @@ import Styles
         , searchBarStyles
         , sideBarItemListStyles
         , sideBarStyles
+        , subHeadingStyles
         )
 import SvgItems
 import Utils exposing (DeviceType(..))
@@ -92,11 +93,15 @@ logoView deviceType =
         ]
 
 
-appIntroView : Html msg
-appIntroView =
+appIntroView : DeviceType -> Html msg
+appIntroView deviceType =
     div []
-        [ h1 [ css [ fontSize (em 3), marginBottom (px 0), fontWeight normal ] ] [ text "99 Elm problems" ]
-        , h2 [ css [ fontSize (px 16), marginTop (px 0), marginBottom (px 50), lineHeight (em 1.5), fontWeight normal ] ]
+        [ h1
+            [ css <| Styles.mainHeadingStyles <| deviceType
+            ]
+            [ text "99 Elm problems" ]
+        , h2
+            [ css <| subHeadingStyles <| deviceType ]
             [ text "Sharpen your functional programming skills." ]
         ]
 
