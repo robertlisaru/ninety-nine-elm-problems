@@ -1,10 +1,10 @@
 module ProblemText exposing (requirement)
 
-import Css exposing (margin, padding, px)
+import Css exposing (margin, px)
 import Html.Styled exposing (Html, a, code, div, h4, li, ol, p, pre, text)
 import Html.Styled.Attributes exposing (css, href)
 import HtmlUtils exposing (viewCode)
-import Styles exposing (codeStyles, problemTitleStyles)
+import Styles exposing (codeBlockStyles, codeLineStyles, problemTitleStyles)
 
 
 requirement : Int -> Html msg
@@ -13,39 +13,39 @@ requirement problemNumber =
         1 ->
             p []
                 [ text "Write a function "
-                , code [ css codeStyles ] [ text "last" ]
+                , code [ css codeLineStyles ] [ text "last" ]
                 , text " that returns the last element of a list. An empty list doesn't have a last element, therefore "
-                , code [ css codeStyles ] [ text "last" ]
+                , code [ css codeLineStyles ] [ text "last" ]
                 , text " must return a "
-                , code [ css codeStyles ] [ text "Maybe" ]
+                , code [ css codeLineStyles ] [ text "Maybe" ]
                 , text "."
                 ]
 
         2 ->
             p []
                 [ text "Implement the function "
-                , code [ css codeStyles ] [ text "penultimate" ]
+                , code [ css codeLineStyles ] [ text "penultimate" ]
                 , text " to find the next to last element of a list."
                 ]
 
         3 ->
             p []
                 [ text "Implement the function "
-                , code [ css codeStyles ] [ text "elementAt" ]
+                , code [ css codeLineStyles ] [ text "elementAt" ]
                 , text " to return the n-th element of a list. The index is 1-relative, that is, the first element is at index 1."
                 ]
 
         4 ->
             p []
                 [ text "Elm provides the function "
-                , code [ css codeStyles ] [ text "List.length" ]
+                , code [ css codeLineStyles ] [ text "List.length" ]
                 , text ". See if you can implement it yourself."
                 ]
 
         5 ->
             p []
                 [ text "Elm provides the function "
-                , code [ css codeStyles ] [ text "List.reverse" ]
+                , code [ css codeLineStyles ] [ text "List.reverse" ]
                 , text " to reverse the order of elements in a list. See if you can implement it."
                 ]
 
@@ -106,7 +106,7 @@ requirement problemNumber =
         19 ->
             p []
                 [ text "Rotate a list "
-                , code [ css codeStyles ] [ text "n" ]
+                , code [ css codeLineStyles ] [ text "n" ]
                 , text " places to the left (negative values will rotate to the right). Allow rotations greater than the list length."
                 ]
 
@@ -145,13 +145,13 @@ requirement problemNumber =
             div []
                 [ h4 [ css (problemTitleStyles ++ [ margin (px 0) ]) ] [ text "a)" ]
                 , p []
-                    [ code [ css codeStyles ] [ text "List.sort" ]
+                    [ code [ css codeLineStyles ] [ text "List.sort" ]
                     , text " will sort a list from lowest to highest."
                     ]
                 , viewCode "List.sort [3, 5, 1, 10 -2] == [-2, 1, 3, 5, 10]"
                 , p []
                     [ text "When you need other sort logic pass a function to "
-                    , code [ css codeStyles ] [ text "List.sortBy" ]
+                    , code [ css codeLineStyles ] [ text "List.sortBy" ]
                     ]
                 , p []
                     [ text "Sort a list of lists by the length of the lists. The order of sublists of the same size is undefined."
@@ -188,19 +188,19 @@ requirement problemNumber =
             div []
                 [ p []
                     [ text "Calculate Euler's totient function "
-                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , code [ css codeLineStyles ] [ text "phi(m)" ]
                     , text "."
                     ]
                 , p []
                     [ text "Euler's totient function "
-                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , code [ css codeLineStyles ] [ text "phi(m)" ]
                     , text " is defined as the number of positive integers "
-                    , code [ css codeStyles ] [ text "r (1 <= r < m)" ]
+                    , code [ css codeLineStyles ] [ text "r (1 <= r < m)" ]
                     , text " that are coprime with "
-                    , code [ css codeStyles ] [ text "m" ]
+                    , code [ css codeLineStyles ] [ text "m" ]
                     , text "."
                     ]
-                , p [] [ text "Note the special case: ", code [ css codeStyles ] [ text "totient 1 == 1" ] ]
+                , p [] [ text "Note the special case: ", code [ css codeLineStyles ] [ text "totient 1 == 1" ] ]
                 ]
 
         35 ->
@@ -216,14 +216,14 @@ requirement problemNumber =
                     [ text "See "
                     , a [ href "#34" ] [ text "problem 34" ]
                     , text " for the definition of Euler's totient function. If the list of the prime factors of a number "
-                    , code [ css codeStyles ] [ text "m" ]
+                    , code [ css codeLineStyles ] [ text "m" ]
                     , text " is known in the form of "
                     , a [ href "#36" ] [ text "problem 36" ]
                     , text " then the function "
-                    , code [ css codeStyles ] [ text "phi(m)" ]
+                    , code [ css codeLineStyles ] [ text "phi(m)" ]
                     , text " can be efficiently calculated as follows:"
                     ]
-                , pre [ css (codeStyles ++ [ padding (px 10) ]) ]
+                , pre [ css codeBlockStyles ]
                     [ code [] [ text """Let ((p1 m1) (p2 m2) (p3 m3) ...) be the list of prime
 factors and their multiplicities) of a given number m. 
 Then phi(m) can be calculated with the following formula:

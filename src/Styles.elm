@@ -1,7 +1,9 @@
 module Styles exposing
     ( buttonStyles
-    , codeStyles
+    , codeBlockStyles
+    , codeLineStyles
     , genericStylesNode
+    , hamburgerButtonStyles
     , headerStyles
     , inputLabelStyles
     , inputRowStyles
@@ -24,18 +26,32 @@ module Styles exposing
 
 import Css exposing (..)
 import Html.Styled exposing (node, text)
+import Utils exposing (DeviceType(..))
 
 
-headerStyles : List Style
-headerStyles =
-    [ height (px 64)
-    , backgroundColor (hex "#5FABDC")
-    , color (hex "#ffffff")
-    , width (calc (pct 100) minus (px 40))
-    , paddingLeft (px 20)
-    , paddingRight (px 20)
-    , overflowX hidden
-    ]
+headerStyles : DeviceType -> List Style
+headerStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ height (px 64)
+            , backgroundColor (hex "#5FABDC")
+            , color (hex "#ffffff")
+            , paddingLeft (px 8)
+            , paddingRight (px 8)
+            , overflowX hidden
+            , position fixed
+            , top (px 0)
+            , width (calc (pct 100) minus (px 16))
+            ]
+
+        Desktop ->
+            [ height (px 64)
+            , backgroundColor (hex "#5FABDC")
+            , color (hex "#ffffff")
+            , paddingLeft (px 20)
+            , paddingRight (px 20)
+            , overflowX hidden
+            ]
 
 
 navStyles : List Style
@@ -48,12 +64,20 @@ navStyles =
     ]
 
 
-pageContainerStyles : List Style
-pageContainerStyles =
-    [ displayFlex
-    , justifyContent center
-    , width (pct 100)
-    ]
+pageContainerStyles : DeviceType -> List Style
+pageContainerStyles deviceType =
+    case deviceType of
+        Mobile ->
+            [ justifyContent center
+            , width (pct 100)
+            , marginTop (px 64)
+            ]
+
+        Desktop ->
+            [ displayFlex
+            , justifyContent center
+            , width (pct 100)
+            ]
 
 
 leftContentStyles : List Style
@@ -151,10 +175,19 @@ inputLabelStyles =
     [ marginRight (px 5) ]
 
 
-codeStyles : List Style
-codeStyles =
-    [ Css.backgroundColor (Css.hex "#f6f8fa")
-    , Css.padding2 (Css.em 0.2) (Css.em 0.4)
+codeLineStyles : List Style
+codeLineStyles =
+    [ backgroundColor (Css.hex "#f6f8fa")
+    , padding2 (Css.em 0.2) (Css.em 0.4)
+    ]
+
+
+codeBlockStyles : List Style
+codeBlockStyles =
+    [ backgroundColor (Css.hex "#f6f8fa")
+    , padding2 (Css.em 0.2) (Css.em 0.4)
+    , padding (px 10)
+    , overflow scroll
     ]
 
 
@@ -174,6 +207,27 @@ buttonStyles =
     , color (hex "#596277")
     , border (px 0)
     , padding (px 0)
+    , fontFamily inherit
+    , fontSize inherit
+    , cursor pointer
+    , outline inherit
+    , display inlineFlex
+    , alignItems center
+    , hover
+        [ color (hex "#8CD636")
+        , textDecoration underline
+        ]
+    ]
+
+
+hamburgerButtonStyles : List Style
+hamburgerButtonStyles =
+    [ backgroundColor inherit
+    , border (px 1)
+    , borderColor (hex "#ffffff60")
+    , borderStyle solid
+    , borderRadius (px 6)
+    , padding (px 4)
     , fontFamily inherit
     , fontSize inherit
     , cursor pointer

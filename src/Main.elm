@@ -51,7 +51,7 @@ import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
         ( buttonStyles
-        , codeStyles
+        , codeLineStyles
         , genericStylesNode
         , headerStyles
         , inputLabelStyles
@@ -151,7 +151,7 @@ init flags =
         ( p24model, p24cmd ) =
             P24Lotto.initModel (problemInfo 24)
     in
-    ( { windowSize = { width = flags.windowWidth, height = flags.windowHeight }
+    ( { deviceType = Utils.deviceType { width = flags.windowWidth, height = flags.windowHeight }
       , searchKeyWord = ""
       , inputLists = inputLists
       , secondaryInputs = secondaryInputs
@@ -181,7 +181,7 @@ init flags =
 
 
 type alias Model =
-    { windowSize : { width : Int, height : Int }
+    { deviceType : Utils.DeviceType
     , searchKeyWord : String
     , inputLists : Array (List Int)
     , secondaryInputs : Array Int
@@ -234,7 +234,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UpdateWindowSize width height ->
-            ( { model | windowSize = { width = width, height = height } }, Cmd.none )
+            ( { model | deviceType = Utils.deviceType { width = width, height = height } }, Cmd.none )
 
         GenerateBasicRandomList problemNumber ->
             let
@@ -533,10 +533,10 @@ view model =
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-        , header [ css headerStyles ] [ navView ]
-        , div [ css pageContainerStyles ]
+        , header [ css <| headerStyles <| model.deviceType ] [ navView model.deviceType ]
+        , div [ css <| pageContainerStyles <| model.deviceType ]
             [ div [ css leftContentStyles ] [ appIntroView, viewProblems model ]
-            , (Utils.displayIf <| not <| Utils.isMobileDevice <| model.windowSize)
+            , (Utils.displayIf <| not <| Utils.isMobile <| model.deviceType)
                 (sideBarView model.searchKeyWord SearchProblem)
             ]
         ]
@@ -640,7 +640,7 @@ problemInteractiveArea model problemNumber =
                 ]
 
         displayResult basicListFunc toString =
-            code [ css codeStyles ]
+            code [ css codeLineStyles ]
                 [ text <|
                     (basicListFunc (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
                         |> toString
@@ -648,7 +648,7 @@ problemInteractiveArea model problemNumber =
                 ]
 
         displayResultWithSecondaryInput basicListFunc toString =
-            code [ css codeStyles ]
+            code [ css codeLineStyles ]
                 [ text <|
                     (basicListFunc (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                         (model.inputLists |> Array.get problemNumber |> Maybe.withDefault [])
@@ -657,7 +657,7 @@ problemInteractiveArea model problemNumber =
                 ]
 
         displayResultWithThirdInput basicListFunc toString =
-            code [ css codeStyles ]
+            code [ css codeLineStyles ]
                 [ text <|
                     (basicListFunc (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                         (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -804,7 +804,7 @@ problemInteractiveArea model problemNumber =
                 [ secondaryInput "Start: "
                 , thirdInput "End: "
                 , label [ css inputLabelStyles ] [ text "Integers in range: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P22Range.range (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -833,7 +833,7 @@ problemInteractiveArea model problemNumber =
             31 ->
                 [ secondaryInput "n: "
                 , label [ css inputLabelStyles ] [ text "Is prime: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P31IsPrime.isPrime
                             (model.secondaryInputs
@@ -849,7 +849,7 @@ problemInteractiveArea model problemNumber =
                 [ secondaryInput "a: "
                 , thirdInput "b: "
                 , label [ css inputLabelStyles ] [ text "GCD: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P32GCD.gcd (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -862,7 +862,7 @@ problemInteractiveArea model problemNumber =
                 [ secondaryInput "a: "
                 , thirdInput "b: "
                 , label [ css inputLabelStyles ] [ text "Coprimes: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P33Coprimes.coprimes (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -874,7 +874,7 @@ problemInteractiveArea model problemNumber =
             34 ->
                 [ secondaryInput "m: "
                 , label [ css inputLabelStyles ] [ text "Totient: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P34Totient.totient (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> String.fromInt
@@ -885,7 +885,7 @@ problemInteractiveArea model problemNumber =
             35 ->
                 [ secondaryInput "m: "
                 , label [ css inputLabelStyles ] [ text "Prime factors: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P35PrimeFactors.primeFactors (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> Utils.listToString String.fromInt ", "
@@ -896,7 +896,7 @@ problemInteractiveArea model problemNumber =
             36 ->
                 [ secondaryInput "m: "
                 , label [ css inputLabelStyles ] [ text "Prime factors: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P36PrimeFactorsM.primeFactorsM (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> Utils.listToString (Utils.tupleToString String.fromInt String.fromInt) ", "
@@ -907,7 +907,7 @@ problemInteractiveArea model problemNumber =
             37 ->
                 [ secondaryInput "m: "
                 , label [ css inputLabelStyles ] [ text "Totient: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P37TotientImproved.totient (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> String.fromInt
@@ -922,7 +922,7 @@ problemInteractiveArea model problemNumber =
                 [ secondaryInput "Start: "
                 , thirdInput "End: "
                 , label [ css inputLabelStyles ] [ text "Primes in range: " ]
-                , code [ css codeStyles ]
+                , code [ css codeLineStyles ]
                     [ text <|
                         (Solutions.P39PrimesInRange.primesInRange (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
@@ -934,5 +934,5 @@ problemInteractiveArea model problemNumber =
             _ ->
                 [ basicListInput
                 , label [ css inputLabelStyles ] [ text "Result is: " ]
-                , code [ css codeStyles ] [ text "Result goes here" ]
+                , code [ css codeLineStyles ] [ text "Result goes here" ]
                 ]

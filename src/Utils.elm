@@ -1,13 +1,27 @@
-module Utils exposing (boolToString, displayIf, intToTwoDigitString, isMobileDevice, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (DeviceType(..), boolToString, deviceType, displayIf, intToTwoDigitString, isMobile, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 
 
-isMobileDevice : { width : Int, height : Int } -> Bool
-isMobileDevice windowSize =
-    windowSize.height > windowSize.width
+type DeviceType
+    = Mobile
+    | Desktop
+
+
+deviceType : { width : Int, height : Int } -> DeviceType
+deviceType windowSize =
+    if windowSize.height > windowSize.width then
+        Mobile
+
+    else
+        Desktop
+
+
+isMobile : DeviceType -> Bool
+isMobile deviceType_ =
+    deviceType_ == Mobile
 
 
 listToString : (a -> String) -> String -> List a -> String

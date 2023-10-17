@@ -8,7 +8,7 @@ import HtmlUtils exposing (niceButton)
 import Json.Decode as Decode
 import Random
 import Solutions.P24Lotto exposing (lotto)
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, secondaryInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, secondaryInputStyles)
 import SvgItems
 import Utils
 
@@ -242,7 +242,7 @@ specialProblemInteractiveArea model =
         ]
     , div [ css (inputRowStyles ++ [ marginBottom (px 0) ]) ]
         [ label [ css inputLabelStyles ] [ text "Random elements: " ]
-        , code [ css (codeStyles ++ [ marginRight (px 8) ]) ]
+        , code [ css (codeLineStyles ++ [ marginRight (px 8) ]) ]
             [ text (model.randomElements |> Utils.listToString String.fromInt ", ") ]
         , niceButton SvgItems.dice "" Lotto
         ]

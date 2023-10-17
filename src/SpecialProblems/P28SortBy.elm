@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P28SortBy
 import Solutions.P9Pack
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -119,7 +119,7 @@ specialProblemInteractiveArea model =
             ]
         ]
     , label [ css inputLabelStyles ] [ text "Sorted: " ]
-    , code [ css codeStyles ]
+    , code [ css codeLineStyles ]
         [ text <|
             if model.sortByLengthFrequency then
                 Solutions.P28SortBy.sortByLengthFrequency model.listOfLists

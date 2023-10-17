@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P12RleDecode
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -103,7 +103,7 @@ specialProblemInteractiveArea model =
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , label [ css inputLabelStyles ] [ text "Decoded: " ]
-    , code [ css codeStyles ]
+    , code [ css codeLineStyles ]
         [ text <|
             (Solutions.P12RleDecode.rleDecode model.rleCodes
                 |> Utils.listToString String.fromInt ", "

@@ -1,4 +1,4 @@
-module SvgItems exposing (book, dice, elmColoredLogo, elmLogo, top)
+module SvgItems exposing (book, dice, elmColoredLogo, elmLogo, hamburger, top)
 
 import Css exposing (fill, hex, hover)
 import Html.Styled exposing (Html)
@@ -197,4 +197,36 @@ top =
                 ]
                 []
             ]
+        ]
+
+
+hamburger : Html msg
+hamburger =
+    svg
+        [ SvgAttr.width "26px"
+        , SvgAttr.height "26px"
+        , SvgAttr.viewBox "0 0 24 24"
+        , SvgAttr.fill "#fff"
+        ]
+        [ path
+            [ SvgAttr.d "M20 7L4 7"
+            , SvgAttr.stroke "#fff"
+            , SvgAttr.strokeWidth "1.5"
+            , SvgAttr.strokeLinecap "round"
+            ]
+            []
+        , path
+            [ SvgAttr.d "M20 12L4 12"
+            , SvgAttr.stroke "#fff"
+            , SvgAttr.strokeWidth "1.5"
+            , SvgAttr.strokeLinecap "round"
+            ]
+            []
+        , path
+            [ SvgAttr.d "M20 17L4 17"
+            , SvgAttr.stroke "#fff"
+            , SvgAttr.strokeWidth "1.5"
+            , SvgAttr.strokeLinecap "round"
+            ]
+            []
         ]

@@ -9,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -106,7 +106,7 @@ specialProblemInteractiveArea model =
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , label [ css inputLabelStyles ] [ text "Flattened list: " ]
-    , code [ css codeStyles ]
+    , code [ css codeLineStyles ]
         [ text <|
             (Solutions.P7FlattenNestedList.flatten model.nestedList
                 |> Utils.listToString String.fromInt ", "

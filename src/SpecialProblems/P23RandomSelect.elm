@@ -9,7 +9,7 @@ import Json.Decode as Decode
 import Random
 import RandomUtils
 import Solutions.P23RandomSelect exposing (randomSelect)
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles, secondaryInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, listInputStyles, secondaryInputStyles)
 import SvgItems
 import Utils
 
@@ -184,7 +184,7 @@ specialProblemInteractiveArea model =
         ]
     , div [ css (inputRowStyles ++ [ marginBottom (px 0) ]) ]
         [ label [ css inputLabelStyles ] [ text "Random elements: " ]
-        , code [ css (codeStyles ++ [ marginRight (px 8) ]) ]
+        , code [ css (codeLineStyles ++ [ marginRight (px 8) ]) ]
             [ text (model.randomElements |> Utils.listToString String.fromInt ", ") ]
         , niceButton SvgItems.dice "" RandomSelect
         ]

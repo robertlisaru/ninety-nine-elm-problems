@@ -8,7 +8,7 @@ import Json.Decode as Decode
 import Process
 import Solutions.P34Totient
 import Solutions.P37TotientImproved
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles)
 import Task
 import Time
 
@@ -145,7 +145,7 @@ specialProblemInteractiveArea model =
     [ div [ css inputRowStyles ]
         [ label [ css inputLabelStyles ]
             [ text "Compute totients for all "
-            , code [ css codeStyles ] [ text "m" ]
+            , code [ css codeLineStyles ] [ text "m" ]
             , text " up to: "
             ]
         , input
@@ -172,11 +172,11 @@ viewTestStatus label testStatus =
                     Completed totientsComputed testTime ->
                         [ code []
                             [ text "computed " ]
-                        , code [ css codeStyles ]
+                        , code [ css codeLineStyles ]
                             [ text <| String.fromInt totientsComputed ]
                         , code []
                             [ text " totients in " ]
-                        , code [ css codeStyles ]
+                        , code [ css codeLineStyles ]
                             [ text <|
                                 String.fromInt
                                     ((testTime.end |> Time.posixToMillis)

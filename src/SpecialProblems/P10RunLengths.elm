@@ -10,7 +10,7 @@ import Random
 import RandomUtils
 import Solutions.P10RunLengths
 import Solutions.P9Pack
-import Styles exposing (codeStyles, inputLabelStyles, inputRowStyles, listInputStyles)
+import Styles exposing (codeLineStyles, inputLabelStyles, inputRowStyles, listInputStyles)
 import SvgItems
 import Utils
 
@@ -102,7 +102,7 @@ specialProblemInteractiveArea model =
         , niceButton SvgItems.dice "" GenerateRandomInput
         ]
     , label [ css inputLabelStyles ] [ text "Run lengths: " ]
-    , code [ css codeStyles ]
+    , code [ css codeLineStyles ]
         [ text <|
             (Solutions.P10RunLengths.runLengths model.listOfLists
                 |> Utils.listToString (Utils.tupleToString String.fromInt String.fromInt) ", "
