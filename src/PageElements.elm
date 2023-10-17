@@ -3,7 +3,7 @@ module PageElements exposing (appIntroView, navView, sideBarView)
 import Css exposing (..)
 import Html.Styled exposing (Html, a, button, div, h1, h2, input, li, nav, span, text, ul)
 import Html.Styled.Attributes exposing (css, href, placeholder, value)
-import Html.Styled.Events exposing (onInput)
+import Html.Styled.Events exposing (onClick, onInput)
 import ProblemHeaders exposing (Category, ProblemHeader, categories)
 import Styles
     exposing
@@ -19,8 +19,8 @@ import SvgItems
 import Utils exposing (DeviceType(..))
 
 
-navView : DeviceType -> Html msg
-navView deviceType =
+navView : DeviceType -> Bool -> msg -> Html msg
+navView deviceType mobileMenuOpen mobileMenuMsg =
     let
         navItem url label =
             a
@@ -66,7 +66,7 @@ navView deviceType =
             , navItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "ninety-nine-elm-problems"
             ]
         , (Utils.displayIf <| Utils.isMobile <| deviceType)
-            (button [ css hamburgerButtonStyles ]
+            (button [ onClick mobileMenuMsg, css <| hamburgerButtonStyles <| mobileMenuOpen ]
                 [ SvgItems.hamburger ]
             )
         ]

@@ -305,13 +305,13 @@ buttonStyles =
     ]
 
 
-hamburgerButtonStyles : List Style
-hamburgerButtonStyles =
-    [ backgroundColor inherit
-    , border (px 1)
+hamburgerButtonStyles : Bool -> List Style
+hamburgerButtonStyles mobileMenuOpen =
+    [ border (px 1)
     , borderColor (hex "#ffffff60")
     , borderStyle solid
     , borderRadius (px 6)
+    , backgroundColor inherit
     , padding (px 4)
     , fontFamily inherit
     , fontSize inherit
@@ -324,6 +324,13 @@ hamburgerButtonStyles =
         , textDecoration underline
         ]
     ]
+        ++ (if mobileMenuOpen then
+                [ backgroundColor (hex "#00000060")
+                ]
+
+            else
+                []
+           )
 
 
 sideBarItemListStyles : List Style

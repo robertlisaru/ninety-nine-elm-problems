@@ -152,6 +152,7 @@ init flags =
             P24Lotto.initModel (problemInfo 24)
     in
     ( { deviceType = Utils.deviceType { width = flags.windowWidth, height = flags.windowHeight }
+      , mobileMenuOpen = False
       , searchKeyWord = ""
       , inputLists = inputLists
       , secondaryInputs = secondaryInputs
@@ -182,6 +183,7 @@ init flags =
 
 type alias Model =
     { deviceType : Utils.DeviceType
+    , mobileMenuOpen : Bool
     , searchKeyWord : String
     , inputLists : Array (List Int)
     , secondaryInputs : Array Int
@@ -207,6 +209,7 @@ type alias Model =
 
 type Msg
     = UpdateWindowSize Int Int
+    | MobileMenuToggle
     | DecodeBasicInput Int String
     | UpdateBasicInput Int
     | GenerateBasicRandomList Int
@@ -235,6 +238,9 @@ update msg model =
     case msg of
         UpdateWindowSize width height ->
             ( { model | deviceType = Utils.deviceType { width = width, height = height } }, Cmd.none )
+
+        MobileMenuToggle ->
+            ( { model | mobileMenuOpen = model.mobileMenuOpen |> not }, Cmd.none )
 
         GenerateBasicRandomList problemNumber ->
             let
@@ -533,7 +539,8 @@ view model =
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-        , header [ css <| headerStyles <| model.deviceType ] [ navView model.deviceType ]
+        , header [ css <| headerStyles <| model.deviceType ]
+            [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
             [ div [ css leftContentStyles ] [ appIntroView model.deviceType, viewProblems model ]
             , (Utils.displayIf <| not <| Utils.isMobile <| model.deviceType)
