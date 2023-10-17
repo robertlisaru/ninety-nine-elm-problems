@@ -1,8 +1,13 @@
-module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (boolToString, displayIf, intToTwoDigitString, isMobileDevice, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
+
+
+isMobileDevice : { width : Int, height : Int } -> Bool
+isMobileDevice windowSize =
+    windowSize.height > windowSize.width
 
 
 listToString : (a -> String) -> String -> List a -> String

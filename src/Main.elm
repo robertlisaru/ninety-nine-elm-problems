@@ -2,6 +2,7 @@ module Main exposing (Model, Msg(..), main)
 
 import Array exposing (Array)
 import Browser
+import Browser.Events exposing (onResize)
 import Css exposing (auto, marginLeft, marginTop, px)
 import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
@@ -75,17 +76,25 @@ import Utils
 -- MAIN
 
 
-main : Program (Array String) Model Msg
+main : Program Flags Model Msg
 main =
     Browser.document
         { init = init
         , view = view
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions =
+            always (Sub.batch [ onResize UpdateWindowSize ])
         }
 
 
-init : Array String -> ( Model, Cmd Msg )
+type alias Flags =
+    { solutions : Array String
+    , windowWidth : Int
+    , windowHeight : Int
+    }
+
+
+init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         inputLists =
@@ -142,7 +151,8 @@ init flags =
         ( p24model, p24cmd ) =
             P24Lotto.initModel (problemInfo 24)
     in
-    ( { searchKeyWord = ""
+    ( { windowSize = { width = flags.windowWidth, height = flags.windowHeight }
+      , searchKeyWord = ""
       , inputLists = inputLists
       , secondaryInputs = secondaryInputs
       , thirdInputs = thirdInputs
@@ -150,7 +160,7 @@ init flags =
       , secondaryInputStrings = Array.map String.fromInt secondaryInputs
       , thirdInputStrings = Array.map String.fromInt thirdInputs
       , showCode = Array.repeat 100 False
-      , solutionsCode = flags
+      , solutionsCode = flags.solutions
       , p7model = P7FlattenNestedList.initModel (problemInfo 7)
       , p10model = P10RunLengths.initModel (problemInfo 10)
       , p12model = P12RleDecode.initModel (problemInfo 12)
@@ -171,7 +181,8 @@ init flags =
 
 
 type alias Model =
-    { searchKeyWord : String
+    { windowSize : { width : Int, height : Int }
+    , searchKeyWord : String
     , inputLists : Array (List Int)
     , secondaryInputs : Array Int
     , thirdInputs : Array Int
@@ -195,7 +206,8 @@ type alias Model =
 
 
 type Msg
-    = DecodeBasicInput Int String
+    = UpdateWindowSize Int Int
+    | DecodeBasicInput Int String
     | UpdateBasicInput Int
     | GenerateBasicRandomList Int
     | BasicRandomListReady Int (List Int)
@@ -221,6 +233,9 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        UpdateWindowSize width height ->
+            ( { model | windowSize = { width = width, height = height } }, Cmd.none )
+
         GenerateBasicRandomList problemNumber ->
             let
                 cmd =
@@ -521,7 +536,8 @@ view model =
         , header [ css headerStyles ] [ navView ]
         , div [ css pageContainerStyles ]
             [ div [ css leftContentStyles ] [ appIntroView, viewProblems model ]
-            , sideBarView model.searchKeyWord SearchProblem
+            , (Utils.displayIf <| not <| Utils.isMobileDevice <| model.windowSize)
+                (sideBarView model.searchKeyWord SearchProblem)
             ]
         ]
             |> List.map toUnstyled
