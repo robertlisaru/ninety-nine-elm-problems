@@ -24,6 +24,11 @@ isMobile deviceType_ =
     deviceType_ == Mobile
 
 
+disableBodyScroll : Html msg
+disableBodyScroll =
+    global [ selector "body" [ overflow hidden ] ]
+
+
 listToString : (a -> String) -> String -> List a -> String
 listToString convert separator list =
     "[" ++ (list |> List.map convert |> String.join separator) ++ "]"

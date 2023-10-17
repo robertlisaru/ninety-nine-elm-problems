@@ -136,13 +136,13 @@ appIntroView deviceType =
         ]
 
 
-sideBarView : String -> (String -> msg) -> Html msg
-sideBarView searchKeyWord searchMsg =
+sideBarView : DeviceType -> Bool -> String -> (String -> msg) -> Html msg
+sideBarView deviceType isOpen searchKeyWord searchMsg =
     let
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
-    div [ css sideBarStyles ]
+    div [ css <| sideBarStyles isOpen <| deviceType ]
         [ ul [ css sideBarItemListStyles ]
             [ linkItem "" "README"
             , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
@@ -166,21 +166,22 @@ sideBarView searchKeyWord searchMsg =
         , input [ placeholder "Search", Html.Styled.Attributes.type_ "search", css searchBarStyles, value searchKeyWord, onInput searchMsg ] []
         , ul [ css sideBarItemListStyles ]
             (categories |> List.map (viewCategory searchKeyWord))
-        , div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
-            [ a
-                [ css
-                    (linkStyles
-                        ++ [ displayFlex
-                           , alignItems center
-                           ]
-                    )
-                , href "#"
+        , Utils.displayIf (deviceType == Desktop) <|
+            div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
+                [ a
+                    [ css
+                        (linkStyles
+                            ++ [ displayFlex
+                               , alignItems center
+                               ]
+                        )
+                    , href "#"
+                    ]
+                    [ SvgItems.top
+                    , div [ css [ marginRight (em 0.6) ] ] []
+                    , text "Back to top"
+                    ]
                 ]
-                [ SvgItems.top
-                , div [ css [ marginRight (em 0.6) ] ] []
-                , text "Back to top"
-                ]
-            ]
         ]
 
 

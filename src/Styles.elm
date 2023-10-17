@@ -28,6 +28,7 @@ module Styles exposing
     )
 
 import Css exposing (..)
+import Css.Transitions exposing (transition)
 import Html.Styled exposing (node, text)
 import Utils exposing (DeviceType(..))
 
@@ -38,10 +39,12 @@ headerStyles deviceType =
         Mobile ->
             [ backgroundColor (hex "#5FABDC")
             , color (hex "#ffffff")
-            , padding (px 8)
+            , paddingLeft (px 8)
+            , paddingRight (px 8)
             , overflowX hidden
             , position fixed
             , top (px 0)
+            , height (px 50)
             ]
 
         Desktop ->
@@ -123,13 +126,36 @@ leftContentStyles =
     ]
 
 
-sideBarStyles : List Style
-sideBarStyles =
-    [ maxWidth (px 200)
-    , padding (px 20)
-    , margin4 (px 20) (px 40) (px 20) (px 40)
-    , borderLeft3 (px 1) solid (hex "#eeeeee")
-    ]
+sideBarStyles : Bool -> DeviceType -> List Style
+sideBarStyles isOpen deviceType =
+    case deviceType of
+        Mobile ->
+            [ position fixed
+            , top (px 50)
+            , left (px 0)
+            , height (calc (vh 100) minus (px 66))
+            , padding (px 8)
+            , backgroundColor (hex "#fff")
+            , overflowY scroll
+            , transition
+                [ Css.Transitions.transform 400
+                ]
+            ]
+                ++ (if isOpen then
+                        [ transform (translateY (vw 0))
+                        ]
+
+                    else
+                        [ transform (translateX (vw 100))
+                        ]
+                   )
+
+        Desktop ->
+            [ maxWidth (px 200)
+            , padding (px 20)
+            , margin4 (px 20) (px 40) (px 20) (px 40)
+            , borderLeft3 (px 1) solid (hex "#eeeeee")
+            ]
 
 
 searchBarStyles : List Style
@@ -139,6 +165,7 @@ searchBarStyles =
     , margin2 (px 10) (px 0)
     , border3 (px 1) solid (hex "#eeeeee")
     , borderRadius (px 6)
+    , width (pct 100)
     ]
 
 
@@ -319,13 +346,11 @@ hamburgerButtonStyles mobileMenuOpen =
     , outline inherit
     , display inlineFlex
     , alignItems center
-    , hover
-        [ color (hex "#8CD636")
-        , textDecoration underline
-        ]
     ]
         ++ (if mobileMenuOpen then
-                [ backgroundColor (hex "#00000060")
+                [ backgroundColor (hex "#8CD636")
+                , borderColor (hex "#8CD636")
+                , boxShadow5 (px 0) (px 0) (px 5) (px 2) (hex "#8CD636")
                 ]
 
             else

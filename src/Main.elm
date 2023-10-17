@@ -69,7 +69,7 @@ import Styles
         )
 import SvgItems
 import SyntaxHighlight
-import Utils
+import Utils exposing (DeviceType(..))
 
 
 
@@ -539,12 +539,12 @@ view model =
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
+        , Utils.displayIf model.mobileMenuOpen Utils.disableBodyScroll
         , header [ css <| headerStyles <| model.deviceType ]
             [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
             [ div [ css leftContentStyles ] [ appIntroView model.deviceType, viewProblems model ]
-            , (Utils.displayIf <| not <| Utils.isMobile <| model.deviceType)
-                (sideBarView model.searchKeyWord SearchProblem)
+            , sideBarView model.deviceType model.mobileMenuOpen model.searchKeyWord SearchProblem
             ]
         ]
             |> List.map toUnstyled
