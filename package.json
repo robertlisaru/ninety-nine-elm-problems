@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "node extractSolutionsCode.js && elm-live src/Main.elm --open --dir=public -- --output public/main.js",
+    "start": "node extractSolutionsCode.js && elm-live --host=0.0.0.0 src/Main.elm --open --dir=public -- --output public/main.js",
     "test": "elm-test",
     "build": "node extractSolutionsCode.js && elm make src/Main.elm --optimize --output public/main.js && npm run uglify",
     "uglify": "uglifyjs public/main.js --compress \"pure_funcs=[F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9],pure_getters,keep_fargs=false,unsafe_comps,unsafe\" | uglifyjs --mangle --output public/main.js",
