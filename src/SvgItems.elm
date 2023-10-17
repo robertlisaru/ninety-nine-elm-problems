@@ -6,10 +6,10 @@ import Svg.Styled as Svg exposing (path, svg)
 import Svg.Styled.Attributes as SvgAttr
 
 
-elmLogo : Html msg
-elmLogo =
+elmLogo : Int -> Html msg
+elmLogo heightPx =
     svg
-        [ SvgAttr.height "32px"
+        [ SvgAttr.height <| (String.fromInt <| heightPx) ++ "px"
         , SvgAttr.viewBox "0 0 600 600"
         ]
         [ Svg.polygon
@@ -203,8 +203,8 @@ top =
 hamburger : Html msg
 hamburger =
     svg
-        [ SvgAttr.width "26px"
-        , SvgAttr.height "26px"
+        [ SvgAttr.width "20px"
+        , SvgAttr.height "20px"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.fill "#fff"
         ]

@@ -35,12 +35,15 @@ navView deviceType =
             [ css <|
                 case deviceType of
                     Mobile ->
-                        [ fontSize (px 18)
+                        [ fontSize (px 16)
                         , fontWeight normal
                         , color (hex "#ffffff")
                         , displayFlex
                         , flexWrap wrap
                         , lineHeight (em 1)
+                        , marginTop (px 0)
+                        , marginBottom (px 0)
+                        , marginRight (px 8)
                         ]
 
                     Desktop ->
@@ -85,9 +88,36 @@ logoView deviceType =
             , alignItems center
             ]
         ]
-        [ SvgItems.elmLogo
-        , div [ css [ paddingLeft (px 8), color (hex "#ffffff"), width (px 64) ] ]
-            [ div [ css [ lineHeight (px 24), fontSize (px 30) ] ] [ text "elm" ]
+        [ SvgItems.elmLogo <|
+            case deviceType of
+                Mobile ->
+                    28
+
+                Desktop ->
+                    32
+        , div
+            [ css <|
+                case deviceType of
+                    Mobile ->
+                        [ paddingLeft (px 4), color (hex "#ffffff"), width (px 64) ]
+
+                    Desktop ->
+                        [ paddingLeft (px 8), color (hex "#ffffff"), width (px 64) ]
+            ]
+            [ div
+                [ css <|
+                    case deviceType of
+                        Mobile ->
+                            [ lineHeight (px 18)
+                            , fontSize (px 24)
+                            ]
+
+                        Desktop ->
+                            [ lineHeight (px 24)
+                            , fontSize (px 30)
+                            ]
+                ]
+                [ text "elm" ]
             , div [ css [ fontSize (px 12) ] ] [ text "99 problems" ]
             ]
         ]

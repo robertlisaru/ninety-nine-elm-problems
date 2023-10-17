@@ -36,11 +36,9 @@ headerStyles : DeviceType -> List Style
 headerStyles deviceType =
     case deviceType of
         Mobile ->
-            [ height (px 64)
-            , backgroundColor (hex "#5FABDC")
+            [ backgroundColor (hex "#5FABDC")
             , color (hex "#ffffff")
-            , paddingLeft (px 8)
-            , paddingRight (px 8)
+            , padding (px 8)
             , overflowX hidden
             , position fixed
             , top (px 0)
@@ -71,7 +69,7 @@ pageContainerStyles deviceType =
     case deviceType of
         Mobile ->
             [ justifyContent center
-            , marginTop (px 84)
+            , marginTop (px 70)
             , paddingLeft (px 8)
             , paddingRight (px 8)
             ]
@@ -105,7 +103,7 @@ subHeadingStyles deviceType =
         Mobile ->
             [ fontSize (px 16)
             , marginTop (px 0)
-            , marginBottom (px 50)
+            , marginBottom (px 30)
             , lineHeight (em 1.5)
             , fontWeight normal
             ]
