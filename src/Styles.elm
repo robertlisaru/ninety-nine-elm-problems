@@ -140,7 +140,7 @@ sideBarStyles isOpen deviceType =
             , top (px 50)
             , right (px 0)
             , zIndex (int 2)
-            , height (calc (vh 100) minus (px 66))
+            , property "height" "calc(100svh - 66px)"
             , width (calc (vw 100) minus (em 3))
             , boxShadow5 (px -3) (px 8) (px 6) (px 3) (rgba 0 0 0 0.5)
             , borderRadius4 (px 8) (px 0) (px 0) (px 8)
