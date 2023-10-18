@@ -143,7 +143,7 @@ sideBarView deviceType isOpen searchKeyWord searchMsg =
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
-    div [ css <| sideBarStyles isOpen <| deviceType ]
+    nav [ css <| sideBarStyles isOpen <| deviceType ]
         [ ul [ css sideBarItemListStyles ]
             [ linkItem "" "README"
             , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
