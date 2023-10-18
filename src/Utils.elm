@@ -1,32 +1,15 @@
-module Utils exposing (DeviceType(..), boolToString, deviceType, displayIf, intToTwoDigitString, isMobile, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (boolToString, disableBodyScroll, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
+import Css.Global exposing (global, selector)
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-
-
-type DeviceType
-    = Mobile
-    | Desktop
-
-
-deviceType : { width : Int, height : Int } -> DeviceType
-deviceType windowSize =
-    if windowSize.height > windowSize.width then
-        Mobile
-
-    else
-        Desktop
-
-
-isMobile : DeviceType -> Bool
-isMobile deviceType_ =
-    deviceType_ == Mobile
+import Styles exposing (disableBodyScrollStyles)
 
 
 disableBodyScroll : Html msg
 disableBodyScroll =
-    global [ selector "body" [ overflow hidden ] ]
+    global [ selector "body" disableBodyScrollStyles ]
 
 
 listToString : (a -> String) -> String -> List a -> String

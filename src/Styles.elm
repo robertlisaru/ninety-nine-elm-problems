@@ -2,6 +2,7 @@ module Styles exposing
     ( buttonStyles
     , codeBlockStyles
     , codeLineStyles
+    , disableBodyScrollStyles
     , genericStylesNode
     , hamburgerButtonStyles
     , headerStyles
@@ -29,8 +30,8 @@ module Styles exposing
 
 import Css exposing (..)
 import Css.Transitions exposing (transition)
+import DeviceType exposing (DeviceType(..))
 import Html.Styled exposing (node, text)
-import Utils exposing (DeviceType(..))
 
 
 headerStyles : DeviceType -> List Style
@@ -133,8 +134,10 @@ sideBarStyles isOpen deviceType =
         Mobile ->
             [ position fixed
             , top (px 50)
-            , left (px 0)
+            , right (px 0)
             , height (calc (vh 100) minus (px 66))
+            , width (calc (vw 100) minus (em 3))
+            , boxShadow5 (px -3) (px 8) (px 6) (px 3) (rgba 0 0 0 0.5)
             , padding (px 8)
             , backgroundColor (hex "#fff")
             , overflowY scroll
@@ -367,6 +370,12 @@ sideBarItemListStyles =
     , color (hex "#1293D8")
     , fontSize (px 16)
     , lineHeight (em 1.5)
+    ]
+
+
+disableBodyScrollStyles : List Style
+disableBodyScrollStyles =
+    [ overflow hidden
     ]
 
 

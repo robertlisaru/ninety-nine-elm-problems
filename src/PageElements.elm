@@ -1,6 +1,7 @@
 module PageElements exposing (appIntroView, navView, sideBarView)
 
 import Css exposing (..)
+import DeviceType exposing (DeviceType(..), isMobile)
 import Html.Styled exposing (Html, a, button, div, h1, h2, input, li, nav, span, text, ul)
 import Html.Styled.Attributes exposing (css, href, placeholder, value)
 import Html.Styled.Events exposing (onClick, onInput)
@@ -16,7 +17,7 @@ import Styles
         , subHeadingStyles
         )
 import SvgItems
-import Utils exposing (DeviceType(..))
+import Utils
 
 
 navView : DeviceType -> Bool -> msg -> Html msg
@@ -65,7 +66,7 @@ navView deviceType mobileMenuOpen mobileMenuMsg =
                 [ text "/" ]
             , navItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "ninety-nine-elm-problems"
             ]
-        , (Utils.displayIf <| Utils.isMobile <| deviceType)
+        , (Utils.displayIf <| isMobile <| deviceType)
             (button [ onClick mobileMenuMsg, css <| hamburgerButtonStyles <| mobileMenuOpen ]
                 [ SvgItems.hamburger ]
             )

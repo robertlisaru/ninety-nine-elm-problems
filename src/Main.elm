@@ -4,6 +4,7 @@ import Array exposing (Array)
 import Browser
 import Browser.Events exposing (onResize)
 import Css exposing (auto, marginLeft, marginTop, px)
+import DeviceType exposing (DeviceType, deviceType)
 import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -69,7 +70,7 @@ import Styles
         )
 import SvgItems
 import SyntaxHighlight
-import Utils exposing (DeviceType(..))
+import Utils
 
 
 
@@ -151,7 +152,7 @@ init flags =
         ( p24model, p24cmd ) =
             P24Lotto.initModel (problemInfo 24)
     in
-    ( { deviceType = Utils.deviceType { width = flags.windowWidth, height = flags.windowHeight }
+    ( { deviceType = deviceType { width = flags.windowWidth, height = flags.windowHeight }
       , mobileMenuOpen = False
       , searchKeyWord = ""
       , inputLists = inputLists
@@ -182,7 +183,7 @@ init flags =
 
 
 type alias Model =
-    { deviceType : Utils.DeviceType
+    { deviceType : DeviceType
     , mobileMenuOpen : Bool
     , searchKeyWord : String
     , inputLists : Array (List Int)
@@ -237,7 +238,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UpdateWindowSize width height ->
-            ( { model | deviceType = Utils.deviceType { width = width, height = height } }, Cmd.none )
+            ( { model | deviceType = deviceType { width = width, height = height } }, Cmd.none )
 
         MobileMenuToggle ->
             ( { model | mobileMenuOpen = model.mobileMenuOpen |> not }, Cmd.none )
