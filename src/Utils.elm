@@ -1,15 +1,8 @@
-module Utils exposing (boolToString, disableBodyScroll, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
 
-import Css.Global exposing (global, selector)
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
-import Styles exposing (disableBodyScrollStyles)
-
-
-disableBodyScroll : Html msg
-disableBodyScroll =
-    global [ selector "body" disableBodyScrollStyles ]
 
 
 listToString : (a -> String) -> String -> List a -> String

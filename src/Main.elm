@@ -540,7 +540,7 @@ view model =
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-        , Utils.displayIf model.mobileMenuOpen Utils.disableBodyScroll
+        , Styles.disabledBackground 0.4 MobileMenuToggle model.mobileMenuOpen
         , header [ css <| headerStyles <| model.deviceType ]
             [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]

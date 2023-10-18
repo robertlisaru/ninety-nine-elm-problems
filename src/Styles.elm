@@ -2,7 +2,7 @@ module Styles exposing
     ( buttonStyles
     , codeBlockStyles
     , codeLineStyles
-    , disableBodyScrollStyles
+    , disabledBackground
     , genericStylesNode
     , hamburgerButtonStyles
     , headerStyles
@@ -29,9 +29,12 @@ module Styles exposing
     )
 
 import Css exposing (..)
+import Css.Global exposing (global, selector)
 import Css.Transitions exposing (transition)
 import DeviceType exposing (DeviceType(..))
-import Html.Styled exposing (node, text)
+import Html.Styled exposing (Html, div, node, text)
+import Html.Styled.Attributes exposing (css)
+import Html.Styled.Events exposing (onClick)
 
 
 headerStyles : DeviceType -> List Style
@@ -47,6 +50,7 @@ headerStyles deviceType =
             , top (px 0)
             , height (px 50)
             , boxShadow5 (px 0) (px 3) (px 6) (px 3) (rgba 0 0 0 0.5)
+            , zIndex (int 2)
             ]
 
         Desktop ->
@@ -135,14 +139,17 @@ sideBarStyles isOpen deviceType =
             [ position fixed
             , top (px 50)
             , right (px 0)
+            , zIndex (int 2)
             , height (calc (vh 100) minus (px 66))
             , width (calc (vw 100) minus (em 3))
             , boxShadow5 (px -3) (px 8) (px 6) (px 3) (rgba 0 0 0 0.5)
+            , borderRadius4 (px 8) (px 0) (px 0) (px 8)
             , padding (px 8)
+            , paddingLeft (px 16)
             , backgroundColor (hex "#fff")
             , overflowY scroll
             , transition
-                [ Css.Transitions.transform 400
+                [ Css.Transitions.transform 200
                 ]
             ]
                 ++ (if isOpen then
@@ -293,15 +300,15 @@ inputLabelStyles =
 
 codeLineStyles : List Style
 codeLineStyles =
-    [ backgroundColor (Css.hex "#f6f8fa")
-    , padding2 (Css.em 0.2) (Css.em 0.4)
+    [ backgroundColor (hex "#f6f8fa")
+    , padding2 (em 0.2) (em 0.4)
     ]
 
 
 codeBlockStyles : List Style
 codeBlockStyles =
-    [ backgroundColor (Css.hex "#f6f8fa")
-    , padding2 (Css.em 0.2) (Css.em 0.4)
+    [ backgroundColor (hex "#f6f8fa")
+    , padding2 (em 0.2) (em 0.4)
     , padding (px 10)
     , overflow scroll
     ]
@@ -350,6 +357,11 @@ hamburgerButtonStyles mobileMenuOpen =
     , outline inherit
     , display inlineFlex
     , alignItems center
+    , transition
+        [ Css.Transitions.backgroundColor 200
+        , Css.Transitions.borderColor 200
+        , Css.Transitions.boxShadow 200
+        ]
     ]
         ++ (if mobileMenuOpen then
                 [ backgroundColor (hex "#8CD636")
@@ -373,10 +385,41 @@ sideBarItemListStyles =
     ]
 
 
-disableBodyScrollStyles : List Style
-disableBodyScrollStyles =
-    [ overflow hidden
-    ]
+disabledBackground : Float -> msg -> Bool -> Html msg
+disabledBackground opacityValue hideMsg isVisible =
+    div
+        [ onClick hideMsg
+        , css <|
+            [ opacity (num 0)
+            , visibility hidden
+            , cursor default
+            , position fixed
+            , zIndex (int 1)
+            , top (px 0)
+            , left (px 0)
+            , width (pct 100)
+            , height (pct 100)
+            , backgroundColor (hex "#596277")
+            , transition
+                [ Css.Transitions.opacity 200
+                , Css.Transitions.visibility 200
+                ]
+            ]
+                ++ (if isVisible then
+                        [ opacity (num opacityValue)
+                        , visibility visible
+                        ]
+
+                    else
+                        []
+                   )
+        ]
+        [ global
+            [ selector "body"
+                [ overflow hidden
+                ]
+            ]
+        ]
 
 
 
