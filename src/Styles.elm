@@ -49,6 +49,7 @@ headerStyles deviceType =
             , position fixed
             , top (px 0)
             , height (px 50)
+            , width (calc (pct 100) minus (px 16))
             , boxShadow5 (px 0) (px 3) (px 6) (px 3) (rgba 0 0 0 0.5)
             , zIndex (int 2)
             ]
@@ -352,6 +353,7 @@ hamburgerButtonStyles mobileMenuOpen =
     , borderRadius (px 6)
     , backgroundColor inherit
     , padding (px 4)
+    , marginLeft auto
     , fontFamily inherit
     , fontSize inherit
     , cursor pointer
