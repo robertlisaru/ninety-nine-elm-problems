@@ -234,6 +234,7 @@ problemStyles deviceType =
             , marginBottom (px 50)
             , padding (px 8)
             , paddingTop (px 0)
+            , property "scroll-margin-top" "50px"
             ]
 
         Desktop ->
