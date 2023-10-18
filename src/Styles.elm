@@ -414,12 +414,17 @@ disabledBackground opacityValue hideMsg isVisible =
                         []
                    )
         ]
-        [ global
-            [ selector "body"
-                [ overflow hidden
+    <|
+        if isVisible then
+            [ global
+                [ selector "body"
+                    [ overflow hidden
+                    ]
                 ]
             ]
-        ]
+
+        else
+            []
 
 
 
