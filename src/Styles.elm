@@ -45,6 +45,7 @@ headerStyles deviceType =
             , position fixed
             , top (px 0)
             , height (px 50)
+            , boxShadow5 (px 0) (px 3) (px 6) (px 3) (rgba 0 0 0 0.5)
             ]
 
         Desktop ->
