@@ -137,8 +137,8 @@ appIntroView deviceType =
         ]
 
 
-sideBarView : DeviceType -> Bool -> String -> (String -> msg) -> Html msg
-sideBarView deviceType isOpen searchKeyWord searchMsg =
+sideBarView : (String -> msg) -> DeviceType -> Bool -> String -> (String -> msg) -> Html msg
+sideBarView scrollToElementId deviceType isOpen searchKeyWord searchMsg =
     let
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
@@ -166,7 +166,7 @@ sideBarView deviceType isOpen searchKeyWord searchMsg =
         , h2 [ css [ marginBottom (px 0), fontWeight normal ] ] [ text "Problems" ]
         , input [ placeholder "Search", Html.Styled.Attributes.type_ "search", css searchBarStyles, value searchKeyWord, onInput searchMsg ] []
         , ul [ css sideBarItemListStyles ]
-            (categories |> List.map (viewCategory searchKeyWord))
+            (categories |> List.map (viewCategory scrollToElementId deviceType searchKeyWord))
         , Utils.displayIf (deviceType == Desktop) <|
             div [ css [ position sticky, top (px 20), marginTop (px 20) ] ]
                 [ a
@@ -186,19 +186,24 @@ sideBarView deviceType isOpen searchKeyWord searchMsg =
         ]
 
 
-viewProblemHeader : ProblemHeader -> Html msg
-viewProblemHeader problem =
+viewProblemHeader : (String -> msg) -> DeviceType -> ProblemHeader -> Html msg
+viewProblemHeader scrollToElementId deviceType problem =
     li []
         [ a
-            [ href ("#" ++ (problem.number |> String.fromInt))
+            [ case deviceType of
+                Mobile ->
+                    onClick (problem.number |> String.fromInt |> scrollToElementId)
+
+                Desktop ->
+                    href ("#" ++ (problem.number |> String.fromInt))
             , css linkStyles
             ]
             [ text <| String.fromInt problem.number ++ ". " ++ problem.title ]
         ]
 
 
-viewCategory : String -> Category -> Html msg
-viewCategory keyword category =
+viewCategory : (String -> msg) -> DeviceType -> String -> Category -> Html msg
+viewCategory scrollToElementId deviceType keyword category =
     let
         filteredProblems =
             category.problems
@@ -217,5 +222,5 @@ viewCategory keyword category =
             div []
                 [ span [ css (linkStyles ++ [ color (hex "#EEA400") ]) ] [ text category.title ]
                 , ul [ css (sideBarItemListStyles ++ [ paddingLeft (px 20) ]) ]
-                    (filteredProblems |> List.map viewProblemHeader)
+                    (filteredProblems |> List.map (viewProblemHeader scrollToElementId deviceType))
                 ]

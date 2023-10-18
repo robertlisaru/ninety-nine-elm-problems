@@ -211,6 +211,7 @@ type alias Model =
 type Msg
     = UpdateWindowSize Int Int
     | MobileMenuToggle
+    | MobileMenuHide
     | DecodeBasicInput Int String
     | UpdateBasicInput Int
     | GenerateBasicRandomList Int
@@ -232,6 +233,7 @@ type Msg
     | P24Msg P24Lotto.Msg
     | P28Msg P28SortBy.Msg
     | P38Msg P38BenchmarkTotient.Msg
+    | ScrollToElementId String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -242,6 +244,12 @@ update msg model =
 
         MobileMenuToggle ->
             ( { model | mobileMenuOpen = model.mobileMenuOpen |> not }, Cmd.none )
+
+        MobileMenuHide ->
+            ( { model | mobileMenuOpen = False }, Cmd.none )
+
+        ScrollToElementId id ->
+            ( { model | mobileMenuOpen = False }, Utils.scrollToElementId (always MobileMenuHide) -50 id )
 
         GenerateBasicRandomList problemNumber ->
             let
@@ -540,12 +548,12 @@ view model =
         , syntaxHighlightRequiredCssNode
         , syntaxHighlightThemeCssNode --overriden by SyntaxHighlight.useTheme
         , SyntaxHighlight.useTheme SyntaxHighlight.gitHub |> fromUnstyled
-        , Styles.disabledBackground 0.4 MobileMenuToggle model.mobileMenuOpen
+        , Styles.disabledBackground 0.4 MobileMenuHide model.mobileMenuOpen
         , header [ css <| headerStyles <| model.deviceType ]
             [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
             [ div [ css leftContentStyles ] [ appIntroView model.deviceType, viewProblems model ]
-            , sideBarView model.deviceType model.mobileMenuOpen model.searchKeyWord SearchProblem
+            , sideBarView ScrollToElementId model.deviceType model.mobileMenuOpen model.searchKeyWord SearchProblem
             ]
         ]
             |> List.map toUnstyled

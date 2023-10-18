@@ -1,8 +1,10 @@
-module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, tupleToString)
+module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, scrollToElementId, tupleToString)
 
+import Browser.Dom as Dom
 import Html.Styled exposing (Html, text)
 import Solutions.P11RleEncode exposing (RleCode(..))
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
+import Task
 
 
 listToString : (a -> String) -> String -> List a -> String
@@ -74,3 +76,13 @@ intToTwoDigitString number =
 
     else
         String.fromInt shortened
+
+
+scrollToElementId : (Result Dom.Error () -> msg) -> Float -> String -> Cmd msg
+scrollToElementId message scrollOffsetY htmlElementId =
+    Dom.getElement htmlElementId
+        |> Task.andThen
+            (\item ->
+                Dom.setViewport item.element.x (item.element.y + scrollOffsetY)
+            )
+        |> Task.attempt message
