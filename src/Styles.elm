@@ -374,9 +374,9 @@ hamburgerButtonStyles mobileMenuOpen =
         ]
     ]
         ++ (if mobileMenuOpen then
-                [ backgroundColor (hex "#8CD636")
-                , borderColor (hex "#8CD636")
-                , boxShadow5 (px 0) (px 0) (px 5) (px 2) (hex "#8CD636")
+                [ backgroundColor (hex "#EEA400")
+                , borderColor (hex "#EEA400")
+                , boxShadow5 (px 0) (px 0) (px 5) (px 2) (hex "#EEA400")
                 ]
 
             else
