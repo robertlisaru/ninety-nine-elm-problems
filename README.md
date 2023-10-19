@@ -13,11 +13,11 @@ Solutions to johncrane's [Ninety-nine Problems, Solved in Elm](https://johncrane
 - [x] show code for each problem
 - [x] allow input of a custom list to run the problems on
 - [x] search functionality
+- [x] responsive ui for mobile
+- [x] nicer ui
 - [ ] search inside problem descriptions too
-- [ ] refactor tests to be more granular
-- [ ] nicer ui
-- [ ] responsive ui for mobile
 - [ ] dark theme
+- [ ] setup cache in CI script for faster deployment
 
 
 
