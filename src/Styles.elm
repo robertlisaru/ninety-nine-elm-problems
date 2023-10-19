@@ -58,8 +58,8 @@ headerStyles deviceType =
             [ height (px 64)
             , backgroundColor (hex "#5FABDC")
             , color (hex "#ffffff")
-            , paddingLeft (px 20)
-            , paddingRight (px 20)
+            , paddingLeft (px 40)
+            , paddingRight (px 40)
             , overflowX hidden
             ]
 
@@ -130,6 +130,7 @@ subHeadingStyles deviceType =
 leftContentStyles : List Style
 leftContentStyles =
     [ maxWidth (px 600)
+    , marginLeft (px 40)
     ]
 
 
@@ -163,8 +164,9 @@ sideBarStyles isOpen deviceType =
                    )
 
         Desktop ->
-            [ maxWidth (px 200)
+            [ maxWidth (px 260)
             , padding (px 20)
+            , paddingRight (px 0)
             , margin4 (px 20) (px 40) (px 20) (px 40)
             , borderLeft3 (px 1) solid (hex "#eeeeee")
             ]
