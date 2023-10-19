@@ -249,7 +249,7 @@ update msg model =
             ( { model | mobileMenuOpen = False }, Cmd.none )
 
         ScrollToElementId id ->
-            ( { model | mobileMenuOpen = False }, Utils.scrollToElementId (always MobileMenuHide) -50 id )
+            ( { model | mobileMenuOpen = False }, Utils.scrollToElementId (always MobileMenuHide) -75 id )
 
         GenerateBasicRandomList problemNumber ->
             let
