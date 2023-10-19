@@ -552,7 +552,7 @@ view model =
         , header [ css <| headerStyles <| model.deviceType ]
             [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
-            [ div [ css leftContentStyles ] [ appIntroView model.deviceType, viewProblems model ]
+            [ div [ css <| leftContentStyles <| model.deviceType ] [ appIntroView model.deviceType, viewProblems model ]
             , sideBarView ScrollToElementId model.deviceType model.mobileMenuOpen model.searchKeyWord SearchProblem
             ]
         ]

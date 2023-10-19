@@ -8,11 +8,11 @@ type DeviceType
 
 deviceType : { width : Int, height : Int } -> DeviceType
 deviceType windowSize =
-    if windowSize.height > windowSize.width then
-        Mobile
+    if windowSize.width >= 800 then
+        Desktop
 
     else
-        Desktop
+        Mobile
 
 
 isMobile : DeviceType -> Bool

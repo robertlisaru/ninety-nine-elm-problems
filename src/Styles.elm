@@ -127,11 +127,16 @@ subHeadingStyles deviceType =
             ]
 
 
-leftContentStyles : List Style
-leftContentStyles =
-    [ maxWidth (px 600)
-    , marginLeft (px 40)
-    ]
+leftContentStyles : DeviceType -> List Style
+leftContentStyles deviceType =
+    case deviceType of
+        Mobile ->
+            []
+
+        Desktop ->
+            [ maxWidth (px 600)
+            , marginLeft (px 40)
+            ]
 
 
 sideBarStyles : Bool -> DeviceType -> List Style
