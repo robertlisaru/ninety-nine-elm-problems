@@ -138,7 +138,7 @@ init flags =
                 |> Array.set 34 100
                 |> Array.set 37 100
                 |> Array.set 39 100
-                |> Array.set 41 10
+                |> Array.set 41 12
 
         problemTitle problemNumber =
             problemHeaders
