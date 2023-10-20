@@ -35,8 +35,9 @@ import Solutions.P34Totient
 import Solutions.P35PrimeFactors
 import Solutions.P36PrimeFactorsM
 import Solutions.P37TotientImproved
-import Solutions.P39PrimesInRange
+import Solutions.P39PrimesInRange exposing (primesInRange)
 import Solutions.P3ElementAt
+import Solutions.P40Goldbach
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
@@ -122,6 +123,7 @@ init flags =
                 |> Array.set 36 900
                 |> Array.set 37 100
                 |> Array.set 39 50
+                |> Array.set 40 50
 
         thirdInputs =
             Array.repeat 100 5
@@ -363,6 +365,9 @@ update msg model =
 
                         39 ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 2 500)
+
+                        40 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 2 999)
 
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
@@ -944,6 +949,41 @@ problemInteractiveArea model problemNumber =
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> Utils.listToString String.fromInt ", "
                         )
+                    ]
+                ]
+
+            40 ->
+                [ secondaryInput "n: "
+                , div [ css inputRowStyles ]
+                    [ label [ css inputLabelStyles ] [ text "Sum of primes: " ]
+                    , code [ css codeLineStyles ]
+                        [ text <|
+                            (Solutions.P40Goldbach.goldbach (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                                |> Utils.maybeToString (Utils.tupleToString String.fromInt String.fromInt)
+                            )
+                        ]
+                    ]
+                , label [ css inputLabelStyles ] [ text "Other options: " ]
+                , code [ css codeLineStyles ]
+                    [ text <|
+                        let
+                            goldbachMore n =
+                                let
+                                    primes =
+                                        primesInRange 2 n
+
+                                    isPrime a =
+                                        List.member a primes
+                                in
+                                primes
+                                    |> List.filter (\prime -> prime <= n // 2)
+                                    |> List.map (\prime -> ( prime, n - prime ))
+                                    |> List.filter (Tuple.second >> isPrime)
+                                    |> List.tail
+                                    |> Maybe.andThen Utils.emptyListMeansNothing
+                        in
+                        goldbachMore (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> Utils.maybeToString (Utils.listToString (Utils.tupleToString String.fromInt String.fromInt) ", ")
                     ]
                 ]
 

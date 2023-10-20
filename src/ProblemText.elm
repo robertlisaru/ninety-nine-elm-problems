@@ -245,5 +245,15 @@ phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) *
             p []
                 [ text "Construct a list of all prime numbers within a range of integers." ]
 
+        40 ->
+            div []
+                [ p []
+                    [ a [ href "https://en.wikipedia.org/wiki/Goldbach%27s_conjecture" ]
+                        [ text "Goldbach's conjecture" ]
+                    , text " says that every positive even integer greater than 2 is the sum of two prime numbers. Example: 28 = 5 + 23. It has been numerically confirmed up to very large numbers but remains unproven."
+                    ]
+                , p [] [ text "Return two prime numbers that sum up to a given even integer." ]
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

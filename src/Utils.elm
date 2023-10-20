@@ -1,4 +1,4 @@
-module Utils exposing (boolToString, displayIf, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, scrollToElementId, tupleToString)
+module Utils exposing (boolToString, displayIf, emptyListMeansNothing, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, scrollToElementId, tupleToString)
 
 import Browser.Dom as Dom
 import Html.Styled exposing (Html, text)
@@ -86,3 +86,12 @@ scrollToElementId message scrollOffsetY htmlElementId =
                 Dom.setViewport item.element.x (item.element.y + scrollOffsetY)
             )
         |> Task.attempt message
+
+
+emptyListMeansNothing : List a -> Maybe (List a)
+emptyListMeansNothing list =
+    if list |> List.isEmpty then
+        Nothing
+
+    else
+        Just list
