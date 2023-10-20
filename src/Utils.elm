@@ -14,7 +14,7 @@ listToString convert separator list =
 
 maybeToString : (a -> String) -> Maybe a -> String
 maybeToString convert maybe =
-    maybe |> Maybe.map (\a -> "Just " ++ convert a) |> Maybe.withDefault "Nothing"
+    maybe |> Maybe.map convert |> Maybe.withDefault "Nothing"
 
 
 displayIf : Bool -> Html msg -> Html msg
