@@ -255,5 +255,8 @@ phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) *
                 , p [] [ text "Return two prime numbers that sum up to a given even integer." ]
                 ]
 
+        41 ->
+            p [] [ text "Find all even numbers within a range which can only be represented by the sum of two prime numbers that are both greater than a specified threshold." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]

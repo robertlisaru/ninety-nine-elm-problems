@@ -56,7 +56,7 @@ categories =
             , { number = 38, title = "Benchmark totient" }
             , { number = 39, title = "Primes in range" }
             , { number = 40, title = "Goldbach's conjecture" }
-            , { number = 41, title = "Goldbach greater than" }
+            , { number = 41, title = "Goldbach threshold" }
             ]
       }
     , { title = "Logic and Codes"

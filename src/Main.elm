@@ -5,7 +5,7 @@ import Browser
 import Browser.Events exposing (onResize)
 import Css exposing (auto, marginLeft, marginTop, px)
 import DeviceType exposing (DeviceType, deviceType)
-import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, text, toUnstyled, ul)
+import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, pre, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
@@ -38,6 +38,7 @@ import Solutions.P37TotientImproved
 import Solutions.P39PrimesInRange exposing (primesInRange)
 import Solutions.P3ElementAt
 import Solutions.P40Goldbach
+import Solutions.P41GoldbachThreshold
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
@@ -53,6 +54,7 @@ import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
         ( buttonStyles
+        , codeBlockStyles
         , codeLineStyles
         , genericStylesNode
         , headerStyles
@@ -124,6 +126,7 @@ init flags =
                 |> Array.set 37 100
                 |> Array.set 39 50
                 |> Array.set 40 50
+                |> Array.set 41 200
 
         thirdInputs =
             Array.repeat 100 5
@@ -135,6 +138,7 @@ init flags =
                 |> Array.set 34 100
                 |> Array.set 37 100
                 |> Array.set 39 100
+                |> Array.set 41 10
 
         problemTitle problemNumber =
             problemHeaders
@@ -984,6 +988,32 @@ problemInteractiveArea model problemNumber =
                         in
                         goldbachMore (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             |> Utils.maybeToString (Utils.listToString (Utils.tupleToString String.fromInt String.fromInt) ", ")
+                    ]
+                ]
+
+            41 ->
+                [ secondaryInput "Sum smaller than: "
+                , thirdInput "Primes larger than: "
+                , label [ css inputLabelStyles ] [ text "Sums of primes: " ]
+                , pre [ css codeBlockStyles ]
+                    [ text <|
+                        (Solutions.P41GoldbachThreshold.goldbachGT 2
+                            (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> List.foldr
+                                (\tuple string ->
+                                    case tuple of
+                                        ( p1, p2 ) ->
+                                            String.fromInt (p1 + p2)
+                                                ++ " = "
+                                                ++ String.fromInt p1
+                                                ++ " + "
+                                                ++ String.fromInt p2
+                                                ++ "\n"
+                                                ++ string
+                                )
+                                ""
+                        )
                     ]
                 ]
 
