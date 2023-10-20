@@ -4,6 +4,7 @@ module Solutions.P41GoldbachThreshold exposing (goldbachGT)
 goldbachGT : Int -> Int -> Int -> List ( Int, Int )
 goldbachGT start end threshold =
     List.range start end
+        |> List.filter (\n -> (n |> modBy 2) == 0)
         |> List.map goldbach
         |> removeNothings
         |> List.filter
@@ -20,9 +21,10 @@ goldbach n =
             List.member a primes
     in
     primes
-        |> List.map (\prime -> ( prime, n - prime ))
-        |> List.filter (Tuple.second >> isPrime)
+        |> dropWhile
+            (\prime -> (n - prime) |> isPrime |> not)
         |> List.head
+        |> Maybe.map (\prime -> ( prime, n - prime ))
 
 
 primesInRange : Int -> Int -> List Int
@@ -59,3 +61,17 @@ removeNothings listMaybes =
                         list
             )
             []
+
+
+dropWhile : (a -> Bool) -> List a -> List a
+dropWhile shouldDrop list =
+    case list of
+        [] ->
+            []
+
+        first :: rest ->
+            if shouldDrop first then
+                dropWhile shouldDrop rest
+
+            else
+                list
