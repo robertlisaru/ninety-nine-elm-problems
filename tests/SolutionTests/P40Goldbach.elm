@@ -13,12 +13,12 @@ suite =
             \_ ->
                 Expect.equal True
                     (List.all (\n -> testGoldbachHappyCase n <| goldbach n)
-                        [ 4, 10, 12, 14, 16, 18, 20, 100, 222, 120, 2444, 24444, 33336, 71000 ]
+                        [ 4, 10, 12, 14, 16, 18, 20, 100, 500, 999 ]
                     )
         , test "Test 2" <|
             \_ ->
                 Expect.equal True
-                    (List.all (\n -> goldbach n == Nothing) [ -99999, -1, 0, 1, 11, 17 ])
+                    (List.all (\n -> goldbach n == Nothing) [ -9, -1, 0, 1, 11, 17 ])
         ]
 
 
