@@ -1,9 +1,9 @@
-module RandomUtils exposing (duplicateSequences, nestedListGenerator, randomList, sometimesPalindrome, sometimesPrime, uniques)
+module RandomUtils exposing (duplicateSequences, even, nestedListGenerator, randomList, sometimesPalindrome, sometimesPrime, uniques)
 
 import Random
 import Solutions.P23RandomSelect exposing (randomSelect)
 import Solutions.P24Lotto
-import Solutions.P31IsPrime exposing (isPrime)
+import Solutions.P39PrimesInRange exposing (primesInRange)
 import Solutions.P7FlattenNestedList exposing (NestedList(..))
 
 
@@ -122,10 +122,7 @@ sometimesPrime max =
             Random.weighted ( 0.5, True ) [ ( 1 - 0.5, False ) ]
 
         primes =
-            List.range 2 max |> List.filter isPrime
-
-        nonPrimes =
-            List.range 0 max |> List.filter (isPrime >> not)
+            primesInRange 2 max
 
         selectOneFrom list =
             list |> randomSelect 1 |> Random.map (List.head >> Maybe.withDefault 0)
@@ -137,5 +134,13 @@ sometimesPrime max =
                     selectOneFrom primes
 
                 else
-                    selectOneFrom nonPrimes
+                    Random.int 2 max
             )
+
+
+even : Int -> Int -> Random.Generator Int
+even low high =
+    List.range low high
+        |> List.filter (modBy 2 >> (==) 0)
+        |> randomSelect 1
+        |> Random.map (List.head >> Maybe.withDefault 0)

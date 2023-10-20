@@ -371,7 +371,10 @@ update msg model =
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 2 500)
 
                         40 ->
-                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 2 999)
+                            Random.generate (RandomSecondaryInputReady problemNumber) (RandomUtils.even 2 999)
+
+                        41 ->
+                            Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 100 999)
 
                         _ ->
                             Random.generate (RandomSecondaryInputReady problemNumber) (Random.int 0 10)
@@ -436,6 +439,9 @@ update msg model =
 
                         39 ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 501 999)
+
+                        41 ->
+                            Random.generate (RandomThirdInputReady problemNumber) (Random.int 2 100)
 
                         _ ->
                             Random.generate (RandomThirdInputReady problemNumber) (Random.int 0 10)
