@@ -213,7 +213,7 @@ specialProblemInteractiveArea model =
             , onInput DecodeStartInput
             , onBlur UpdateStartInput
             , value model.startInputString
-            , maxlength 3
+            , maxlength 4
             ]
             []
         , niceButton SvgItems.dice "" GenerateStartInput
@@ -223,7 +223,7 @@ specialProblemInteractiveArea model =
             , onInput DecodeEndInput
             , onBlur UpdateEndInput
             , value model.endInputString
-            , maxlength 3
+            , maxlength 4
             ]
             []
         , niceButton SvgItems.dice "" GenerateEndInput
@@ -235,7 +235,7 @@ specialProblemInteractiveArea model =
             , onInput DecodeNInput
             , onBlur UpdateNInput
             , value model.nInputString
-            , maxlength 3
+            , maxlength 4
             ]
             []
         , niceButton SvgItems.dice "" GenerateNInput

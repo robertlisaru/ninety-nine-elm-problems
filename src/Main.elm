@@ -650,7 +650,7 @@ problemInteractiveArea model problemNumber =
                     , onInput (DecodeBasicSecondaryInput problemNumber)
                     , onBlur (UpdateBasicSecondaryInput problemNumber)
                     , value (model.secondaryInputStrings |> Array.get problemNumber |> Maybe.withDefault "0")
-                    , maxlength 3
+                    , maxlength 4
                     ]
                     []
                 , niceButton SvgItems.dice "" (GenerateRandomSecondaryInput problemNumber)
@@ -664,7 +664,7 @@ problemInteractiveArea model problemNumber =
                     , onInput (DecodeBasicThirdInput problemNumber)
                     , onBlur (UpdateBasicThirdInput problemNumber)
                     , value (model.thirdInputStrings |> Array.get problemNumber |> Maybe.withDefault "0")
-                    , maxlength 3
+                    , maxlength 4
                     ]
                     []
                 , niceButton SvgItems.dice "" (GenerateRandomThirdInput problemNumber)

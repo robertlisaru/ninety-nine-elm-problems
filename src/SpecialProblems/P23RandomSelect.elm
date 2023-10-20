@@ -177,7 +177,7 @@ specialProblemInteractiveArea model =
             , onInput DecodeBasicSecondaryInput
             , onBlur UpdateBasicSecondaryInput
             , value model.secondaryInputString
-            , maxlength 3
+            , maxlength 4
             ]
             []
         , niceButton SvgItems.dice "" GenerateRandomSecondaryInput
