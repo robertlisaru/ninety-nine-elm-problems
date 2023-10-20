@@ -1006,19 +1006,7 @@ problemInteractiveArea model problemNumber =
                         (Solutions.P41GoldbachThreshold.goldbachGT 2
                             (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
                             (model.thirdInputs |> Array.get problemNumber |> Maybe.withDefault 0)
-                            |> List.foldr
-                                (\tuple string ->
-                                    case tuple of
-                                        ( p1, p2 ) ->
-                                            String.fromInt (p1 + p2)
-                                                ++ " = "
-                                                ++ String.fromInt p1
-                                                ++ " + "
-                                                ++ String.fromInt p2
-                                                ++ "\n"
-                                                ++ string
-                                )
-                                ""
+                            |> Utils.primeSumsToString
                         )
                     ]
                 ]

@@ -1,4 +1,4 @@
-module Utils exposing (boolToString, displayIf, emptyListMeansNothing, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, rleCodeToString, scrollToElementId, tupleToString)
+module Utils exposing (boolToString, displayIf, emptyListMeansNothing, intToTwoDigitString, listOfListsToString, listToString, maybeToString, nestedListToString, primeSumsToString, rleCodeToString, scrollToElementId, tupleToString)
 
 import Browser.Dom as Dom
 import Html.Styled exposing (Html, text)
@@ -95,3 +95,26 @@ emptyListMeansNothing list =
 
     else
         Just list
+
+
+primeSumsToString : List ( Int, Int ) -> String
+primeSumsToString primeSums =
+    case primeSums of
+        [] ->
+            "Nothing"
+
+        _ ->
+            primeSums
+                |> List.foldr
+                    (\tuple string ->
+                        case tuple of
+                            ( p1, p2 ) ->
+                                String.fromInt (p1 + p2)
+                                    ++ " = "
+                                    ++ String.fromInt p1
+                                    ++ " + "
+                                    ++ String.fromInt p2
+                                    ++ "\n"
+                                    ++ string
+                    )
+                    ""
