@@ -160,6 +160,7 @@ init flags =
     in
     ( { deviceType = deviceType { width = flags.windowWidth, height = flags.windowHeight }
       , mobileMenuOpen = False
+      , darkMode = False
       , searchKeyWord = ""
       , inputLists = inputLists
       , secondaryInputs = secondaryInputs
@@ -191,6 +192,7 @@ init flags =
 type alias Model =
     { deviceType : DeviceType
     , mobileMenuOpen : Bool
+    , darkMode : Bool
     , searchKeyWord : String
     , inputLists : Array (List Int)
     , secondaryInputs : Array Int
@@ -218,6 +220,7 @@ type Msg
     = UpdateWindowSize Int Int
     | MobileMenuToggle
     | MobileMenuHide
+    | ToggleDarkMode
     | DecodeBasicInput Int String
     | UpdateBasicInput Int
     | GenerateBasicRandomList Int
@@ -253,6 +256,9 @@ update msg model =
 
         MobileMenuHide ->
             ( { model | mobileMenuOpen = False }, Cmd.none )
+
+        ToggleDarkMode ->
+            ( { model | darkMode = model.darkMode |> not }, Cmd.none )
 
         ScrollToElementId id ->
             ( { model | mobileMenuOpen = False }, Utils.scrollToElementId (always MobileMenuHide) -75 id )
@@ -568,7 +574,13 @@ view model =
             [ navView model.deviceType model.mobileMenuOpen MobileMenuToggle ]
         , div [ css <| pageContainerStyles <| model.deviceType ]
             [ div [ css <| leftContentStyles <| model.deviceType ] [ appIntroView model.deviceType, viewProblems model ]
-            , sideBarView ScrollToElementId model.deviceType model.mobileMenuOpen model.searchKeyWord SearchProblem
+            , sideBarView ToggleDarkMode
+                model.darkMode
+                ScrollToElementId
+                model.deviceType
+                model.mobileMenuOpen
+                model.searchKeyWord
+                SearchProblem
             ]
         ]
             |> List.map toUnstyled

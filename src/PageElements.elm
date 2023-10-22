@@ -124,6 +124,76 @@ logoView deviceType =
         ]
 
 
+darkModeButton : msg -> Bool -> Html msg
+darkModeButton toggleDarkMode darkMode =
+    div
+        [ css
+            [ display inlineFlex
+            , alignItems center
+            , justifyContent spaceBetween
+            , marginBottom (px 20)
+            ]
+        ]
+        [ button
+            [ onClick toggleDarkMode
+            , css <|
+                [ border (px 0)
+                , padding (px 0)
+                , fontFamily inherit
+                , fontSize inherit
+                , cursor pointer
+                , outline inherit
+                , display inlineFlex
+                , alignItems center
+                , height (px 24)
+                , width (px 48)
+                , borderRadius (px 20)
+                , borderStyle solid
+                , borderWidth (px 1)
+                , padding (px 2)
+                , borderColor (hex "#596277")
+                , marginRight (px 8)
+                ]
+                    ++ (if darkMode then
+                            [ justifyContent end
+                            , backgroundColor (hex "#59627780")
+                            ]
+
+                        else
+                            [ justifyContent start
+                            , backgroundColor (hex "#59627710")
+                            ]
+                       )
+            ]
+            [ div
+                [ css
+                    [ backgroundColor (hex "#fff")
+                    , width (px 18)
+                    , height (px 18)
+                    , border (px 0)
+                    , borderRadius (pct 50)
+                    , borderStyle solid
+                    , borderWidth (px 1)
+                    , borderColor (hex "#596277a0")
+                    , padding (px 0)
+                    , fontFamily inherit
+                    , fontSize inherit
+                    , cursor pointer
+                    , outline inherit
+                    , display inlineFlex
+                    , alignItems center
+                    ]
+                ]
+                []
+            ]
+        , if darkMode then
+            SvgItems.moon
+
+          else
+            SvgItems.sun
+        ]
+
+
 appIntroView : DeviceType -> Html msg
 appIntroView deviceType =
     div []
@@ -137,14 +207,23 @@ appIntroView deviceType =
         ]
 
 
-sideBarView : (String -> msg) -> DeviceType -> Bool -> String -> (String -> msg) -> Html msg
-sideBarView scrollToElementId deviceType isOpen searchKeyWord searchMsg =
+sideBarView :
+    msg
+    -> Bool
+    -> (String -> msg)
+    -> DeviceType
+    -> Bool
+    -> String
+    -> (String -> msg)
+    -> Html msg
+sideBarView toggleDarkMode darkMode scrollToElementId deviceType isOpen searchKeyWord searchMsg =
     let
         linkItem url label =
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
     nav [ css <| sideBarStyles isOpen <| deviceType ]
-        [ ul [ css sideBarItemListStyles ]
+        [ darkModeButton toggleDarkMode darkMode
+        , ul [ css sideBarItemListStyles ]
             [ linkItem "" "README"
             , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
             , linkItem "https://github.com/robertlisaru/ninety-nine-elm-problems" "Source"
