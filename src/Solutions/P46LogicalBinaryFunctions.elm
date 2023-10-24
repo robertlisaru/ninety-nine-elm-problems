@@ -3,71 +3,43 @@ module Solutions.P46LogicalBinaryFunctions exposing (and, equivalent, implies, n
 
 and : Bool -> Bool -> Bool
 and a b =
-    -- your implementation here
-    True
-
-
-
--- True if either a or b are true
+    a && b
 
 
 or : Bool -> Bool -> Bool
 or a b =
-    -- your implementation here
-    True
-
-
-
--- True either a or b are false
+    a || b
 
 
 nand : Bool -> Bool -> Bool
 nand a b =
-    -- your implementation here
-    True
-
-
-
--- True if and only if a and b are false
+    not (a && b)
 
 
 nor : Bool -> Bool -> Bool
 nor a b =
-    -- your implementation here
-    True
-
-
-
--- True if a or b is true, but not if both are true
+    not (a || b)
 
 
 xor : Bool -> Bool -> Bool
 xor a b =
-    -- your implementation here
-    True
-
-
-
--- True if a is false or b is true
+    (a && not b) || (b && not a)
 
 
 implies : Bool -> Bool -> Bool
 implies a b =
-    -- your implementation here
-    True
-
-
-
--- True if both a and b are true, or both a and b ar false
+    not a || b
 
 
 equivalent : Bool -> Bool -> Bool
 equivalent a b =
-    -- your implementation here
-    True
+    a == b
 
 
 truthTable : (Bool -> Bool -> Bool) -> List ( Bool, Bool, Bool )
-truthTable f =
-    -- your implementation goes here
-    List.repeat 4 ( True, True, True )
+truthTable logicalFunction =
+    [ ( True, True, logicalFunction True True )
+    , ( True, False, logicalFunction True False )
+    , ( False, True, logicalFunction False True )
+    , ( False, False, logicalFunction False False )
+    ]
