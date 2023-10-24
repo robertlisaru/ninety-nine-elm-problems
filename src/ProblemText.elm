@@ -258,5 +258,32 @@ phi(m) = ((p1 - 1) * p1 ^ (m1 - 1)) *
         41 ->
             p [] [ text "Find all even numbers within a range which can only be represented by the sum of two prime numbers that are both greater than a specified threshold." ]
 
+        46 ->
+            div []
+                [ p [] [ text "Define functions to provide the logical binary functions and, or, nand, nor, xor, implies, and equivalent." ]
+                , p [] [ viewCode """-- True if and only if a and b are true
+and : Bool -> Bool -> Bool
+
+-- True if either a or b are true
+or : Bool -> Bool -> Bool
+
+-- True either a or b are false
+nand : Bool -> Bool -> Bool
+
+-- True if and only if a and b are false
+nor : Bool -> Bool -> Bool
+
+-- True if a or b is true, but not if both are true
+xor : Bool -> Bool -> Bool
+
+-- True if a is false or b is true 
+implies : Bool -> Bool -> Bool
+
+-- True if both a and b are true, or both a and b ar false
+equivalent : Bool -> Bool -> Bool""" ]
+                , p [] [ text "Define a function to show a truth table for a logical expression." ]
+                , p [] [ viewCode "truthTable : (Bool -> Bool -> Bool) -> List (Bool, Bool, Bool)" ]
+                ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
