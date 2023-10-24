@@ -23,7 +23,7 @@ nor a b =
 
 xor : Bool -> Bool -> Bool
 xor a b =
-    (a && not b) || (b && not a)
+    a /= b
 
 
 implies : Bool -> Bool -> Bool
