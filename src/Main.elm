@@ -50,6 +50,7 @@ import SpecialProblems.P23RandomSelect as P23RandomSelect
 import SpecialProblems.P24Lotto as P24Lotto
 import SpecialProblems.P28SortBy as P28SortBy
 import SpecialProblems.P38BenchmarkTotient as P38BenchmarkTotient
+import SpecialProblems.P46LogicalBinaryFunctions as P46LogicalBinaryFunctions
 import SpecialProblems.P7FlattenNestedList as P7FlattenNestedList
 import Styles
     exposing
@@ -177,6 +178,7 @@ init flags =
       , p24model = p24model
       , p28model = P28SortBy.initModel (problemInfo 28)
       , p38model = P38BenchmarkTotient.initModel (problemInfo 38)
+      , p46model = P46LogicalBinaryFunctions.initModel (problemInfo 46)
       }
     , Cmd.batch
         [ p23cmd |> Cmd.map P23Msg
@@ -209,6 +211,7 @@ type alias Model =
     , p24model : P24Lotto.Model
     , p28model : P28SortBy.Model
     , p38model : P38BenchmarkTotient.Model
+    , p46model : P46LogicalBinaryFunctions.Model
     }
 
 
@@ -242,6 +245,7 @@ type Msg
     | P24Msg P24Lotto.Msg
     | P28Msg P28SortBy.Msg
     | P38Msg P38BenchmarkTotient.Msg
+    | P46Msg P46LogicalBinaryFunctions.Msg
     | ScrollToElementId String
 
 
@@ -555,6 +559,13 @@ update msg model =
                     P38BenchmarkTotient.update problemMsg model.p38model
             in
             ( { model | p38model = newProblemModel }, problemCmd |> Cmd.map P38Msg )
+
+        P46Msg problemMsg ->
+            let
+                ( newProblemModel, problemCmd ) =
+                    P46LogicalBinaryFunctions.update problemMsg model.p46model
+            in
+            ( { model | p46model = newProblemModel }, problemCmd |> Cmd.map P46Msg )
 
 
 
@@ -1022,6 +1033,9 @@ problemInteractiveArea model problemNumber =
                         )
                     ]
                 ]
+
+            46 ->
+                P46LogicalBinaryFunctions.specialProblemInteractiveArea model.p46model |> List.map (Html.map P46Msg)
 
             _ ->
                 [ basicListInput

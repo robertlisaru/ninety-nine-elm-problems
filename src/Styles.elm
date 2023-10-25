@@ -569,5 +569,20 @@ input:focus {
     outline-color: #a6e22e;
     outline-style: solid;
     outline-width: 1px;
+    
 }
+
+table {
+    border-collapse: collapse;
+
+}
+
+td {
+    border: 1px solid #f5f5f5;
+    padding: 0.2em;
+    min-width: 5em;
+    text-align: center;
+}
+
+
 """
