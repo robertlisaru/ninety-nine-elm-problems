@@ -1,7 +1,7 @@
 module SpecialProblems.P46LogicalBinaryFunctions exposing (Model, Msg, initModel, specialProblemInteractiveArea, update)
 
 import Css exposing (bold, color, fontWeight, hex)
-import Html.Styled exposing (Html, div, label, option, select, table, td, text, tr)
+import Html.Styled exposing (Html, div, label, option, select, span, table, td, text, tr)
 import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onInput)
 import Solutions.P46LogicalBinaryFunctions
@@ -163,7 +163,12 @@ viewTruthTable lbf =
         tr [ css [ fontWeight bold, color (hex "#596277") ] ]
             [ td [] [ text "A" ]
             , td [] [ text "B" ]
-            , td [] [ text ("A " ++ logicalBinaryFunctionToString lbf ++ " B") ]
+            , td []
+                [ text
+                    "A "
+                , span [ css [ color (hex "#5FB4CB") ] ] [ text <| logicalBinaryFunctionToString lbf ]
+                , text " B"
+                ]
             ]
             :: (truthTable
                     |> List.map
