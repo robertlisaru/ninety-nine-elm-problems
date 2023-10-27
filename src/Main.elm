@@ -5,7 +5,7 @@ import Browser
 import Browser.Events exposing (onResize)
 import Css exposing (auto, marginLeft, marginTop, px)
 import DeviceType exposing (DeviceType, deviceType)
-import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, pre, text, toUnstyled, ul)
+import Html.Styled as Html exposing (Html, a, code, div, fromUnstyled, h3, header, input, label, li, p, pre, text, toUnstyled, ul)
 import Html.Styled.Attributes exposing (css, href, id, maxlength, target, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import HtmlUtils exposing (niceButton)
@@ -1036,6 +1036,14 @@ problemInteractiveArea model problemNumber =
 
             46 ->
                 P46LogicalBinaryFunctions.specialProblemInteractiveArea model.p46model |> List.map (Html.map P46Msg)
+
+            47 ->
+                [ p [] [ text "Elm 0.19 does not support custom operators." ]
+                , p []
+                    [ a [ href "https://gist.github.com/evancz/769bba8abb9ddc3bf81d69fa80cc76b1" ]
+                        [ text "The reasoning behind removing user-defined operators " ]
+                    ]
+                ]
 
             _ ->
                 [ basicListInput

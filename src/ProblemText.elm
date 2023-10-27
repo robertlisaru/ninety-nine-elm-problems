@@ -285,5 +285,8 @@ equivalent : Bool -> Bool -> Bool""" ]
                 , p [] [ viewCode "truthTable : (Bool -> Bool -> Bool) -> List (Bool, Bool, Bool)" ]
                 ]
 
+        47 ->
+            p [] [ text "Create custom infix operators for the logical functions from Problem 46." ]
+
         _ ->
             p [] [ text "Problem requirement here" ]
