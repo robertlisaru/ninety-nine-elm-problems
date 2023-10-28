@@ -238,7 +238,7 @@ sideBarView toggleDarkMode darkMode scrollToElementId deviceType isOpen searchKe
                 )
             ]
             [ linkItem "https://www.ic.unicamp.br/~meidanis/courses/mc336/2009s2/prolog/problemas/" "The original collection was named Ninety-Nine Prolog Problems by Werner Hett"
-            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The problems are adapted to Elm in a gitbook by johncrane"
+            , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "The problems are adapted to Elm in a gitbook by John Crane"
             , linkItem "https://github.com/evancz" "Elm was created by Evan Czaplicki"
             , linkItem "https://elm-lang.org/" "Visit the official Elm Website"
             , linkItem "https://package.elm-lang.org/" "This page layout is inspired by the official Elm Packages website"
