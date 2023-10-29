@@ -289,4 +289,4 @@ equivalent : Bool -> Bool -> Bool""" ]
             p [] [ text "Create custom infix operators for the logical functions from Problem 46." ]
 
         _ ->
-            p [] [ text "Problem requirement here" ]
+            p [] [ text "Problem not yet implemented." ]

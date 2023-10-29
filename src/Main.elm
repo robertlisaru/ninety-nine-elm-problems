@@ -1046,7 +1046,5 @@ problemInteractiveArea model problemNumber =
                 ]
 
             _ ->
-                [ basicListInput
-                , label [ css inputLabelStyles ] [ text "Result is: " ]
-                , code [ css codeLineStyles ] [ text "Result goes here" ]
+                [ code [ css codeLineStyles ] [ text "Interactive example not yet implemented." ]
                 ]
