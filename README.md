@@ -19,6 +19,8 @@ https://robertlisaru.github.io/ninety-nine-elm-problems/
 - [ ] setup cache in CI script for faster deployment
 - [ ] come up with faster algorithms for Goldbach problems
 - [ ] do not block UI with long operations
+- [ ] add requirement text for all problems
+- [ ] find missing problems
 
 ## About Elm
 [Elm](https://elm-lang.org/) is a purely functional programming language and a frontend web framework. If you are not used to functional programming, it will be challenging at first. But once you learn and use it for a while, it becomes a pleasure to write code. 
