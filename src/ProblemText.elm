@@ -288,5 +288,12 @@ equivalent : Bool -> Bool -> Bool""" ]
         47 ->
             p [] [ text "Create custom infix operators for the logical functions from Problem 46." ]
 
+        49 ->
+            p []
+                [ text "The "
+                , a [ href "https://mathworld.wolfram.com/GrayCode.html" ] [ text "Gray Code" ]
+                , text " is a binary numbering system used in error correction system. It can be generated for different bit sizes using a reflecting pattern. To generate a two-bit code, take the single bit Gray code 0, 1. Write it forwards, then backwards: 0, 1, 1, 0. Prepend 0s to the first half and 1s to the second half: 00, 01, 11, 10. To generate a 3-bit code, write 00, 01, 11, 10, 10, 11, 01, 00 to obtain: 000, 001, 011, 010, 110, 111, 101, 100."
+                ]
+
         _ ->
             p [] [ text "Problem not yet implemented." ]
