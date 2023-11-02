@@ -298,5 +298,13 @@ equivalent : Bool -> Bool -> Bool""" ]
         50 ->
             p [] [ text "Huffman coding uses variable bit length codes to efficiently encode data by giving the frequently found values short codes and rarely used values longer codes. The first step in Huffman encoding is to determine the frequency of every value in the input data. " ]
 
+        54 ->
+            div []
+                [ p [] [ text "Define a data type to represent a binary tree. " ]
+                , viewCode """type Tree a =
+     -- your definition goes here
+                """
+                ]
+
         _ ->
             p [] [ text "Problem not yet implemented." ]
