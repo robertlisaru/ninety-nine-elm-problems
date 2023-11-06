@@ -306,5 +306,11 @@ equivalent : Bool -> Bool -> Bool""" ]
                 """
                 ]
 
+        55 ->
+            div []
+                [ p [] [ text "In a balanced binary tree the difference between the number of nodes in the left and right subtrees of every node is less than one." ]
+                , p [] [ text "Write a function to construct a balanced binary tree for a given number of nodes. Put the letter 'x' as data value for all nodes of the tree." ]
+                ]
+
         _ ->
             p [] [ text "Problem not yet implemented." ]
