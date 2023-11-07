@@ -312,5 +312,10 @@ equivalent : Bool -> Bool -> Bool""" ]
                 , p [] [ text "Write a function to construct a balanced binary tree for a given number of nodes. Put the letter 'x' as data value for all nodes of the tree." ]
                 ]
 
+        56 ->
+            p []
+                [ text "We call a binary tree symmetric if you can draw a vertical line through the root node and the right subtree is the mirror image of the left subtree. Write a function to check if a binary tree is structurally symmetric (ignore the node values)."
+                ]
+
         _ ->
             p [] [ text "Problem not yet implemented." ]
