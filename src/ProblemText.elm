@@ -317,5 +317,12 @@ equivalent : Bool -> Bool -> Bool""" ]
                 [ text "We call a binary tree symmetric if you can draw a vertical line through the root node and the right subtree is the mirror image of the left subtree. Write a function to check if a binary tree is structurally symmetric (ignore the node values)."
                 ]
 
+        57 ->
+            p []
+                [ text "Build a "
+                , a [ href "http://www.tutorialspoint.com/data_structures_algorithms/binary_search_tree.htm" ] [ text "binary search tree" ]
+                , text " from a list. Place lower values the right. By definition, duplicate values are omitted. "
+                ]
+
         _ ->
             p [] [ text "Problem not yet implemented." ]
