@@ -222,7 +222,7 @@ sideBarView toggleDarkMode darkMode scrollToElementId deviceType isOpen searchKe
             li [] [ a [ href url, css linkStyles ] [ text label ] ]
     in
     nav [ css <| sideBarStyles isOpen <| deviceType ]
-        [ darkModeButton toggleDarkMode darkMode
+        [ Utils.displayIf False <| darkModeButton toggleDarkMode darkMode
         , ul [ css sideBarItemListStyles ]
             [ linkItem "" "README"
             , linkItem "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/" "About"
