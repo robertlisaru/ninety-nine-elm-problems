@@ -39,6 +39,7 @@ import Solutions.P39PrimesInRange exposing (primesInRange)
 import Solutions.P3ElementAt
 import Solutions.P40Goldbach
 import Solutions.P41GoldbachThreshold
+import Solutions.P49GrayCodes
 import Solutions.P4CountElements
 import Solutions.P5Reverse
 import Solutions.P6IsPalindrome
@@ -128,6 +129,7 @@ init flags =
                 |> Array.set 39 50
                 |> Array.set 40 50
                 |> Array.set 41 200
+                |> Array.set 49 2
 
         thirdInputs =
             Array.repeat 100 5
@@ -1042,6 +1044,18 @@ problemInteractiveArea model problemNumber =
                 , p []
                     [ a [ href "https://gist.github.com/evancz/769bba8abb9ddc3bf81d69fa80cc76b1" ]
                         [ text "The reasoning behind removing user-defined operators " ]
+                    ]
+                ]
+
+            49 ->
+                [ secondaryInput "How many bits: "
+                , label [ css inputLabelStyles ] [ text "Gray codes: " ]
+                , code [ css codeLineStyles ]
+                    [ text <|
+                        (Solutions.P49GrayCodes.grayCodes
+                            (model.secondaryInputs |> Array.get problemNumber |> Maybe.withDefault 0)
+                            |> Utils.listOfListsToString
+                        )
                     ]
                 ]
 
