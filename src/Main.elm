@@ -606,7 +606,7 @@ viewProblems model =
 
 
 viewProblem : Model -> ProblemHeader -> Html Msg
-viewProblem model problem =
+viewProblem model problemHeader =
     let
         viewCodeButton showCode problemNumber =
             niceButton SvgItems.elmColoredLogo
@@ -619,35 +619,64 @@ viewProblem model problem =
                 (ShowCodeToggle problemNumber)
     in
     li
-        [ css <| problemStyles <| model.deviceType, id (problem.number |> String.fromInt) ]
-        [ h3 [ css <| problemTitleStyles <| model.deviceType ]
-            [ text <| String.fromInt problem.number ++ ". " ++ problem.title
-            , a
-                [ href
-                    ("https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p"
-                        ++ Utils.intToTwoDigitString problem.number
-                        ++ ".html"
-                    )
-                , target "_blank"
-                , css
-                    (buttonStyles
-                        ++ [ marginLeft auto
-                           , marginTop (px 3)
-                           ]
-                    )
-                ]
-                [ SvgItems.book ]
-            ]
-        , ProblemText.requirement problem.number
-        , problemInteractiveArea model problem.number
-        , viewCodeButton model.showCode problem.number
-        , Utils.displayIf (model.showCode |> Array.get problem.number |> Maybe.withDefault False) <|
+        [ css <| problemStyles <| model.deviceType, id (problemHeader.number |> String.fromInt) ]
+        [ viewProblemHeader model problemHeader
+        , ProblemText.requirement problemHeader.number
+        , problemInteractiveArea model problemHeader.number
+        , viewCodeButton model.showCode problemHeader.number
+        , Utils.displayIf (model.showCode |> Array.get problemHeader.number |> Maybe.withDefault False) <|
             (model.solutionsCode
-                |> Array.get problem.number
+                |> Array.get problemHeader.number
                 |> Maybe.withDefault "Error when indexing code for this solution."
                 |> HtmlUtils.viewCode
             )
         ]
+
+
+viewProblemHeader : Model -> ProblemHeader -> Html msg
+viewProblemHeader model problemHeader =
+    h3 [ css <| problemTitleStyles <| model.deviceType ]
+        [ text <| String.fromInt problemHeader.number ++ ". " ++ problemHeader.title
+        , viewGitbookUrl problemHeader.number
+        ]
+
+
+viewGitbookUrl : Int -> Html msg
+viewGitbookUrl problemNumber =
+    a
+        [ href <|
+            case problemNumber of
+                28 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p28a.html"
+
+                50 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p50a.html"
+
+                61 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p61a.html"
+
+                62 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p62a.html"
+
+                68 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p68a.html"
+
+                80 ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p80a.html"
+
+                _ ->
+                    "https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p"
+                        ++ Utils.intToTwoDigitString problemNumber
+                        ++ ".html"
+        , target "_blank"
+        , css
+            (buttonStyles
+                ++ [ marginLeft auto
+                   , marginTop (px 3)
+                   ]
+            )
+        ]
+        [ SvgItems.book ]
 
 
 problemInteractiveArea : Model -> Int -> Html Msg
