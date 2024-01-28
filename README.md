@@ -1,6 +1,6 @@
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/9a2e1778-1e23-4ac0-8689-c0470aad64b8)
 
-## Live demo
+## Live demo with responsive layout
 
 https://robertlisaru.github.io/ninety-nine-elm-problems/
 
