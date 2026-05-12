@@ -36,15 +36,6 @@ https://robertlisaru.github.io/ninety-nine-elm-problems/
 - `Application flow` is easy to follow in code.
 - Elm developers are friendly, helpful, and always excited to talk about Elm.
 
-## My Elm experience <3
-- After React, this was the 2nd web framework I had ever interacted with at the time, in 2021.
-- At university I had mostly used imperative languages like Java, C, C++, PHP;
-- Thinking in a functional style was not easy at first, but shortly became natural and intuitive to me.
-- It took me 7 days to learn the Elm basics and build a [small test app](https://github.com/robertlisaru/elm-todos-app);
-- After that, I jumped straight into a real-world production project, where I successfully deployed over 100 pull requests, and many thousand lines of code.
-
-The elm tree is also a wonderful tree.
-
 ![image](https://github.com/robertlisaru/elm-exercises/assets/40792547/34d16f6f-3f13-4c66-b845-8a57cf5d4fd8)
 
 ## Initial setup
